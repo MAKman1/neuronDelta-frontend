@@ -1,30 +1,24 @@
 {
-  "name": "argon-dashboard-react",
+  "name": "neuron-delta",
   "version": "1.1.0",
-  "description": "React version of Argon Dashboard by Creative Tim",
+  "description": "NeuronDelta's Compliance Management System",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/creativetimofficial/argon-dashboard-react.git"
+    "url": "git+https://github.com/MAKman1/neuronDelta-frontend"
   },
   "keywords": [
-    "react",
-    "reactjs",
-    "argon",
-    "argon-react",
-    "dashboard",
-    "dashboard-react",
-    "argon-dashboard",
-    "argon-dashboard-react"
+    "newronDelta",
+    "compliance"
   ],
-  "author": "Creative Tim",
+  "author": "Alinon",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
+    "url": "https://github.com/MAKman1/neuronDelta-frontend/issues"
   },
-  "homepage": "https://demos.creative-tim.com/argon-dashboard-react/",
+  "homepage": "https://google.com",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "NODE_PATH=./src react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -56,7 +50,7 @@
     "react-dom": "16.12.0",
     "react-google-maps": "9.4.5",
     "react-router-dom": "5.1.2",
-    "react-scripts": "3.3.1",
+    "react-scripts": "^3.4.1",
     "reactstrap": "8.4.1"
   },
   "devDependencies": {
