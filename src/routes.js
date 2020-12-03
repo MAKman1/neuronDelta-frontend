@@ -1,7 +1,7 @@
 /*! Developed by Alinon */
 // import Index from "views/Index.js";
-import UserIndex from "views/User/UserIndex.js";
-import ManagerIndex from "views/Manager/ManagerIndex.js";
+import UserIndex from "components/User/UserIndex.js";
+import ManagerIndex from "components/Manager/ManagerIndex.js";
 import Profile from "views/examples/Profile.js";
 import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
@@ -10,9 +10,9 @@ import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 
 // User Imports
-import Audit from "views/User/Audit.js"
-import Document from "views/User/Document.js"
-import Checklist from "views/User/Checklist.js"
+import Audit from "components/User/Views/Audit.js"
+import Document from "components/User/Views/Document.js"
+import Checklist from "components/User/Views/Checklist.js"
 
 // Manager Imports
 // import Audit from "views/User/Audit.js"

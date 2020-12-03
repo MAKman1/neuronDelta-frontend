@@ -9,8 +9,8 @@ import "assets/scss/argon-dashboard-react.scss";
 
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
-import ManagerLayout from "layouts/Manager.js";
-import UserLayout from "layouts/User.js";
+import ManagerLayout from "components/Manager/Manager.js";
+import UserLayout from "components/User/User.js";
 
 
 ReactDOM.render(

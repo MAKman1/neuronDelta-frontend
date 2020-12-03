@@ -4,13 +4,13 @@ import { Route, Switch, Redirect } from "react-router-dom";
 // reactstrap components
 import { Container } from "reactstrap";
 // core components
-import UserNavbar from "components/Navbars/UserNavebar.js";
-import AdminFooter from "components/Footers/AdminFooter.js";
-import UserSidebar from "components/Sidebar/UserSidebar.js";
+import ManagerNavbar from "components/Manager/ManagerNavbar.js";
+// import AdminFooter from "components/Footers/AdminFooter.js";
+import ManagerSidebar from "components/Manager/ManagerSidebar.js";
 
 import routes from "routes.js";
 
-class User extends React.Component {
+class Manager extends React.Component {
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -18,7 +18,7 @@ class User extends React.Component {
   }
   getRoutes = routes => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/user") {
+      if (prop.layout === "/manager") {
         return (
             <Route
               path={prop.layout + prop.path}
@@ -46,26 +46,26 @@ class User extends React.Component {
   render() {
     return (
       <>
-        <UserSidebar
+        <ManagerSidebar
           {...this.props}
           routes={routes}
           logo={{
-            innerLink: "/user/index",
+            innerLink: "/manager/index",
             imgSrc: require("assets/img/brand/argon-react.png"),
             imgAlt: "..."
           }}
         />
         <div className="main-content" ref="mainContent">
-          <UserNavbar
+          <ManagerNavbar
             {...this.props}
             brandText={this.getBrandText(this.props.location.pathname)}
           />
           <Switch>
             {this.getRoutes(routes)}
-            <Redirect from="*" to="/user/index" />
+            <Redirect from="*" to="/manager/index" />
           </Switch>
           <Container fluid>
-            <AdminFooter />
+            {/* <AdminFooter /> */}
           </Container>
         </div>
       </>
@@ -73,4 +73,4 @@ class User extends React.Component {
   }
 }
 
-export default User;
+export default Manager;

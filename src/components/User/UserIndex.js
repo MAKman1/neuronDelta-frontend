@@ -30,9 +30,9 @@ import {
   chartExample2
 } from "variables/charts.js";
 
-import Header from "components/Headers/Manager/DashboardHeader.js";
+import Header from "components/User/Headers/DashboardHeader.js";
 
-class ManagerIndex extends React.Component {
+class UserIndex extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -64,7 +64,7 @@ class ManagerIndex extends React.Component {
                   <Row className="align-items-center">
                     <div className="col">
                       <h6 className="text-uppercase text-light ls-1 mb-1">
-                        Manager
+                        User
                       </h6>
                       <h2 className="text-white mb-0">Sales value</h2>
                     </div>
@@ -329,4 +329,4 @@ class ManagerIndex extends React.Component {
   }
 }
 
-export default ManagerIndex;
+export default UserIndex;
