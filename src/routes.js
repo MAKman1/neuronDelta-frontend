@@ -1,5 +1,7 @@
 /*! Developed by Alinon */
-import Index from "views/Index.js";
+// import Index from "views/Index.js";
+import UserIndex from "views/User/UserIndex.js";
+import ManagerIndex from "views/Manager/ManagerIndex.js";
 import Profile from "views/examples/Profile.js";
 import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
@@ -7,41 +9,89 @@ import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 
+// User Imports
+import Audit from "views/User/Audit.js"
+import Document from "views/User/Document.js"
+import Checklist from "views/User/Checklist.js"
+
+// Manager Imports
+// import Audit from "views/User/Audit.js"
+// import Document from "views/User/Document.js"
+
 var routes = [
+  // Manager
   {
     path: "/index",
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
-    component: Index,
-    layout: "/admin"
-  },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "ni ni-planet text-blue",
-    component: Icons,
-    layout: "/admin"
-  },
-  {
-    path: "/maps",
-    name: "Maps",
-    icon: "ni ni-pin-3 text-orange",
-    component: Maps,
-    layout: "/admin"
+    component: ManagerIndex,
+    layout: "/manager"
   },
   {
     path: "/user-profile",
-    name: "User Profile",
+    name: "Profile",
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
-    layout: "/admin"
+    layout: "/manager"
   },
   {
-    path: "/tables",
-    name: "Tables",
-    icon: "ni ni-bullet-list-67 text-red",
+    path: "/audit",
+    name: "Audit",
+    icon: "ni ni-collection text-blue",
+    component: Icons,
+    layout: "/manager"
+  },
+  {
+    path: "/checklist",
+    name: "Checklist",
+    icon: "ni ni-check-bold text-orange",
+    component: Maps,
+    layout: "/manager"
+  },
+
+  {
+    path: "/docs",
+    name: "Documents",
+    icon: "ni ni-single-copy-04 text-red",
     component: Tables,
-    layout: "/admin"
+    layout: "/manager"
+  },
+  // User
+  {
+    path: "/index",
+    name: "Dashboard",
+    icon: "ni ni-tv-2 text-primary",
+    component: UserIndex,
+    layout: "/user"
+  },
+  {
+    path: "/user-profile",
+    name: "Profile",
+    icon: "ni ni-single-02 text-yellow",
+    component: Profile,
+    layout: "/user"
+  },
+  {
+    path: "/audit",
+    name: "Audit",
+    icon: "ni ni-collection text-blue",
+    component: Audit,
+    layout: "/user"
+  },
+  {
+    path: "/checklist",
+    name: "Checklist",
+    icon: "ni ni-check-bold text-orange",
+    component: Checklist,
+    layout: "/user"
+  },
+ 
+  {
+    path: "/docs",
+    name: "Documents",
+    icon: "ni ni-single-copy-04 text-red",
+    component: Document,
+    layout: "/user"
   },
   {
     path: "/login",
