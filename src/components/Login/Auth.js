@@ -54,10 +54,9 @@ class Auth extends React.Component {
               <div className="header-body text-center mb-7">
                 <Row className="justify-content-center">
                   <Col lg="5" md="6">
-                    <h1 className="text-white">Welcome!</h1>
-                    <p className="text-lead text-light">
-                      Use these awesome forms to login or create new account in
-                      your project for free.
+                    <h1 className="text-white">Welcome to Assent360</h1>
+                    <p className="text-black text-light">
+                      Please login with your account details
                     </p>
                   </Col>
                 </Row>
@@ -84,7 +83,7 @@ class Auth extends React.Component {
             <Row className="justify-content-center">
             <Col lg="5" md="7">
           <Card className="bg-secondary shadow border-0">
-            <CardHeader className="bg-transparent pb-5">
+            {/* <CardHeader className="bg-transparent pb-5">
               <div className="text-muted text-center mt-2 mb-3">
                 <small>Sign in with</small>
               </div>
@@ -118,11 +117,11 @@ class Auth extends React.Component {
                   <span className="btn-inner--text">Google</span>
                 </Button>
               </div>
-            </CardHeader>
+            </CardHeader> */}
             <CardBody className="px-lg-5 py-lg-5">
-              <div className="text-center text-muted mb-4">
+              {/* <div className="text-center text-muted mb-4">
                 <small>Or sign in with credentials</small>
-              </div>
+              </div> */}
               <Form role="form">
                 <FormGroup className="mb-3">
                   <InputGroup className="input-group-alternative">
@@ -175,7 +174,7 @@ class Auth extends React.Component {
                 <small>Forgot password?</small>
               </a>
             </Col>
-            <Col className="text-right" xs="6">
+            {/* <Col className="text-right" xs="6">
               <a
                 className="text-light"
                 href="#pablo"
@@ -183,7 +182,7 @@ class Auth extends React.Component {
               >
                 <small>Create new account</small>
               </a>
-            </Col>
+            </Col> */}
           </Row>
         </Col>
             </Row>

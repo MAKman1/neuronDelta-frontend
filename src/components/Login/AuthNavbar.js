@@ -23,9 +23,10 @@ class AuthNavbar extends React.Component {
           expand="md"
         >
           <Container className="px-4">
-            <NavbarBrand to="/" tag={Link}>
+            {/* <NavbarBrand to="/" tag={Link}>
               <img alt="..." src={require("assets/img/brand/argon-react-white.png")} />
-            </NavbarBrand>
+            </NavbarBrand> */}
+            <h1 className="text-white">Assent360</h1>
             <button className="navbar-toggler" id="navbar-collapse-main">
               <span className="navbar-toggler-icon" />
             </button>
@@ -34,10 +35,11 @@ class AuthNavbar extends React.Component {
                 <Row>
                   <Col className="collapse-brand" xs="6">
                     <Link to="/">
-                      <img
+                      {/* <img
                         alt="..."
                         src={require("assets/img/brand/argon-react.png")}
-                      />
+                      /> */}
+                      <h1 className="text-black">Assent360</h1>
                     </Link>
                   </Col>
                   <Col className="collapse-close" xs="6">
@@ -52,13 +54,13 @@ class AuthNavbar extends React.Component {
                 </Row>
               </div>
               <Nav className="ml-auto" navbar>
-                <NavItem>
+                {/* <NavItem>
                   <NavLink className="nav-link-icon" to="/" tag={Link}>
                     <i className="ni ni-planet" />
                     <span className="nav-link-inner--text">Dashboard</span>
                   </NavLink>
-                </NavItem>
-                <NavItem>
+                </NavItem> */}
+                {/* <NavItem>
                   <NavLink
                     className="nav-link-icon"
                     to="/auth/register"
@@ -67,18 +69,18 @@ class AuthNavbar extends React.Component {
                     <i className="ni ni-circle-08" />
                     <span className="nav-link-inner--text">Register</span>
                   </NavLink>
-                </NavItem>
+                </NavItem> */}
                 <NavItem>
                   <NavLink
                     className="nav-link-icon"
                     to="/auth/login"
                     tag={Link}
                   >
-                    <i className="ni ni-key-25" />
-                    <span className="nav-link-inner--text">Login</span>
+                    <i class="fas fa-home"></i>
+                    <span className="nav-link-inner--text">Home</span>
                   </NavLink>
                 </NavItem>
-                <NavItem>
+                {/* <NavItem>
                   <NavLink
                     className="nav-link-icon"
                     to="/admin/user-profile"
@@ -87,7 +89,7 @@ class AuthNavbar extends React.Component {
                     <i className="ni ni-single-02" />
                     <span className="nav-link-inner--text">Profile</span>
                   </NavLink>
-                </NavItem>
+                </NavItem> */}
               </Nav>
             </UncontrolledCollapse>
           </Container>

@@ -5,7 +5,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { Container } from "reactstrap";
 // core components
 import UserNavbar from "components/User/UserNavebar.js";
-// import AdminFooter from "components/Footers/AdminFooter.js";
+import UserFooter from "components/User/UserFooter";
 import UserSidebar from "components/User/UserSidebar.js";
 
 import routes from "routes.js";
@@ -65,7 +65,7 @@ class User extends React.Component {
             <Redirect from="*" to="/user/index" />
           </Switch>
           <Container fluid>
-            {/* <AdminFooter /> */}
+            <UserFooter />
           </Container>
         </div>
       </>
