@@ -112,7 +112,8 @@ class UserSidebar extends React.Component {
             <span className="navbar-toggler-icon" />
           </button>
           {/* Brand */}
-          {logo ? (
+          <h1 className="text-center">Assent360</h1>
+          {/* {logo ? (
             <NavbarBrand className="pt-0" {...navbarBrandProps}>
               <img
                 alt={logo.imgAlt}
@@ -120,7 +121,7 @@ class UserSidebar extends React.Component {
                 src={logo.imgSrc}
               />
             </NavbarBrand>
-          ) : null}
+          ) : null} */}
           {/* User */}
           <Nav className="align-items-center d-md-none">
             <UncontrolledDropdown nav>
@@ -161,14 +162,14 @@ class UserSidebar extends React.Component {
                   <i className="ni ni-settings-gear-65" />
                   <span>Settings</span>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                {/* <DropdownItem to="/admin/user-profile" tag={Link}>
                   <i className="ni ni-calendar-grid-58" />
                   <span>Activity</span>
                 </DropdownItem>
                 <DropdownItem to="/admin/user-profile" tag={Link}>
                   <i className="ni ni-support-16" />
                   <span>Support</span>
-                </DropdownItem>
+                </DropdownItem> */}
                 <DropdownItem divider />
                 <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
                   <i className="ni ni-user-run" />
@@ -182,7 +183,7 @@ class UserSidebar extends React.Component {
             {/* Collapse header */}
             <div className="navbar-collapse-header d-md-none">
               <Row>
-                {logo ? (
+                {/* {logo ? (
                   <Col className="collapse-brand" xs="6">
                     {logo.innerLink ? (
                       <Link to={logo.innerLink}>
@@ -194,7 +195,10 @@ class UserSidebar extends React.Component {
                       </a>
                     )}
                   </Col>
-                ) : null}
+                ) : null} */}
+                <Col className="collapse-brand" xs="6">
+                  <h1>Assent360</h1>
+                  </Col>
                 <Col className="collapse-close" xs="6">
                   <button
                     className="navbar-toggler"
