@@ -92,8 +92,24 @@ class Auth extends React.Component {
                       Please login with your account details
                     </p>
                   </Col>
+                  
                 </Row>
               </div>
+            </Container>
+            <div className="separator separator-bottom separator-skew zindex-100">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="none"
+                version="1.1"
+                viewBox="0 0 2560 100"
+                x="0"
+                y="0"
+              >
+                <polygon
+                  className="fill-default"
+                  points="2560 0 2560 100 0 100"
+                />
+              </svg>
             </div>
           </div>
           {/* Page content */}
@@ -112,12 +128,17 @@ class Auth extends React.Component {
                   href="#pablo"
                   onClick={e => e.preventDefault()}
                 >
-                  <small>Forgot password?</small>
-                </a>
-              </Col>
-              <Col className="text-right" xs="6">
-                <a
-                  className="text-light"
+                  <span className="btn-inner--icon">
+                    <img
+                      alt="..."
+                      src={require("assets/img/icons/common/github.svg")}
+                    />
+                  </span>
+                  <span className="btn-inner--text">Github</span>
+                </Button>
+                <Button
+                  className="btn-neutral btn-icon"
+                  color="default"
                   href="#pablo"
                   onClick={e => e.preventDefault()}
                 >
@@ -131,19 +152,22 @@ class Auth extends React.Component {
                 </Button>
               </div>
             </CardHeader> */}
+            
             <CardBody className="px-lg-5 py-lg-5">
               {/* <div className="text-center text-muted mb-4">
                 <small>Or sign in with credentials</small>
               </div> */}
               <Form role="form">
                 <FormGroup className="mb-3">
+                {this.state.valid === 1 && <p style={{color: 'red', textAlign: 'center'}}>Invalid Credentials!</p>}
                   <InputGroup className="input-group-alternative">
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>
-                        <i className="ni ni-email-83" />
+                        <i className="ni ni-email-83"/>
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" type="email" autoComplete="new-email"/>
+                    <Input placeholder="Email" type="email" autoComplete="new-email" onChange={this.handleEmail}
+                            defaultValue ={this.state.email}/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -153,7 +177,8 @@ class Auth extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="password" autoComplete="new-password"/>
+                    <Input placeholder="Password" type="password" autoComplete="new-password"
+                          onChange= {this.handlePass} defaultValue={this.state.password}/>
                   </InputGroup>
                 </FormGroup>
                 <div className="custom-control custom-control-alternative custom-checkbox">
@@ -170,7 +195,7 @@ class Auth extends React.Component {
                   </label>
                 </div>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="button">
+                  <Button className="my-4" color="primary" type="button" onClick={this.userlogin}>
                     Sign in
                   </Button>
                 </div>
@@ -199,13 +224,11 @@ class Auth extends React.Component {
           </Row>
         </Col>
             </Row>
-          </Col>
-              </Row>
-            </Container>
-          </div>
-          <AuthFooter />
-        </>
-      );
+          </Container>
+        </div>
+        <AuthFooter />
+      </>
+    );
   }
 }
 
