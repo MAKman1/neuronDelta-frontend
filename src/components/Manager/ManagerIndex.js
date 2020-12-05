@@ -88,45 +88,45 @@ class ManagerIndex extends React.Component {
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">/argon/</th>
-                      <td>4,569</td>
-                      <td>340</td>
+                      <th scope="row">Food Legislation</th>
+                      <td>46</td>
+                      <td>75</td>
                       <td>
                         <i className="fas fa-arrow-up text-success mr-3" />{" "}
                         46,53%
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/index.html</th>
-                      <td>3,985</td>
-                      <td>319</td>
+                      <th scope="row">Fumigation Law</th>
+                      <td>23</td>
+                      <td>45</td>
                       <td>
                         <i className="fas fa-arrow-down text-warning mr-3" />{" "}
                         46,53%
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/charts.html</th>
-                      <td>3,513</td>
-                      <td>294</td>
+                      <th scope="row">Can Verification</th>
+                      <td>19</td>
+                      <td>81</td>
                       <td>
                         <i className="fas fa-arrow-down text-warning mr-3" />{" "}
                         36,49%
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/tables.html</th>
-                      <td>2,050</td>
-                      <td>147</td>
+                      <th scope="row">Restaurant Sanitation</th>
+                      <td>56</td>
+                      <td>94</td>
                       <td>
                         <i className="fas fa-arrow-up text-success mr-3" />{" "}
                         50,87%
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/profile.html</th>
-                      <td>1,795</td>
-                      <td>190</td>
+                      <th scope="row">Income Tax Payment</th>
+                      <td>104</td>
+                      <td>158</td>
                       <td>
                         <i className="fas fa-arrow-down text-danger mr-3" />{" "}
                         46,53%
@@ -159,85 +159,70 @@ class ManagerIndex extends React.Component {
                   <thead className="thead-light">
                     <tr>
                       <th scope="col">Name</th>
-                      <th scope="col">Assigned To</th>
-                      <th scope="col" />
+                      <th scope="col">Size</th>
+                      <th scope="col">Uploaded On</th>
+                      <th scope="col">Assigned Roles</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">Facebook</th>
-                      <td>1,480</td>
+                      <th scope="row">Company Insurance</th>
+                      <td>78</td>
                       <td>
                         <div className="d-flex align-items-center">
-                          <span className="mr-2">60%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="60"
-                              barClassName="bg-gradient-danger"
-                            />
-                          </div>
+                          <span className="mr-2">12/5/2020</span>
                         </div>
+                      </td>
+                      <td>
+                        <h4><span class="badge badge-primary">Reception</span></h4>
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">Facebook</th>
-                      <td>5,480</td>
+                      <th scope="row">Employee Legislation</th>
+                      <td>98</td>
                       <td>
                         <div className="d-flex align-items-center">
-                          <span className="mr-2">70%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="70"
-                              barClassName="bg-gradient-success"
-                            />
-                          </div>
+                          <span className="mr-2">12/1/2020</span>
                         </div>
+                      </td>
+                      <td>
+                      <h4><span class="badge badge-primary">Human Resources</span></h4>
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">Google</th>
-                      <td>4,807</td>
+                      <th scope="row">Food Legislation</th>
+                      <td>25</td>
                       <td>
                         <div className="d-flex align-items-center">
-                          <span className="mr-2">80%</span>
-                          <div>
-                            <Progress max="100" value="80" />
-                          </div>
+                          <span className="mr-2">11/28/2020</span>
                         </div>
+                      </td>
+                      <td>
+                        <h4> <span class="badge badge-primary">Supervisor</span></h4>
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">Instagram</th>
-                      <td>3,678</td>
+                      <th scope="row">Car Verification</th>
+                      <td>78</td>
                       <td>
                         <div className="d-flex align-items-center">
-                          <span className="mr-2">75%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="75"
-                              barClassName="bg-gradient-info"
-                            />
-                          </div>
+                          <span className="mr-2">Petty Officer</span>
                         </div>
+                      </td>
+                      <td>
+                        <h4><span class="badge badge-primary">Finance Head</span></h4>
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">twitter</th>
-                      <td>2,645</td>
+                      <th scope="row">Fumigation</th>
+                      <td>78</td>
                       <td>
                         <div className="d-flex align-items-center">
-                          <span className="mr-2">30%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="30"
-                              barClassName="bg-gradient-warning"
-                            />
-                          </div>
+                          <span className="mr-2">11/10/2020</span>
                         </div>
+                      </td>
+                      <td>
+                        <h4><span class="badge badge-primary">Dormitory Manager</span></h4>
                       </td>
                     </tr>
                   </tbody>
@@ -251,7 +236,7 @@ class ManagerIndex extends React.Component {
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Current Standards</h3>
+                      <h3 className="mb-0">Audits</h3>
                     </div>
                     <div className="col text-right">
                       <Button
@@ -268,56 +253,82 @@ class ManagerIndex extends React.Component {
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col">Audits</th>
+                      <th scope="col">Name</th>
                       <th scope="col">Assigned To</th>
+                      <th scope="col">Due Date</th>
                       <th scope="col">Standards</th>
-                      <th scope="col">Bounce rate</th>
+                      <th scope="col">Progress</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">/argon/</th>
-                      <td>4,569</td>
-                      <td>340</td>
+                      <th scope="row">Food Quality 1.3</th>
+                      <td>
+                        Will Cole
+                      </td>
+                      <td>12/07/2020</td>
+                      <td>
+                        Food Legislation
+                      </td>
                       <td>
                         <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46,53%
+                        85.65%
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/index.html</th>
-                      <td>3,985</td>
-                      <td>319</td>
+                      <th scope="row">Tax Audit 2.1</th>
                       <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        46,53%
+                        Henry Greysmith
                       </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/charts.html</th>
-                      <td>3,513</td>
-                      <td>294</td>
+                      <td>12/20/2020</td>
                       <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        36,49%
+                        Income Tax Audit
                       </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/tables.html</th>
-                      <td>2,050</td>
-                      <td>147</td>
                       <td>
                         <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        50,87%
+                        65.12%
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/profile.html</th>
-                      <td>1,795</td>
-                      <td>190</td>
+                      <th scope="row">Car Quality 1.3</th>
                       <td>
-                        <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                        46,53%
+                        Martha Stewart
+                      </td>
+                      <td>12/26/2020</td>
+                      <td>
+                        Car Registration
+                      </td>
+                      <td>
+                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                        46.78%
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Vehicle Tax 1.7</th>
+                      <td>
+                        Saima Malik
+                      </td>
+                      <td>01/04/2021</td>
+                      <td>
+                        Car Registration
+                      </td>
+                      <td>
+                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                        21.82%
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Fumigation Law 4.3</th>
+                      <td>
+                        Sakamato Yui
+                      </td>
+                      <td>01/10/2021</td>
+                      <td>
+                        Fumigation Quality
+                      </td>
+                      <td>
+                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                        10.53%
                       </td>
                     </tr>
                   </tbody>
@@ -331,7 +342,7 @@ class ManagerIndex extends React.Component {
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">CheckLists</h3>
+                      <h3 className="mb-0">CheckList</h3>
                     </div>
                     <div className="col text-right">
                       <Button
@@ -348,35 +359,219 @@ class ManagerIndex extends React.Component {
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col">List</th>
-                      <th scope="col">Standard Name</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Assigned To</th>
+                      <th scope="col">Due Date</th>
+                      <th scope="col">Workflow</th>
+                      <th scope="col">Progress</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">/argon/</th>
-                      <td>4,569</td>
-                   
+                  <tr>
+                      <th scope="row">Food Quality 1.3</th>
+                      <td>
+                        Will Cole
+                      </td>
+                      <td>12/07/2020</td>
+                      <td>
+                        Product Launch
+                      </td>
+                      <td>
+                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                        85.65%
+                      </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/index.html</th>
-                      <td>3,985</td>
-             
+                      <th scope="row">Tax Audit 2.1</th>
+                      <td>
+                        Henry Greysmith
+                      </td>
+                      <td>12/20/2020</td>
+                      <td>
+                        Tax Approval
+                      </td>
+                      <td>
+                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                        65.12%
+                      </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/charts.html</th>
-                      <td>3,513</td>
-
+                      <th scope="row">Car Quality 1.3</th>
+                      <td>
+                        Martha Stewart
+                      </td>
+                      <td>12/26/2020</td>
+                      <td>
+                        Insurance Verification
+                      </td>
+                      <td>
+                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                        46.78%
+                      </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/tables.html</th>
-                      <td>2,050</td>
-          
+                      <th scope="row">Vehicle Tax 1.7</th>
+                      <td>
+                        Saima Malik
+                      </td>
+                      <td>01/04/2021</td>
+                      <td>
+                        Recruitment
+                      </td>
+                      <td>
+                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                        21.82%
+                      </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/profile.html</th>
-                      <td>1,795</td>
-     
+                      <th scope="row">Fumigation Law 4.3</th>
+                      <td>
+                        Sakamato Yui
+                      </td>
+                      <td>01/10/2021</td>
+                      <td>
+                        Pre-Flight Approval
+                      </td>
+                      <td>
+                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                        10.53%
+                      </td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </Card>
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col className="mb-5 mb-xl-0" xl="12">
+              <Card className="shadow">
+                <CardHeader className="border-0">
+                  <Row className="align-items-center">
+                    <div className="col">
+                      <h3 className="mb-0">Users</h3>
+                    </div>
+                    <div className="col text-right">
+                      <Button
+                        color="primary"
+                        href="#pablo"
+                        onClick={e => e.preventDefault()}
+                        size="sm"
+                      >
+                        See all
+                      </Button>
+                    </div>
+                  </Row>
+                </CardHeader>
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                      <th scope="col">Name</th>
+                      <th scope="col">Role</th>
+                      <th scope="col">Assigned List</th>
+                      <th scope="col">Assigned Audit</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                      <th scope="row">Will Cole</th>
+                      <td>
+                        <h3><span class="badge badge-primary">Supervisor</span></h3>
+                      </td>
+                      <td>2</td>
+                      <td>
+                        3
+                      </td>
+                      <td>
+                      <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          View
+                        </Button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Henry Greysmith</th>
+                      <td>
+                        <h3><span class="badge badge-primary">Finance Head</span></h3>
+                      </td>
+                      <td>1</td>
+                      <td>
+                        1
+                      </td>
+                      <td>
+                      <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          View
+                        </Button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Martha Stewart</th>
+                      <td>
+                        <h3><span class="badge badge-primary">Insurance Agent</span></h3>
+                      </td>
+                      <td>4</td>
+                      <td>
+                        2
+                      </td>
+                      <td>
+                      <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          View
+                        </Button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Saima Malik</th>
+                      <td>
+                        <h3><span class="badge badge-primary">Recruitment Officer</span></h3>
+                      </td>
+                      <td>5</td>
+                      <td>
+                        4
+                      </td>
+                      <td>
+                      <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          View
+                        </Button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Sakamato Yui</th>
+                      <td>
+                        <h3><span class="badge badge-primary">Flight Attendant</span></h3>
+                      </td>
+                      <td>3</td>
+                      <td>
+                        5
+                      </td>
+                      <td>
+                      <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          View
+                        </Button>
+                      </td>
                     </tr>
                   </tbody>
                 </Table>

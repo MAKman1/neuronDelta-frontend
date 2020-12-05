@@ -7,6 +7,7 @@ import { Container } from "reactstrap";
 import ManagerNavbar from "components/Manager/ManagerNavbar.js";
 // import AdminFooter from "components/Footers/AdminFooter.js";
 import ManagerSidebar from "components/Manager/ManagerSidebar.js";
+import ManagerFooter from "components/Manager/ManagerFooter.js"
 
 import routes from "routes.js";
 
@@ -65,7 +66,7 @@ class Manager extends React.Component {
             <Redirect from="*" to="/manager/index" />
           </Switch>
           <Container fluid>
-            {/* <AdminFooter /> */}
+            <ManagerFooter/>
           </Container>
         </div>
       </>

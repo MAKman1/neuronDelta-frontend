@@ -35,6 +35,20 @@ var routes = [
     layout: "/manager"
   },
   {
+    path: "/standards",
+    name: "Current Standards",
+    icon: "ni ni-collection text-blue",
+    component: Icons,
+    layout: "/manager"
+  },
+  {
+    path: "/docs",
+    name: "Documents",
+    icon: "ni ni-single-copy-04 text-red",
+    component: Tables,
+    layout: "/manager"
+  },
+  {
     path: "/audit",
     name: "Audit",
     icon: "ni ni-collection text-blue",
@@ -48,14 +62,15 @@ var routes = [
     component: Maps,
     layout: "/manager"
   },
-
   {
-    path: "/docs",
-    name: "Documents",
-    icon: "ni ni-single-copy-04 text-red",
-    component: Tables,
+    path: "/users",
+    name: "Users",
+    icon: "ni ni-single-02 text-yellow",
+    component: Maps,
     layout: "/manager"
   },
+
+
   // User
   {
     path: "/index",

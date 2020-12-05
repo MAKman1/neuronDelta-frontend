@@ -112,7 +112,8 @@ class ManagerSidebar extends React.Component {
             <span className="navbar-toggler-icon" />
           </button>
           {/* Brand */}
-          {logo ? (
+          <h1 className="text-center">Assent360</h1>
+          {/* {logo ? (
             <NavbarBrand className="pt-0" {...navbarBrandProps}>
               <img
                 alt={logo.imgAlt}
@@ -120,7 +121,7 @@ class ManagerSidebar extends React.Component {
                 src={logo.imgSrc}
               />
             </NavbarBrand>
-          ) : null}
+          ) : null} */}
           {/* User */}
           <Nav className="align-items-center d-md-none">
             <UncontrolledDropdown nav>
@@ -182,7 +183,7 @@ class ManagerSidebar extends React.Component {
             {/* Collapse header */}
             <div className="navbar-collapse-header d-md-none">
               <Row>
-                {logo ? (
+                {/* {logo ? (
                   <Col className="collapse-brand" xs="6">
                     {logo.innerLink ? (
                       <Link to={logo.innerLink}>
@@ -194,7 +195,10 @@ class ManagerSidebar extends React.Component {
                       </a>
                     )}
                   </Col>
-                ) : null}
+                ) : null} */}
+                <Col className="collapse-brand" xs="6">
+                  <h1>Assent360</h1>
+                  </Col>
                 <Col className="collapse-close" xs="6">
                   <button
                     className="navbar-toggler"
@@ -228,36 +232,7 @@ class ManagerSidebar extends React.Component {
             {/* Divider */}
             <hr className="my-3" />
             {/* Heading */}
-            <h6 className="navbar-heading text-muted">Documentation</h6>
-            {/* Navigation */}
-            <Nav className="mb-md-3" navbar>
-              <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview?ref=adr-admin-sidebar">
-                  <i className="ni ni-spaceship" />
-                  Getting started
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/colors?ref=adr-admin-sidebar">
-                  <i className="ni ni-palette" />
-                  Foundation
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/alerts?ref=adr-admin-sidebar">
-                  <i className="ni ni-ui-04" />
-                  Components
-                </NavLink>
-              </NavItem>
-            </Nav>
-            <Nav className="mb-md-3" navbar>
-              <NavItem className="active-pro active">
-                <NavLink href="https://www.creative-tim.com/product/argon-dashboard-pro-react?ref=adr-admin-sidebar">
-                  <i className="ni ni-spaceship" />
-                  Upgrade to PRO
-                </NavLink>
-              </NavItem>
-            </Nav>
+            
           </Collapse>
         </Container>
       </Navbar>

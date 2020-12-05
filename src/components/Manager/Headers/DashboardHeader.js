@@ -98,12 +98,12 @@ class DashboardHeader extends React.Component {
                             Total Standards
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            49,65%
+                            501
                           </span>
                         </div>
                         <Col className="col-auto">
-                          <div className="icon icon-shape bg-info text-white rounded-circle shadow">
-                            <i className="fas fa-percent" />
+                          <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
+                            <i className="fas fa-chart-pie" />
                           </div>
                         </Col>
                       </Row>

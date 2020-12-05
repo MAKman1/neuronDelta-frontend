@@ -120,7 +120,8 @@ class Auth extends React.Component {
             <CardBody className="px-lg-5 py-lg-5">
               <Form role="form">
                 <FormGroup className="mb-3">
-                {this.state.valid === 1 && <p style={{color: 'red', textAlign: 'center'}}>Invalid Credentials!</p>}
+                {this.state.valid === 1 && <p style={{color: 'red', textAlign: 'center'}}>Invalid Credentials! Please try again.</p>}
+                {this.state.valid === 0 && <p style={{color: 'red', textAlign: 'center'}}></p>}
                   <InputGroup className="input-group-alternative">
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>

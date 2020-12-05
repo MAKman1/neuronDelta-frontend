@@ -20,6 +20,10 @@ import {
 } from "reactstrap";
 
 class UserNavbar extends React.Component {
+  logout = () => {
+    this.props.history.push("/login")
+  }
+
   render() {
     return (
       <>
@@ -73,7 +77,7 @@ class UserNavbar extends React.Component {
                     <span>Settings</span>
                   </DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                  <DropdownItem href="" onClick={this.logout}>
                     <i className="ni ni-button-power" />
                     <span>Logout</span>
                   </DropdownItem>
