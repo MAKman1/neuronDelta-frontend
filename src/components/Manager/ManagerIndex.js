@@ -206,7 +206,7 @@ class ManagerIndex extends React.Component {
                       <td>78</td>
                       <td>
                         <div className="d-flex align-items-center">
-                          <span className="mr-2">Petty Officer</span>
+                          <span className="mr-2">10/11/2020</span>
                         </div>
                       </td>
                       <td>
@@ -342,7 +342,7 @@ class ManagerIndex extends React.Component {
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">CheckList</h3>
+                      <h3 className="mb-0">Workflows</h3>
                     </div>
                     <div className="col text-right">
                       <Button

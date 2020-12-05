@@ -25,7 +25,7 @@ class DashboardHeader extends React.Component {
                             Pending Audits
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            350,897
+                            12
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -55,7 +55,7 @@ class DashboardHeader extends React.Component {
                             Completed Audits
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            2,356
+                            70
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -84,7 +84,7 @@ class DashboardHeader extends React.Component {
                           >
                             Assigned Documents
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">924</span>
+                          <span className="h2 font-weight-bold mb-0">11</span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-blue text-white rounded-circle shadow">

@@ -66,10 +66,10 @@ class Auth extends React.Component {
   
   userlogin = () => {
     
-    if (this.state.email === "user" && this.state.password === "password") {
+    if (this.state.email === "user@gmail.com" && this.state.password === "password") {
       this.props.history.push("/user/index");
     };
-    if (this.state.email === "manager" && this.state.password === "password") {
+    if (this.state.email === "manager@gmail.com" && this.state.password === "password") {
       this.props.history.push("/manager/index");
     }
     this.setState({

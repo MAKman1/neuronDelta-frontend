@@ -35,17 +35,17 @@ var routes = [
     layout: "/manager"
   },
   {
-    path: "/standards",
-    name: "Current Standards",
-    icon: "ni ni-collection text-blue",
-    component: Icons,
-    layout: "/manager"
-  },
-  {
     path: "/docs",
     name: "Documents",
     icon: "ni ni-single-copy-04 text-red",
     component: Tables,
+    layout: "/manager"
+  },
+  {
+    path: "/standards",
+    name: "Standards",
+    icon: "ni ni-collection text-blue",
+    component: Icons,
     layout: "/manager"
   },
   {
@@ -57,7 +57,7 @@ var routes = [
   },
   {
     path: "/checklist",
-    name: "Checklist",
+    name: "Workflows",
     icon: "ni ni-check-bold text-orange",
     component: Maps,
     layout: "/manager"
@@ -66,6 +66,13 @@ var routes = [
     path: "/users",
     name: "Users",
     icon: "ni ni-single-02 text-yellow",
+    component: Maps,
+    layout: "/manager"
+  },
+  {
+    path: "/users",
+    name: "Subscriptions",
+    icon: "ni ni-single-copy-04 text-red",
     component: Maps,
     layout: "/manager"
   },
@@ -88,14 +95,14 @@ var routes = [
   },
   {
     path: "/audit",
-    name: "Audit",
+    name: "Audits",
     icon: "ni ni-collection text-blue",
     component: Audit,
     layout: "/user"
   },
   {
     path: "/checklist",
-    name: "Checklist",
+    name: "Workflows",
     icon: "ni ni-check-bold text-orange",
     component: Checklist,
     layout: "/user"
