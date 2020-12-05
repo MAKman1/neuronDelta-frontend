@@ -12,14 +12,14 @@ class UserFooter extends React.Component {
         <Row className="align-items-center justify-content-xl-between">
           <Col xl="6">
             <div className="copyright text-center text-xl-left text-muted">
-              © 2018{" "}
+              © 2020{" "}
               <a
                 className="font-weight-bold ml-1"
                 href="https://www.creative-tim.com?ref=adr-admin-footer"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Lorem Ipsom
+                NeuronDelta
               </a>
             </div>
           </Col>
@@ -32,7 +32,7 @@ class UserFooter extends React.Component {
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  Lorem Ipsom
+                  About Us
                 </NavLink>
               </NavItem>
 
@@ -42,27 +42,7 @@ class UserFooter extends React.Component {
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  Lorem Ipsom
-                </NavLink>
-              </NavItem>
-
-              <NavItem>
-                <NavLink
-                //   href="http://blog.creative-tim.com?ref=adr-admin-footer"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Lorem Ipsom
-                </NavLink>
-              </NavItem>
-
-              <NavItem>
-                <NavLink
-                //   href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md?ref=adr-admin-footer"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Lorem Ipsom
+                  Privacy
                 </NavLink>
               </NavItem>
             </Nav>

@@ -59,7 +59,7 @@ class UserIndex extends React.Component {
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row className="mt-5">
-            <Col className="mb-5 mb-xl-0" xl="8">
+            <Col className="mb-5 mb-xl-0" xl="7">
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
@@ -100,46 +100,50 @@ class UserIndex extends React.Component {
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/index.html</th>
-                      <td>3,985</td>
-                      <td>319</td>
+                      <th scope="row">Tax Payment</th>
+                      <td>Maria Garcia</td>
+                      <td>1-3-2021</td>
+                      <td>National Tax Payment </td>
                       <td>
                         <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        46,53%
+                        40,53%
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/charts.html</th>
-                      <td>3,513</td>
-                      <td>294</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        36,49%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/tables.html</th>
-                      <td>2,050</td>
-                      <td>147</td>
+                      <th scope="row">Fumigation Details</th>
+                      <td>David Smith</td>
+                      <td>21-4-2021</td>
+                      <td>Fumigation Law </td>
                       <td>
                         <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        50,87%
+                        50,53%
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/profile.html</th>
-                      <td>1,795</td>
-                      <td>190</td>
+                      <th scope="row">Food Quality 1.1</th>
+                      <td>James Smith</td>
+                      <td>12-2-2020</td>
+                      <td>Food Legislation </td>
                       <td>
-                        <i className="fas fa-arrow-down text-danger mr-3" />{" "}
+                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
                         46,53%
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Tax Payment</th>
+                      <td>Maria Garcia</td>
+                      <td>1-3-2021</td>
+                      <td>National Tax Payment </td>
+                      <td>
+                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
+                        40,53%
                       </td>
                     </tr>
                   </tbody>
                 </Table>
               </Card>
             </Col>
-            <Col xl="4">
+            <Col xl="5">
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
@@ -161,16 +165,18 @@ class UserIndex extends React.Component {
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col">File Name</th>
-                      <th scope="col">User</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">File Size</th>
+                      <th scope="col">Assigned By</th>
                       <th className="text-center" scope="col">Accepted</th>
                       <th className="text-center" scope="col">File</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">Lorem</th>
-                      <td>1,480</td>
+                      <th scope="row">Mark Smith</th>
+                      <td>3 Mb</td>
+                      <th >Denver Louis</th>
                       <td className="text-center"><i class="fas fa-check"></i></td>
                       <td className="text-center">
                         <Button
@@ -184,23 +190,9 @@ class UserIndex extends React.Component {
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">Lorem</th>
-                      <td>1,480</td>
-                      <td className="text-center"></td>
-                      <td className="text-center">
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Lorem</th>
-                      <td>1,480</td>
+                      <th scope="row">Maria Gracia</th>
+                      <td>5.5 Mb</td>
+                      <th >James Smith</th>
                       <td className="text-center"><i class="fas fa-check"></i></td>
                       <td className="text-center">
                         <Button
@@ -214,8 +206,34 @@ class UserIndex extends React.Component {
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">Lorem</th>
-                      <td>1,480</td>
+                      <th scope="row">Lillian Foard</th>
+                      <td>5.5 Mb</td>
+                      <th >John Doe</th>
+                      <td className="text-center">
+                        <Button
+                          color="success"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          Accept
+                        </Button>
+                      </td>
+                      <td className="text-center">
+                        <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          View
+                        </Button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Alfred Ansari</th>
+                      <td>3 Mb</td>
+                      <th >Loise Behler</th>
                       <td className="text-center"><i class="fas fa-check"></i></td>
                       <td className="text-center">
                         <Button
@@ -228,7 +246,6 @@ class UserIndex extends React.Component {
                         </Button>
                       </td>
                     </tr>
-                    
                   </tbody>
                 </Table>
               </Card>
@@ -257,56 +274,42 @@ class UserIndex extends React.Component {
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col">Page name</th>
-                      <th scope="col">Visitors</th>
-                      <th scope="col">Unique users</th>
-                      <th scope="col">Bounce rate</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Assigned By</th>
+                      <th scope="col">Due By</th>
+                      <th scope="col">Standard</th>
+                      <th scope="col">Progress</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <th scope="row">/argon/</th>
-                      <td>4,569</td>
-                      <td>340</td>
+                      <th scope="row">HR Interview Round 1</th>
+                      <td>Lillian Foard</td>  
+                      <td>13-6-2021</td>
+                      <td>Human Resource Law</td>
                       <td>
                         <i className="fas fa-arrow-up text-success mr-3" />{" "}
                         46,53%
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/index.html</th>
-                      <td>3,985</td>
-                      <td>319</td>
+                      <th scope="row">Car Repair</th>
+                      <td>Denver Louis</td>  
+                      <td>4-8-2021</td>
+                      <td>Car Verification</td>
                       <td>
                         <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        46,53%
+                        41,53%
                       </td>
                     </tr>
                     <tr>
-                      <th scope="row">/argon/charts.html</th>
-                      <td>3,513</td>
-                      <td>294</td>
+                      <th scope="row">Sanitation 1.1</th>
+                      <td>Maria Gracia</td>  
+                      <td>22-5-2021</td>
+                      <td>Fumigation Law</td>
                       <td>
                         <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        36,49%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/tables.html</th>
-                      <td>2,050</td>
-                      <td>147</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        50,87%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/profile.html</th>
-                      <td>1,795</td>
-                      <td>190</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                        46,53%
+                        43,53%
                       </td>
                     </tr>
                   </tbody>
