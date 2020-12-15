@@ -257,7 +257,7 @@ class UserIndex extends React.Component {
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Assigned Checklists</h3>
+                      <h3 className="mb-0">Assigned Workflows</h3>
                     </div>
                     <div className="col text-right">
                       <Button

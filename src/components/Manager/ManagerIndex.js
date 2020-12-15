@@ -206,7 +206,7 @@ class ManagerIndex extends React.Component {
                       <td>78</td>
                       <td>
                         <div className="d-flex align-items-center">
-                          <span className="mr-2">Petty Officer</span>
+                          <span className="mr-2">10/11/2020</span>
                         </div>
                       </td>
                       <td>
