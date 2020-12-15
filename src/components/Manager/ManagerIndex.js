@@ -11,24 +11,11 @@ import {
   Button,
   Card,
   CardHeader,
-  CardBody,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
   Table,
   Container,
   Row,
   Col
 } from "reactstrap";
-
-// core components
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2
-} from "variables/charts.js";
 
 import Header from "components/Manager/Headers/DashboardHeader.js";
 
@@ -36,21 +23,10 @@ class ManagerIndex extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      activeNav: 1,
-      chartExample1Data: "data1"
+      // states
     };
-    if (window.Chart) {
-      parseOptions(Chart, chartOptions());
-    }
   }
-  toggleNavs = (e, index) => {
-    e.preventDefault();
-    this.setState({
-      activeNav: index,
-      chartExample1Data:
-        this.state.chartExample1Data === "data1" ? "data2" : "data1"
-    });
-  };
+
   render() {
     return (
       <>
