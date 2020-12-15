@@ -2,17 +2,26 @@
 // import Index from "views/Index.js";
 import UserIndex from "components/User/UserIndex.js";
 import ManagerIndex from "components/Manager/ManagerIndex.js";
+import ManagerWorkflows from "components/Manager/ManagerWorkflows.js";
+import ManagerStandards from "components/Manager/ManagerStandards.js";
+import ManagerUsers from "components/Manager/ManagerUsers.js"
+import ManagerSubscriptions from "components/Manager/ManagerSubscriptions.js";
+import ManagerDocuments from "components/Manager/ManagerDocuments.js";
+import ManagerProfile from "components/Manager/ManagerProfile.js";
+
 import Profile from "views/examples/Profile.js";
 import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
+import ManagerAudits from "components/Manager/ManagerAudits";
 
 // User Imports
 import Audit from "components/User/Views/Audit.js"
 import Document from "components/User/Views/Document.js"
 import Checklist from "components/User/Views/Checklist.js"
+
 
 // Manager Imports
 // import Audit from "views/User/Audit.js"
@@ -28,52 +37,52 @@ var routes = [
     layout: "/manager"
   },
   {
-    path: "/user-profile",
+    path: "/profile",
     name: "Profile",
     icon: "ni ni-single-02 text-yellow",
-    component: Profile,
+    component: ManagerProfile,
     layout: "/manager"
   },
   {
     path: "/docs",
     name: "Documents",
     icon: "ni ni-single-copy-04 text-red",
-    component: Tables,
+    component: ManagerDocuments,
     layout: "/manager"
   },
   {
     path: "/standards",
     name: "Standards",
     icon: "ni ni-collection text-blue",
-    component: Icons,
+    component: ManagerStandards,
     layout: "/manager"
   },
   {
     path: "/audit",
     name: "Audit",
     icon: "ni ni-collection text-blue",
-    component: Icons,
+    component: ManagerAudits,
     layout: "/manager"
   },
   {
-    path: "/checklist",
+    path: "/workflows",
     name: "Workflows",
     icon: "ni ni-check-bold text-orange",
-    component: Maps,
+    component: ManagerWorkflows,
     layout: "/manager"
   },
   {
     path: "/users",
     name: "Users",
     icon: "ni ni-single-02 text-yellow",
-    component: Maps,
+    component: ManagerUsers,
     layout: "/manager"
   },
   {
-    path: "/users",
+    path: "/subscriptions",
     name: "Subscriptions",
     icon: "ni ni-single-copy-04 text-red",
-    component: Maps,
+    component: ManagerSubscriptions,
     layout: "/manager"
   },
 
