@@ -57,7 +57,7 @@ var routes = [
   },
   {
     path: "/checklist",
-    name: "Checklist",
+    name: "Workflows",
     icon: "ni ni-check-bold text-orange",
     component: Maps,
     layout: "/manager"
