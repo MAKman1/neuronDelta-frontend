@@ -9,14 +9,18 @@ import {
   Container,
   Row,
   Modal,
-  Col
+  Col,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from "reactstrap";
 
 
 import Header from "components/Manager/Headers/EmptyHeader.js";
 
 class ManagerDocuments extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       documentModel: false
@@ -58,8 +62,6 @@ class ManagerDocuments extends React.Component {
                       >
                         Add Document
                       </Button>
-                      {/* ADD Document*/}
-                      {/* Modal */}
                       <Modal
                         className="modal-dialog-centered"
                         isOpen={this.state.documentModel}
@@ -89,6 +91,11 @@ class ManagerDocuments extends React.Component {
                               <label for="message-text" class="col-form-label">Description:</label>
                               <textarea class="form-control" id="message-text"></textarea>
                             </div>
+                            <div className="align-items-center">
+                              <Button color="primary" type="button">
+                                Choose File
+                            </Button>
+                            </div>
                           </form>
                         </div>
                         <div className="modal-footer">
@@ -98,14 +105,13 @@ class ManagerDocuments extends React.Component {
                             type="button"
                             onClick={() => this.toggleModal("documentModel")}
                           >
-                            Close
+                            Cancel
                           </Button>
                           <Button color="success" type="button">
                             Upload
                           </Button>
                         </div>
                       </Modal>
-                      {/* Model */}
                     </div>
                   </Row>
                 </CardHeader>
@@ -121,6 +127,73 @@ class ManagerDocuments extends React.Component {
                       <th scope="col"></th>
                     </tr>
                   </thead>
+                  <Modal
+                    size="sm"
+                    className="modal-dialog-centered"
+                    isOpen={this.state.roleModel}
+                    toggle={() => this.toggleModal("roleModel")}
+                  >
+                    <div className="modal-header">
+                      <h2 className="modal-title" id="roleModelLabel">
+                        Add/Remove Role
+                          </h2>
+                      <button
+                        aria-label="Close"
+                        className="close"
+                        data-dismiss="modal"
+                        type="button"
+                        onClick={() => this.toggleModal("roleModel")}
+                      >
+                        <span aria-hidden={true}>×</span>
+                      </button>
+                    </div>
+                    <div className="modal-body">
+                      <Row>
+                        <Col sm="auto">
+                          <h4><span class="badge badge-primary">Reception</span>
+                            <button
+                              aria-label="Close"
+                              className="close"
+                              data-dismiss="modal"
+                              type="button"
+                            >
+                              <span class="badge badge-warning" aria-hidden={true}>×</span>
+                            </button>
+                          </h4>
+                        </Col>
+                      </Row>
+                      <br></br>
+                      <Row className="justify-content-md-center">
+                        <Col xl="auto">
+                          <Dropdown isOpen={this.state.toggleDropdown} toggle={() => this.toggleModal("toggleDropdown")}>
+                            <DropdownToggle caret>
+                              Select Roles
+                              </DropdownToggle>
+                            <DropdownMenu>
+                              <DropdownItem disabled>Reception</DropdownItem>
+                              <DropdownItem>Human Resources</DropdownItem>
+                              <DropdownItem>Supervisor</DropdownItem>
+                              <DropdownItem>Finance Head</DropdownItem>
+                              <DropdownItem>Dormitory Manager</DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+                        </Col>
+                      </Row>
+                    </div>
+                    <div className="modal-footer">
+                      <Button
+                        color="secondary"
+                        data-dismiss="modal"
+                        type="button"
+                        onClick={() => this.toggleModal("roleModel")}
+                      >
+                        Cancel
+                          </Button>
+                      <Button color="success" type="button">
+                        Save
+                          </Button>
+                    </div>
+                  </Modal>
                   <tbody>
                     <tr>
                       <th scope="row">Company Insurance</th>
@@ -132,13 +205,13 @@ class ManagerDocuments extends React.Component {
                       </td>
                       <td>3 / 5</td>
                       <td>
-                        <h4><span class="badge badge-primary">Reception</span></h4>
+                        <h4><span className="badge badge-primary">Reception</span></h4>
                       </td>
                       <td>
                         <Button
                           color="primary"
                           href="#pablo"
-                          onClick={e => e.preventDefault()}
+                          onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >
                           Edit
@@ -165,13 +238,13 @@ class ManagerDocuments extends React.Component {
                       </td>
                       <td>4 / 5</td>
                       <td>
-                        <h4><span class="badge badge-primary">Human Resources</span></h4>
+                        <h4><span className="badge badge-primary">Human Resources</span></h4>
                       </td>
                       <td>
                         <Button
                           color="primary"
                           href="#pablo"
-                          onClick={e => e.preventDefault()}
+                          onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >
                           Edit
@@ -198,13 +271,13 @@ class ManagerDocuments extends React.Component {
                       </td>
                       <td>3 / 5</td>
                       <td>
-                        <h4> <span class="badge badge-primary">Supervisor</span></h4>
+                        <h4> <span className="badge badge-primary">Supervisor</span></h4>
                       </td>
                       <td>
                         <Button
                           color="primary"
                           href="#pablo"
-                          onClick={e => e.preventDefault()}
+                          onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >
                           Edit
@@ -231,13 +304,13 @@ class ManagerDocuments extends React.Component {
                       </td>
                       <td>5 / 5</td>
                       <td>
-                        <h4><span class="badge badge-primary">Finance Head</span></h4>
+                        <h4><span className="badge badge-primary">Finance Head</span></h4>
                       </td>
                       <td>
                         <Button
                           color="primary"
                           href="#pablo"
-                          onClick={e => e.preventDefault()}
+                          onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >
                           Edit
@@ -264,13 +337,13 @@ class ManagerDocuments extends React.Component {
                       </td>
                       <td>1 / 5</td>
                       <td>
-                        <h4><span class="badge badge-primary">Dormitory Manager</span></h4>
+                        <h4><span className="badge badge-primary">Dormitory Manager</span></h4>
                       </td>
                       <td>
                         <Button
                           color="primary"
                           href="#pablo"
-                          onClick={e => e.preventDefault()}
+                          onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >
                           Edit

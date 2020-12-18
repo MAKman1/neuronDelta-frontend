@@ -10,7 +10,11 @@ import {
   Container,
   Row,
   Modal,
-  Col
+  Col,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from "reactstrap";
 
 import Header from "components/Manager/Headers/DashboardHeader.js";
@@ -21,7 +25,8 @@ class ManagerIndex extends React.Component {
     super(props);
     this.state = {
       documentModel: false,
-      roleModel: false
+      roleModel: false,
+      toggleDropdown: false
     };
   }
   toggleModal = state => {
@@ -206,6 +211,7 @@ class ManagerIndex extends React.Component {
                     </tr>
                   </thead>
                   <Modal
+                    size="sm"
                     className="modal-dialog-centered"
                     isOpen={this.state.roleModel}
                     toggle={() => this.toggleModal("roleModel")}
@@ -226,11 +232,34 @@ class ManagerIndex extends React.Component {
                     </div>
                     <div className="modal-body">
                       <Row>
-                        <Col>
-                          <h4><span class="badge badge-primary">Reception</span></h4>
+                        <Col sm="auto">
+                          <h4><span class="badge badge-primary">Reception</span>
+                            <button
+                              aria-label="Close"
+                              className="close"
+                              data-dismiss="modal"
+                              type="button"
+                            >
+                              <span class="badge badge-warning" aria-hidden={true}>×</span>
+                            </button>
+                          </h4>
                         </Col>
-                        <Col>
-                          <h4><span class="badge badge-primary">Reception</span></h4>
+                      </Row>
+                      <br></br>
+                      <Row className="justify-content-md-center">
+                        <Col xl="auto">
+                          <Dropdown isOpen={this.state.toggleDropdown} toggle={() => this.toggleModal("toggleDropdown")}>
+                            <DropdownToggle caret>
+                              Select Roles
+                              </DropdownToggle>
+                            <DropdownMenu>
+                              <DropdownItem disabled>Reception</DropdownItem>
+                              <DropdownItem>Human Resources</DropdownItem>
+                              <DropdownItem>Supervisor</DropdownItem>
+                              <DropdownItem>Finance Head</DropdownItem>
+                              <DropdownItem>Dormitory Manager</DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
                         </Col>
                       </Row>
                     </div>
@@ -244,7 +273,7 @@ class ManagerIndex extends React.Component {
                         Cancel
                           </Button>
                       <Button color="success" type="button">
-                        Upload
+                        Save
                           </Button>
                     </div>
                   </Modal>
@@ -298,7 +327,7 @@ class ManagerIndex extends React.Component {
                         <Button
                           color="primary"
                           href="#pablo"
-                          onClick={e => e.preventDefault()}
+                          onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >
                           Edit
@@ -331,7 +360,7 @@ class ManagerIndex extends React.Component {
                         <Button
                           color="primary"
                           href="#pablo"
-                          onClick={e => e.preventDefault()}
+                          onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >
                           Edit
@@ -364,7 +393,7 @@ class ManagerIndex extends React.Component {
                         <Button
                           color="primary"
                           href="#pablo"
-                          onClick={e => e.preventDefault()}
+                          onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >
                           Edit
@@ -397,7 +426,7 @@ class ManagerIndex extends React.Component {
                         <Button
                           color="primary"
                           href="#pablo"
-                          onClick={e => e.preventDefault()}
+                          onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >
                           Edit
