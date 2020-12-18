@@ -1,34 +1,15 @@
 /*! Developed by Alinon */
 import React from "react";
-// node.js library that concatenates classes (strings)
-import classnames from "classnames";
-// javascipt plugin for creating charts
-import Chart from "chart.js";
-// react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
-// reactstrap components
+
 import {
   Button,
   Card,
   CardHeader,
-  CardBody,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
   Table,
   Container,
   Row,
   Col
 } from "reactstrap";
-
-// core components
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2
-} from "variables/charts.js";
 
 import Header from "components/User/Headers/DashboardHeader.js";
 
@@ -36,21 +17,9 @@ class UserIndex extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      activeNav: 1,
-      chartExample1Data: "data1"
+      // States
     };
-    if (window.Chart) {
-      parseOptions(Chart, chartOptions());
-    }
   }
-  toggleNavs = (e, index) => {
-    e.preventDefault();
-    this.setState({
-      activeNav: index,
-      chartExample1Data:
-        this.state.chartExample1Data === "data1" ? "data2" : "data1"
-    });
-  };
   
   render() {
     return (
@@ -86,6 +55,7 @@ class UserIndex extends React.Component {
                       <th scope="col">Due By</th>
                       <th scope="col">Standard</th>
                       <th scope="col">Progress</th>
+                      <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -98,6 +68,16 @@ class UserIndex extends React.Component {
                         <i className="fas fa-arrow-up text-success mr-3" />{" "}
                         46,53%
                       </td>
+                      <td className="text-center">
+                        <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          View
+                        </Button>
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">Tax Payment</th>
@@ -107,6 +87,16 @@ class UserIndex extends React.Component {
                       <td>
                         <i className="fas fa-arrow-down text-warning mr-3" />{" "}
                         40,53%
+                      </td>
+                      <td className="text-center">
+                        <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          View
+                        </Button>
                       </td>
                     </tr>
                     <tr>
@@ -118,6 +108,16 @@ class UserIndex extends React.Component {
                         <i className="fas fa-arrow-up text-success mr-3" />{" "}
                         50,53%
                       </td>
+                      <td className="text-center">
+                        <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          View
+                        </Button>
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">Food Quality 1.1</th>
@@ -128,6 +128,16 @@ class UserIndex extends React.Component {
                         <i className="fas fa-arrow-up text-success mr-3" />{" "}
                         46,53%
                       </td>
+                      <td className="text-center">
+                        <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          View
+                        </Button>
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">Tax Payment</th>
@@ -137,6 +147,16 @@ class UserIndex extends React.Component {
                       <td>
                         <i className="fas fa-arrow-down text-warning mr-3" />{" "}
                         40,53%
+                      </td>
+                      <td className="text-center">
+                        <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          View
+                        </Button>
                       </td>
                     </tr>
                   </tbody>
@@ -279,6 +299,7 @@ class UserIndex extends React.Component {
                       <th scope="col">Due By</th>
                       <th scope="col">Standard</th>
                       <th scope="col">Progress</th>
+                      <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -291,6 +312,16 @@ class UserIndex extends React.Component {
                         <i className="fas fa-arrow-up text-success mr-3" />{" "}
                         46,53%
                       </td>
+                      <td className="text-center">
+                        <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          View
+                        </Button>
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">Car Repair</th>
@@ -301,6 +332,16 @@ class UserIndex extends React.Component {
                         <i className="fas fa-arrow-down text-warning mr-3" />{" "}
                         41,53%
                       </td>
+                      <td className="text-center">
+                        <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          View
+                        </Button>
+                      </td>
                     </tr>
                     <tr>
                       <th scope="row">Sanitation 1.1</th>
@@ -310,6 +351,16 @@ class UserIndex extends React.Component {
                       <td>
                         <i className="fas fa-arrow-down text-warning mr-3" />{" "}
                         43,53%
+                      </td>
+                      <td className="text-center">
+                        <Button
+                          color="primary"
+                          href="#pablo"
+                          onClick={e => e.preventDefault()}
+                          size="sm"
+                        >
+                          View
+                        </Button>
                       </td>
                     </tr>
                   </tbody>

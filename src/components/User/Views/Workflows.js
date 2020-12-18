@@ -34,7 +34,7 @@ class Workflows extends React.Component {
                     <CardHeader className="border-0">
                     <Row className="align-items-center">
                         <div className="col">
-                        <h3 className="mb-0">Assigned Documents</h3>
+                        <h3 className="mb-0">Assigned Workflows</h3>
                         </div>
                         <div className="col text-right">
                         <Button
@@ -52,58 +52,22 @@ class Workflows extends React.Component {
                     <thead className="thead-light">
                         <tr>
                         <th scope="col">Name</th>
-                        <th scope="col">File Size</th>
                         <th scope="col">Assigned By</th>
-                        <th className="text-center" scope="col">Accepted</th>
-                        <th className="text-center" scope="col">File</th>
+                        <th scope="col">Due By</th>
+                        <th scope="col">Standard</th>
+                        <th scope="col">Progress</th>
+                        <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                        <th scope="row">Mark Smith</th>
-                        <td>3 Mb</td>
-                        <th >Denver Louis</th>
-                        <td className="text-center"><i class="fas fa-check"></i></td>
-                        <td className="text-center">
-                            <Button
-                            color="primary"
-                            href="#pablo"
-                            onClick={e => e.preventDefault()}
-                            size="sm"
-                            >
-                            View
-                            </Button>
-                        </td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Maria Gracia</th>
-                        <td>5.5 Mb</td>
-                        <th >James Smith</th>
-                        <td className="text-center"><i class="fas fa-check"></i></td>
-                        <td className="text-center">
-                            <Button
-                            color="primary"
-                            href="#pablo"
-                            onClick={e => e.preventDefault()}
-                            size="sm"
-                            >
-                            View
-                            </Button>
-                        </td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Lillian Foard</th>
-                        <td>5.5 Mb</td>
-                        <th >John Doe</th>
-                        <td className="text-center">
-                            <Button
-                            color="success"
-                            href="#pablo"
-                            onClick={e => e.preventDefault()}
-                            size="sm"
-                            >
-                            Accept
-                            </Button>
+                        <th scope="row">HR Interview Round 1</th>
+                        <td>Lillian Foard</td>  
+                        <td>13-6-2021</td>
+                        <td>Human Resource Law</td>
+                        <td>
+                            <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                            46,53%
                         </td>
                         <td className="text-center">
                             <Button
@@ -117,10 +81,34 @@ class Workflows extends React.Component {
                         </td>
                         </tr>
                         <tr>
-                        <th scope="row">Alfred Ansari</th>
-                        <td>3 Mb</td>
-                        <th >Loise Behler</th>
-                        <td className="text-center"><i class="fas fa-check"></i></td>
+                        <th scope="row">Car Repair</th>
+                        <td>Denver Louis</td>  
+                        <td>4-8-2021</td>
+                        <td>Car Verification</td>
+                        <td>
+                            <i className="fas fa-arrow-down text-warning mr-3" />{" "}
+                            41,53%
+                        </td>
+                        <td className="text-center">
+                            <Button
+                            color="primary"
+                            href="#pablo"
+                            onClick={e => e.preventDefault()}
+                            size="sm"
+                            >
+                            View
+                            </Button>
+                        </td>
+                        </tr>
+                        <tr>
+                        <th scope="row">Sanitation 1.1</th>
+                        <td>Maria Gracia</td>  
+                        <td>22-5-2021</td>
+                        <td>Fumigation Law</td>
+                        <td>
+                            <i className="fas fa-arrow-down text-warning mr-3" />{" "}
+                            43,53%
+                        </td>
                         <td className="text-center">
                             <Button
                             color="primary"

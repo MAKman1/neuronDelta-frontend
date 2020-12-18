@@ -1,6 +1,6 @@
 /*! Developed by Alinon */
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 // reactstrap components
 import {
   DropdownMenu,

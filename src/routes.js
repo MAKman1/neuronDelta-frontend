@@ -9,23 +9,18 @@ import ManagerSubscriptions from "components/Manager/ManagerSubscriptions.js";
 import ManagerDocuments from "components/Manager/ManagerDocuments.js";
 import ManagerProfile from "components/Manager/ManagerProfile.js";
 
-import Profile from "views/examples/Profile.js";
-import Maps from "views/examples/Maps.js";
+
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
-import Tables from "views/examples/Tables.js";
-import Icons from "views/examples/Icons.js";
 import ManagerAudits from "components/Manager/ManagerAudits";
 
 // User Imports
 import Audit from "components/User/Views/Audit.js"
 import Document from "components/User/Views/Document.js"
-import Checklist from "components/User/Views/Checklist.js"
+import Workflows from "components/User/Views/Workflows.js"
+import Profile from "components/User/Views/Profile.js";
 
 
-// Manager Imports
-// import Audit from "views/User/Audit.js"
-// import Document from "views/User/Document.js"
 
 var routes = [
   // Manager
@@ -110,10 +105,10 @@ var routes = [
     layout: "/user"
   },
   {
-    path: "/checklist",
+    path: "/workflow",
     name: "Workflows",
     icon: "ni ni-check-bold text-orange",
-    component: Checklist,
+    component: Workflows,
     layout: "/user"
   },
  
