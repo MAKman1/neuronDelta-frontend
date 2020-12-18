@@ -203,7 +203,7 @@ class ManagerDocuments extends React.Component {
                       <td>
                         <Button
                           color="primary"
-                          href="#pablo"
+                          
                           onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >

@@ -26,7 +26,8 @@ class ManagerIndex extends React.Component {
     this.state = {
       documentModel: false,
       roleModel: false,
-      toggleDropdown: false
+      userModel: false,
+      toggleDropdown: false,
     };
   }
   toggleModal = state => {
@@ -139,7 +140,6 @@ class ManagerIndex extends React.Component {
                       </Button>
                       <Button
                         color="success"
-                        href="#pablo"
                         onClick={() => this.toggleModal("documentModel")}
                         size="sm"
                       >
@@ -293,7 +293,6 @@ class ManagerIndex extends React.Component {
                       <td>
                         <Button
                           color="primary"
-                          href="#pablo"
                           onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >
@@ -303,7 +302,6 @@ class ManagerIndex extends React.Component {
                       <td>
                         <Button
                           color="primary"
-                          href="#pablo"
                           onClick={e => e.preventDefault()}
                           size="sm"
                         >
@@ -326,7 +324,7 @@ class ManagerIndex extends React.Component {
                       <td>
                         <Button
                           color="primary"
-                          href="#pablo"
+
                           onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >
@@ -336,7 +334,7 @@ class ManagerIndex extends React.Component {
                       <td>
                         <Button
                           color="primary"
-                          href="#pablo"
+
                           onClick={e => e.preventDefault()}
                           size="sm"
                         >
@@ -359,7 +357,7 @@ class ManagerIndex extends React.Component {
                       <td>
                         <Button
                           color="primary"
-                          href="#pablo"
+
                           onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >
@@ -369,7 +367,7 @@ class ManagerIndex extends React.Component {
                       <td>
                         <Button
                           color="primary"
-                          href="#pablo"
+
                           onClick={e => e.preventDefault()}
                           size="sm"
                         >
@@ -392,7 +390,7 @@ class ManagerIndex extends React.Component {
                       <td>
                         <Button
                           color="primary"
-                          href="#pablo"
+
                           onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >
@@ -425,7 +423,7 @@ class ManagerIndex extends React.Component {
                       <td>
                         <Button
                           color="primary"
-                          href="#pablo"
+
                           onClick={() => this.toggleModal("roleModel")}
                           size="sm"
                         >
@@ -677,6 +675,74 @@ class ManagerIndex extends React.Component {
                       >
                         See all
                       </Button>
+                      <Button
+                        color="success"
+                        onClick={() => this.toggleModal("userModel")}
+                        size="sm"
+                      >
+                        Add User
+                      </Button>
+                      <Modal
+                        className="modal-dialog-centered"
+                        isOpen={this.state.userModel}
+                        toggle={() => this.toggleModal("userModel")}
+                      >
+                        <div className="modal-header">
+                          <h2 className="modal-title" id="userModelLabel">
+                            Add User
+                          </h2>
+                          <button
+                            aria-label="Close"
+                            className="close"
+                            data-dismiss="modal"
+                            type="button"
+                            onClick={() => this.toggleModal("userModelModel")}
+                          >
+                            <span aria-hidden={true}>×</span>
+                          </button>
+                        </div>
+                        <div className="modal-body">
+                          <form>
+                            <div class="form-group">
+                              <label for="recipient-name" class="col-form-label">Name:</label>
+                              <input type="text" class="form-control" id="recipient-name"></input>
+                            </div>
+                            <div class="form-group">
+                              <label for="recipient-name" class="col-form-label">Email:</label>
+                              <input type="text" class="form-control" id="recipient-name"></input>
+                            </div>
+                            <div class="form-group">
+                              <label for="message-text" class="col-form-label">About:</label>
+                              <textarea class="form-control" id="message-text"></textarea>
+                            </div>
+                            <Row>
+                              <Col sm={{size: "auto"}}>
+                              <label for="recipient-name" class="col-form-label">Password:</label>
+                              </Col>
+                              <Col>
+                              <div className="align-items-center">
+                                <Button color="primary" type="button">
+                                  Auto Generate
+                                </Button>
+                              </div>
+                              </Col>
+                            </Row>
+                          </form>
+                        </div>
+                        <div className="modal-footer">
+                          <Button
+                            color="secondary"
+                            data-dismiss="modal"
+                            type="button"
+                            onClick={() => this.toggleModal("userModel")}
+                          >
+                            Cancel
+                          </Button>
+                          <Button color="success" type="button">
+                            Save
+                          </Button>
+                        </div>
+                      </Modal>
                     </div>
                   </Row>
                 </CardHeader>
@@ -685,7 +751,7 @@ class ManagerIndex extends React.Component {
                     <tr>
                       <th scope="col">Name</th>
                       <th scope="col">Role</th>
-                      <th scope="col">Assigned List</th>
+                      <th scope="col">Assigned Workflow</th>
                       <th scope="col">Assigned Audit</th>
                       <th scope="col"></th>
                     </tr>
@@ -703,7 +769,6 @@ class ManagerIndex extends React.Component {
                       <td>
                         <Button
                           color="primary"
-                          href="#pablo"
                           onClick={e => e.preventDefault()}
                           size="sm"
                         >

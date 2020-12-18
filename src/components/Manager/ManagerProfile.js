@@ -63,9 +63,9 @@ class ManagerProfile extends React.Component {
                     </div>
                   </Row>
                   <div className="text-center">
-                    <h3>
+                    <h1>
                       Jessica Jones
-                    </h3>
+                    </h1>
                     <div className="h5 font-weight-300">
                       <i className="ni location_pin mr-2" />
                       jessicajones@gmail.com
