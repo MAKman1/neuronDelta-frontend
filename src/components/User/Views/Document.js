@@ -36,16 +36,6 @@ class Workflows extends React.Component {
                         <div className="col">
                         <h3 className="mb-0">Assigned Documents</h3>
                         </div>
-                        <div className="col text-right">
-                        <Button
-                            color="primary"
-                            href="#pablo"
-                            onClick={e => e.preventDefault()}
-                            size="sm"
-                        >
-                            See all
-                        </Button>
-                        </div>
                     </Row>
                     </CardHeader>
                     <Table className="align-items-center table-flush" responsive>

@@ -37,9 +37,6 @@ class ManagerStandards extends React.Component {
                     <div className="col">
                       <h3 className="mb-0">Current Standards</h3>
                     </div>
-                    <div className="col text-right">
-
-                    </div>
                   </Row>
                 </CardHeader>
                 <Table className="align-items-center table-flush">
