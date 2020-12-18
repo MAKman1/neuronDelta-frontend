@@ -9,11 +9,9 @@ import ManagerSubscriptions from "components/Manager/ManagerSubscriptions.js";
 import ManagerDocuments from "components/Manager/ManagerDocuments.js";
 import ManagerProfile from "components/Manager/ManagerProfile.js";
 
-import Maps from "views/examples/Maps.js";
+
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
-import Tables from "views/examples/Tables.js";
-import Icons from "views/examples/Icons.js";
 import ManagerAudits from "components/Manager/ManagerAudits";
 
 // User Imports
@@ -23,10 +21,6 @@ import Workflows from "components/User/Views/Workflows.js"
 import Profile from "components/User/Views/Profile.js";
 
 
-
-// Manager Imports
-// import Audit from "views/User/Audit.js"
-// import Document from "views/User/Document.js"
 
 var routes = [
   // Manager
