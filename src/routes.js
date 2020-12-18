@@ -8,6 +8,7 @@ import ManagerUsers from "components/Manager/ManagerUsers.js"
 import ManagerSubscriptions from "components/Manager/ManagerSubscriptions.js";
 import ManagerDocuments from "components/Manager/ManagerDocuments.js";
 import ManagerProfile from "components/Manager/ManagerProfile.js";
+import ManagerArticle from "components/Manager/ManagerArticle.js";
 
 
 import Register from "views/examples/Register.js";
@@ -58,6 +59,13 @@ var routes = [
     icon: "ni ni-collection text-blue",
     component: ManagerAudits,
     layout: "/manager"
+  },
+  {
+    path: "/audit/article",
+    name: "Article",
+    icon: "ni ni-collection text-blue",
+    component: ManagerArticle,
+    layout: "/manager/audit"
   },
   {
     path: "/workflows",

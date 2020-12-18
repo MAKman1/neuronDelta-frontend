@@ -10,6 +10,7 @@ import "assets/scss/argon-dashboard-react.scss";
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "components/Login/Auth.js";
 import ManagerLayout from "components/Manager/Manager.js";
+import ManagerAuditLayout from "components/Manager/ManagerAudits.js"
 import UserLayout from "components/User/User.js";
 
 
@@ -18,6 +19,7 @@ ReactDOM.render(
     <Switch>
       <Route path="/admin" render={props => <AdminLayout {...props} />} />
       <Route path="/manager" render={props => <ManagerLayout {...props} />} />
+      <Route path="/manager/audit" render={props => <ManagerAuditLayout {...props}/>}></Route> 
       <Route path="/user" render={props => <UserLayout {...props} />} />
       <Route path="/login" render={props => <AuthLayout {...props} />} />
       

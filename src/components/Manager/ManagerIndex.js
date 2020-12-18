@@ -53,8 +53,8 @@ class ManagerIndex extends React.Component {
                     <div className="col text-right">
                       <Button
                         color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        href="/manager/standards"
+                        onClick={"/manager/standards"}
                         size="sm"
                       >
                         See all
@@ -131,8 +131,8 @@ class ManagerIndex extends React.Component {
                     <div className="col text-right">
                       <Button
                         color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        href="/manager/audits"
+                        onClick={"/manager/audits"}
                         size="sm"
                       >
                         See all
@@ -459,8 +459,8 @@ class ManagerIndex extends React.Component {
                     <div className="col text-right">
                       <Button
                         color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        href="/manager/audits"
+                        onClick={"/manager/audits"}
                         size="sm"
                       >
                         See all
@@ -565,8 +565,8 @@ class ManagerIndex extends React.Component {
                     <div className="col text-right">
                       <Button
                         color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        href="/manager/workflows"
+                        onClick={"/manager/workflows"}
                         size="sm"
                       >
                         See all
@@ -671,8 +671,8 @@ class ManagerIndex extends React.Component {
                     <div className="col text-right">
                       <Button
                         color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        href="/manager/users"
+                        onClick={"/manager/users"}
                         size="sm"
                       >
                         See all

@@ -30,6 +30,7 @@ class Manager extends React.Component {
       } else {
         return null;
       }
+
     });
   };
   getBrandText = path => {

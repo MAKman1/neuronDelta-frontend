@@ -1,6 +1,5 @@
 /*! Developed by Alinon */
 import React from "react";
-import {useHistory} from "react-router-dom";
 
 // reactstrap components
 import {
@@ -19,22 +18,16 @@ import {
 } from "reactstrap";
 
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
-import User from "components/User/User";
 // import Roles from "./Popups/Roles.js"
 
 class ManagerIndex extends React.Component {
   constructor(props) {
     super(props);
-    
     this.state = {
       documentModel: false,
       roleModel: false,
       toggleDropdown: false
     };
-  }
-  handleClick = () => {
-    let history = useHistory();
-    this.props.history.push("/article")
   }
   toggleModal = state => {
     console.log(state);
@@ -89,8 +82,8 @@ class ManagerIndex extends React.Component {
                       <td>
                       <Button
                         color="success"
-                        href="/manager/audit/article"
-                        onClick={"/manager/audit/article"}
+                        href="#pablo"
+                        onClick={() => this.toggleModal("documentModel")}
                         size="sm"
                       >
                         View
@@ -113,8 +106,8 @@ class ManagerIndex extends React.Component {
                       <td>
                       <Button
                         color="success"
-                        href=""
-                        onClick={"/manager/audit/article"}
+                        href="#pablo"
+                        onClick={() => this.toggleModal("documentModel")}
                         size="sm"
                       >
                         View
@@ -137,8 +130,8 @@ class ManagerIndex extends React.Component {
                       <td>
                       <Button
                         color="success"
-                        href=""
-                        onClick={"/manager/audit/article"}
+                        href="#pablo"
+                        onClick={() => this.toggleModal("documentModel")}
                         size="sm"
                       >
                         View
@@ -161,8 +154,8 @@ class ManagerIndex extends React.Component {
                       <td>
                       <Button
                         color="success"
-                        href=""
-                        onClick={"/manager/audit/article"}
+                        href="#pablo"
+                        onClick={() => this.toggleModal("documentModel")}
                         size="sm"
                       >
                         View
@@ -185,8 +178,8 @@ class ManagerIndex extends React.Component {
                       <td>
                       <Button
                         color="success"
-                        href=""
-                        onClick={"/manager/audit/article"}
+                        href="#pablo"
+                        onClick={() => this.toggleModal("documentModel")}
                         size="sm"
                       >
                         View
@@ -209,8 +202,8 @@ class ManagerIndex extends React.Component {
                       <td>
                       <Button
                         color="success"
-                        href=""
-                        onClick={"/manager/audit/article"}
+                        href="#pablo"
+                        onClick={() => this.toggleModal("documentModel")}
                         size="sm"
                       >
                         View
@@ -233,8 +226,8 @@ class ManagerIndex extends React.Component {
                       <td>
                       <Button
                         color="success"
-                        href=""
-                        onClick={"/manager/audit/article"}
+                        href="#pablo"
+                        onClick={() => this.toggleModal("documentModel")}
                         size="sm"
                       >
                         View
@@ -257,8 +250,8 @@ class ManagerIndex extends React.Component {
                       <td>
                       <Button
                         color="success"
-                        href=""
-                        onClick={"/manager/audit/article"}
+                        href="#pablo"
+                        onClick={() => this.toggleModal("documentModel")}
                         size="sm"
                       >
                         View
@@ -281,8 +274,8 @@ class ManagerIndex extends React.Component {
                       <td>
                       <Button
                         color="success"
-                        href=""
-                        onClick={"/manager/audit/article"}
+                        href="#pablo"
+                        onClick={() => this.toggleModal("documentModel")}
                         size="sm"
                       >
                         View
@@ -305,8 +298,8 @@ class ManagerIndex extends React.Component {
                       <td>
                       <Button
                         color="success"
-                        href=""
-                        onClick={"/manager/audit/article"}
+                        href="#pablo"
+                        onClick={() => this.toggleModal("documentModel")}
                         size="sm"
                       >
                         View
@@ -329,9 +322,8 @@ class ManagerIndex extends React.Component {
                       <td>
                       <Button
                         color="success"
-                        href=""
+                        href="/manager/audit/article"
                         onClick={"/manager/audit/article"}
-                        size="sm"
                       >
                         View
                       </Button>
