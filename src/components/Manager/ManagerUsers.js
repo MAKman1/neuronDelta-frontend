@@ -44,17 +44,9 @@ class ManagerUsers extends React.Component {
                     </div>
                     <div className="col text-right">
                       <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
-                      <Button
                         color="success"
                         onClick={() => this.toggleModal("userModel")}
-                        size="sm"
+                        size="md"
                       >
                         Add User
                       </Button>

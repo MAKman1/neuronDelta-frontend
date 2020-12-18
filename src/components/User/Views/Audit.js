@@ -15,13 +15,13 @@ import {
 import Header from "components/User/Headers/EmptyHeader.js";
 
 class Audits extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-        //States
+      //States
     };
   }
-  
+
   render() {
     return (
       <>
@@ -35,16 +35,6 @@ class Audits extends React.Component {
                   <Row className="align-items-center">
                     <div className="col">
                       <h3 className="mb-0">Assigned Audits</h3>
-                    </div>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
                     </div>
                   </Row>
                 </CardHeader>

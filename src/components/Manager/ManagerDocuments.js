@@ -51,7 +51,7 @@ class ManagerDocuments extends React.Component {
                         color="success"
                         href="#pablo"
                         onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
+                        size="md"
                       >
                         Add Document
                       </Button>
