@@ -49,7 +49,7 @@ var routes = [
   {
     path: "/standards",
     name: "Standards",
-    icon: "ni ni-collection text-blue",
+    icon: "ni ni-book-bookmark text-green",
     component: ManagerStandards,
     layout: "/manager"
   },
