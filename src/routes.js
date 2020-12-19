@@ -60,13 +60,7 @@ var routes = [
     component: ManagerAudits,
     layout: "/manager"
   },
-  {
-    path: "/audit/article",
-    name: "Article",
-    icon: "ni ni-collection text-blue",
-    component: ManagerArticle,
-    layout: "/manager/audit"
-  },
+
   {
     path: "/workflows",
     name: "Workflows",
@@ -86,6 +80,12 @@ var routes = [
     name: "Subscriptions",
     icon: "ni ni-single-copy-04 text-red",
     component: ManagerSubscriptions,
+    layout: "/manager"
+  },
+
+  {
+    path: "/article",
+    component: ManagerArticle,
     layout: "/manager"
   },
 
