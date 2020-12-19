@@ -1,5 +1,6 @@
 /*! Developed by Alinon */
 import React from "react";
+import {Link} from "react-router-dom";
 
 // reactstrap components
 import {
@@ -14,7 +15,7 @@ import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
 } from "reactstrap";
 
 import Header from "components/Manager/Headers/DashboardHeader.js";
@@ -51,14 +52,19 @@ class ManagerIndex extends React.Component {
                       <h3 className="mb-0">Current Standards</h3>
                     </div>
                     <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
+                      <Link to = {{
+                            pathname: '/manager/standards',
+                            state: {
+                              name: "Food Quality 1.3"
+                            }
+                          }}>
+                        <Button
+                          color="success"
+                          size="sm"
+                        >
+                        See All
+                        </Button>
+                      </Link>
                     </div>
                   </Row>
                 </CardHeader>
@@ -129,14 +135,19 @@ class ManagerIndex extends React.Component {
                       <h3 className="mb-0">Uploaded Documents</h3>
                     </div>
                     <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
+                    <Link to = {{
+                            pathname: '/manager/docs',
+                            state: {
+                              name: "Food Quality 1.3"
+                            }
+                          }} style={{paddingRight: 5}}>
+                        <Button
+                          color="success"
+                          size="sm"
+                        >
+                        See All
+                        </Button>
+                      </Link>
                       <Button
                         color="success"
                         href="#pablo"
@@ -457,14 +468,19 @@ class ManagerIndex extends React.Component {
                       <h3 className="mb-0">Audits</h3>
                     </div>
                     <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
+                    <Link to = {{
+                            pathname: '/manager/audits',
+                            state: {
+                              name: "Food Quality 1.3"
+                            }
+                          }}>
+                        <Button
+                          color="success"
+                          size="sm"
+                        >
+                        See All
+                        </Button>
+                      </Link>
                     </div>
                   </Row>
                 </CardHeader>
@@ -563,14 +579,19 @@ class ManagerIndex extends React.Component {
                       <h3 className="mb-0">Workflows</h3>
                     </div>
                     <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
+                    <Link to = {{
+                            pathname: '/manager/workflows',
+                            state: {
+                              name: "Food Quality 1.3"
+                            }
+                          }}>
+                        <Button
+                          color="success"
+                          size="sm"
+                        >
+                        See All
+                        </Button>
+                      </Link>
                     </div>
                   </Row>
                 </CardHeader>
@@ -669,14 +690,19 @@ class ManagerIndex extends React.Component {
                       <h3 className="mb-0">Users</h3>
                     </div>
                     <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
+                    <Link to = {{
+                            pathname: '/manager/users',
+                            state: {
+                              name: "Food Quality 1.3"
+                            }
+                          }}>
+                        <Button
+                          color="success"
+                          size="sm"
+                        >
+                        See All
+                        </Button>
+                      </Link>
                     </div>
                   </Row>
                 </CardHeader>

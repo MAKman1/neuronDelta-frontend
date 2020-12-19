@@ -58,6 +58,7 @@ class ManagerIndex extends React.Component {
                   <Row className="align-items-center">
                     <div className="col">
                       <h3 className="mb-0">Audits</h3>
+                      
                     </div>
 
                   </Row>
