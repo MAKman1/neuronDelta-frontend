@@ -1,5 +1,6 @@
 /*! Developed by Alinon */
 import React from "react";
+import {useHistory, Link} from "react-router-dom";
 
 // reactstrap components
 import {
@@ -18,16 +19,23 @@ import {
 } from "reactstrap";
 
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
+import User from "components/User/User";
 // import Roles from "./Popups/Roles.js"
 
 class ManagerIndex extends React.Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       documentModel: false,
       roleModel: false,
-      toggleDropdown: false
+      toggleDropdown: false,
+      name: "None"
     };
+  }
+
+  handleClick = () => {
+    
   }
   toggleModal = state => {
     console.log(state);
@@ -50,6 +58,7 @@ class ManagerIndex extends React.Component {
                   <Row className="align-items-center">
                     <div className="col">
                       <h3 className="mb-0">Audits</h3>
+                      
                     </div>
 
                   </Row>
@@ -66,6 +75,7 @@ class ManagerIndex extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
+                    
                     <tr>
                       <th scope="row">Food Quality 1.3</th>
                       <td>
@@ -80,158 +90,19 @@ class ManagerIndex extends React.Component {
                         85.65%
                       </td>
                       <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
+                      <Link to = {{
+                            pathname: '/manager/article',
+                            state: {
+                              name: "Food Quality 1.3"
+                            }
+                          }}>
+                        <Button
+                          color="success"
+                          size="sm"
+                        >
                         View
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Food Quality 1.3</th>
-                      <td>
-                        Will Cole
-                      </td>
-                      <td>12/07/2020</td>
-                      <td>
-                        Food Legislation
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        85.65%
-                      </td>
-                      <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
-                        View
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Food Quality 1.3</th>
-                      <td>
-                        Will Cole
-                      </td>
-                      <td>12/07/2020</td>
-                      <td>
-                        Food Legislation
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        85.65%
-                      </td>
-                      <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
-                        View
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Food Quality 1.3</th>
-                      <td>
-                        Will Cole
-                      </td>
-                      <td>12/07/2020</td>
-                      <td>
-                        Food Legislation
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        85.65%
-                      </td>
-                      <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
-                        View
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Food Quality 1.3</th>
-                      <td>
-                        Will Cole
-                      </td>
-                      <td>12/07/2020</td>
-                      <td>
-                        Food Legislation
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        85.65%
-                      </td>
-                      <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
-                        View
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Food Quality 1.3</th>
-                      <td>
-                        Will Cole
-                      </td>
-                      <td>12/07/2020</td>
-                      <td>
-                        Food Legislation
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        85.65%
-                      </td>
-                      <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
-                        View
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Food Quality 1.3</th>
-                      <td>
-                        Will Cole
-                      </td>
-                      <td>12/07/2020</td>
-                      <td>
-                        Food Legislation
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        85.65%
-                      </td>
-                      <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
-                        View
-                      </Button>
+                        </Button>
+                      </Link>
                       </td>
                     </tr>
                     <tr>
@@ -248,14 +119,19 @@ class ManagerIndex extends React.Component {
                         65.12%
                       </td>
                       <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
+                      <Link to = {{
+                            pathname: '/manager/article',
+                            state: {
+                              name: "Tax Audit 2.1"
+                            }
+                          }}>
+                        <Button
+                          color="success"
+                          size="sm"
+                        >
                         View
-                      </Button>
+                        </Button>
+                      </Link>
                       </td>
                     </tr>
                     <tr>
@@ -272,14 +148,19 @@ class ManagerIndex extends React.Component {
                         46.78%
                       </td>
                       <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
+                      <Link to = {{
+                            pathname: '/manager/article',
+                            state: {
+                              name: "Car Quality 1.3"
+                            }
+                          }}>
+                        <Button
+                          color="success"
+                          size="sm"
+                        >
                         View
-                      </Button>
+                        </Button>
+                      </Link>
                       </td>
                     </tr>
                     <tr>
@@ -296,14 +177,19 @@ class ManagerIndex extends React.Component {
                         21.82%
                       </td>
                       <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
+                      <Link to = {{
+                            pathname: '/manager/article',
+                            state: {
+                              name: "Vehicle Tax 1.7"
+                            }
+                          }}>
+                        <Button
+                          color="success"
+                          size="sm"
+                        >
                         View
-                      </Button>
+                        </Button>
+                      </Link>
                       </td>
                     </tr>
                     <tr>
@@ -320,14 +206,19 @@ class ManagerIndex extends React.Component {
                         10.53%
                       </td>
                       <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
+                      <Link to = {{
+                            pathname: '/manager/article',
+                            state: {
+                              name: "Fumigation Law 4.3"
+                            }
+                          }}>
+                        <Button
+                          color="success"
+                          size="sm"
+                        >
                         View
-                      </Button>
+                        </Button>
+                      </Link>
                       </td>
                     </tr>
                   </tbody>

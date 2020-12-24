@@ -27,9 +27,11 @@ class Manager extends React.Component {
               key={key}
             />
           );
-      } else {
+      } 
+      else {
         return null;
       }
+
     });
   };
   getBrandText = path => {

@@ -18,6 +18,7 @@ ReactDOM.render(
     <Switch>
       <Route path="/admin" render={props => <AdminLayout {...props} />} />
       <Route path="/manager" render={props => <ManagerLayout {...props} />} />
+      
       <Route path="/user" render={props => <UserLayout {...props} />} />
       <Route path="/login" render={props => <AuthLayout {...props} />} />
       

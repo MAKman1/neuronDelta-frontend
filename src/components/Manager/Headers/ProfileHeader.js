@@ -12,7 +12,7 @@ class DashboardHeader extends React.Component {
           <Container fluid>
             <div className="header-body">
                 <Row>
-					<h1 className="text-white" style={{paddingLeft: 15, paddingBottom: 50}}>Jacobs & Sons</h1>
+					          <h1 className="text-white" style={{paddingLeft: 15, paddingBottom: 50}}>Jacobs & Sons</h1>
                 </Row>
               {/* Card stats */}
               <Row>
