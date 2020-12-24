@@ -1,6 +1,7 @@
 /*! Developed by Alinon */
 import React from "react";
 import { Route } from "react-router-dom";
+import axios from 'axios';
 // reactstrap components
 import {
   Button,
@@ -20,6 +21,7 @@ import {
 // core components
 import AuthNavbar from "components/Login/AuthNavbar.js";
 import AuthFooter from "components/Login/AuthFooter.js";
+import {constants} from '../../constants.js';
 
 class Auth extends React.Component {
 
@@ -31,9 +33,21 @@ class Auth extends React.Component {
       email: "",
       password: "",
     };
-    
   }
   componentDidMount() {
+    //Check if auth token in valid
+    const data = {
+      "token": "m2AoQNceiRUNTRDOmmgG9sHE31fpl1QJjWmsuSLm",
+      "userId": 2
+    }
+
+    axios.post( constants["apiUrl"], data)
+    .then((res) => {
+      console.warn(JSON.stringify(res));
+    })
+    .catch((error) => {
+      console.warn(JSON.stringify(error));
+    });
     document.body.classList.add("bg-default");
   }
   componentWillUnmount() {
@@ -64,6 +78,8 @@ class Auth extends React.Component {
   }
   
   userlogin = () => {
+
+    //Api call time
     
     if (this.state.email === "user@gmail.com" && this.state.password === "password") {
       this.props.history.push("/user/index");
