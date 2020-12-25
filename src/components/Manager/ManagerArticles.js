@@ -22,7 +22,7 @@ import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
 // import User from "components/User/User";
 // import Roles from "./Popups/Roles.js"
 
-class ManagerAudits extends React.Component {
+class ManagerArticles extends React.Component {
   constructor(props) {
     super(props);
     
@@ -281,4 +281,4 @@ class ManagerAudits extends React.Component {
   }
 }
 
-export default ManagerAudits;
+export default ManagerArticles;
