@@ -3,7 +3,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { reactLocalStorage } from 'reactjs-localstorage';
 import axios from 'axios';
-
 import { constants } from '../../constants.js';
 
 // reactstrap components
@@ -40,7 +39,9 @@ class ManagerIndex extends React.Component {
       documents: [],
       articles: [],
       workflows: [],
-      users: []
+      users: [],
+      documentName: '',
+      documentDesc: '',
     };
   }
 
@@ -138,8 +139,8 @@ class ManagerIndex extends React.Component {
                         <tr>
                           <th scope="row">{e.name}</th>
                           <td>2</td>
-                          <td style={{maxWidth: 150}}>
-                            <text style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word'}}>
+                          <td style={{ maxWidth: 150 }}>
+                            <text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
                               {e.description}
                             </text>
                           </td>
@@ -316,176 +317,45 @@ class ManagerIndex extends React.Component {
                     </div>
                   </Modal>
                   <tbody>
-                    {/* {this.documents.map(doc => {
+                    {this.state.documents.map(doc => {
+                      // const date = moment(doc.updated_at).format('DD MMM, YYYY');
+                      const date = new Date(doc.updated_at).toLocaleString();
                       return (
-                        
+                        <tr>
+                          <th scope="row">{doc.name}</th>
+                          <td>{doc.size} KB</td>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <span className="mr-2">{date}</span>
+                            </div>
+                          </td>
+                          <td>3 / 5</td>
+                          <td>
+                            <h4><span className="badge badge-primary">Reception</span></h4>
+                          </td>
+                          <td>
+                            <Button
+                              color="primary"
+                              href="#pablo"
+                              onClick={() => this.toggleModal("roleModel")}
+                              size="sm"
+                            >
+                              Edit
+                        </Button>
+                          </td>
+                          <td>
+                            <Button
+                              color="primary"
+                              href="#pablo"
+                              onClick={e => e.preventDefault()}
+                              size="sm"
+                            >
+                              View
+                        </Button>
+                          </td>
+                        </tr>
                       )
-                    })} */}
-                    <tr>
-                      <th scope="row">Company Insurance</th>
-                      <td>78 KB</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">12/5/2020</span>
-                        </div>
-                      </td>
-                      <td>3 / 5</td>
-                      <td>
-                        <h4><span className="badge badge-primary">Reception</span></h4>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={() => this.toggleModal("roleModel")}
-                          size="sm"
-                        >
-                          Edit
-                        </Button>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Employee Legislation</th>
-                      <td>98 KB</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">12/1/2020</span>
-                        </div>
-                      </td>
-                      <td>4 / 5</td>
-                      <td>
-                        <h4><span className="badge badge-primary">Human Resources</span></h4>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={() => this.toggleModal("roleModel")}
-                          size="sm"
-                        >
-                          Edit
-                        </Button>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Food Legislation</th>
-                      <td>25 KB</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">11/28/2020</span>
-                        </div>
-                      </td>
-                      <td>3 / 5</td>
-                      <td>
-                        <h4> <span className="badge badge-primary">Supervisor</span></h4>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={() => this.toggleModal("roleModel")}
-                          size="sm"
-                        >
-                          Edit
-                        </Button>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Car Verification</th>
-                      <td>78 KB</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">10/11/2020</span>
-                        </div>
-                      </td>
-                      <td>5 / 5</td>
-                      <td>
-                        <h4><span className="badge badge-primary">Finance Head</span></h4>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={() => this.toggleModal("roleModel")}
-                          size="sm"
-                        >
-                          Edit
-                        </Button>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Fumigation</th>
-                      <td>113 KB</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">11/10/2020</span>
-                        </div>
-                      </td>
-                      <td>1 / 5</td>
-                      <td>
-                        <h4><span className="badge badge-primary">Dormitory Manager</span></h4>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={() => this.toggleModal("roleModel")}
-                          size="sm"
-                        >
-                          Edit
-                        </Button>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
+                    })}
                   </tbody>
                 </Table>
               </Card>

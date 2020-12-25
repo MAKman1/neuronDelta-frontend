@@ -22,15 +22,15 @@ class DashboardHeader extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Pending Audits
+                            Pending Articles
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            12
+                            {this.props.pendArticles}
                           </span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
-                          <i class="fas fa-clipboard"></i>
+                            <i class="fas fa-clipboard"></i>
                           </div>
                         </Col>
                       </Row>
@@ -55,7 +55,7 @@ class DashboardHeader extends React.Component {
                             Completed Audits
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            70
+                            {this.props.compArticles}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -64,12 +64,6 @@ class DashboardHeader extends React.Component {
                           </div>
                         </Col>
                       </Row>
-                      {/* <p className="mt-3 mb-0 text-muted text-sm">
-                        <span className="text-danger mr-2">
-                          <i className="fas fa-arrow-down" /> 3.48%
-                        </span>{" "}
-                        <span className="text-nowrap">Since last week</span>
-                      </p> */}
                     </CardBody>
                   </Card>
                 </Col>
@@ -84,7 +78,9 @@ class DashboardHeader extends React.Component {
                           >
                             Assigned Documents
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">11</span>
+                          <span className="h2 font-weight-bold mb-0">
+                            {this.props.assignedDocs}
+                          </span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-blue text-white rounded-circle shadow">
@@ -92,12 +88,6 @@ class DashboardHeader extends React.Component {
                           </div>
                         </Col>
                       </Row>
-                      {/* <p className="mt-3 mb-0 text-muted text-sm">
-                        <span className="text-warning mr-2">
-                          <i className="fas fa-arrow-down" /> 1.10%
-                        </span>{" "}
-                        <span className="text-nowrap">Since yesterday</span>
-                      </p> */}
                     </CardBody>
                   </Card>
                 </Col>

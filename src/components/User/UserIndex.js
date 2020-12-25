@@ -1,5 +1,8 @@
 /*! Developed by Alinon */
 import React from "react";
+import { reactLocalStorage } from 'reactjs-localstorage';
+import axios from 'axios';
+import { constants } from '../../constants.js';
 
 import {
   Button,
@@ -14,17 +17,59 @@ import {
 import Header from "components/User/Headers/DashboardHeader.js";
 
 class UserIndex extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      // States
+      pendArticles: 0,
+      compArticles: 0,
+      assignedDocs: 0,
+      articles: [],
+      documents: [],
+      assignedWorkflows: []
     };
   }
-  
+
+  componentDidMount() {
+    //Check if auth token in valid
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    console.warn('user ' + userId + 'client ' + clientId);
+
+    if (clientId != null && userId != null) {
+      const data = {
+        "clientId": clientId,
+        "userId": userId
+      }
+      axios.post(constants["apiUrl"] + '/dashboard/get', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(JSON.stringify(data));
+          this.setState({
+            pendArticles: data.pendingArticles,
+            compArticles: data.completedArticles,
+            assignedDocs: data.assignedDocuments,
+            articles: data.assignedArticles,
+            documents: data.documents,
+            assignedWorkflows: data.assignedWorkflows
+          })
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    } else {
+      //TODO: go back to login
+    }
+  }
+
   render() {
     return (
       <>
-        <Header />
+        <Header
+          pendArticles={this.state.pendArticles}
+          compArticles={this.state.compArticles}
+          assignedDocs={this.state.assignedDocs}
+        />
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row className="mt-5">
@@ -33,7 +78,7 @@ class UserIndex extends React.Component {
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Assigned Audits</h3>
+                      <h3 className="mb-0">Assigned Articles</h3>
                     </div>
                     <div className="col text-right">
                       <Button
@@ -59,106 +104,30 @@ class UserIndex extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">Food Quality 1.1</th>
-                      <td>James Smith</td>
-                      <td>12-2-2020</td>
-                      <td>Food Legislation </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46,53%
+                    {this.state.articles.map(a => {
+                      return (
+                        <tr>
+                          <th scope="row">{a.name}</th>
+                          <td>{a.assignedBy.name}</td>
+                          <td>12-2-2020</td>
+                          <td>{a.standard.name}</td>
+                          <td>
+                            <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                            {a.progress} %
                       </td>
-                      <td className="text-center">
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
+                          <td className="text-center">
+                            <Button
+                              color="primary"
+                              href="#pablo"
+                              onClick={e => e.preventDefault()}
+                              size="sm"
+                            >
+                              View
                         </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Tax Payment</th>
-                      <td>Maria Garcia</td>
-                      <td>1-3-2021</td>
-                      <td>National Tax Payment </td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        40,53%
-                      </td>
-                      <td className="text-center">
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Fumigation Details</th>
-                      <td>David Smith</td>
-                      <td>21-4-2021</td>
-                      <td>Fumigation Law </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        50,53%
-                      </td>
-                      <td className="text-center">
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Food Quality 1.1</th>
-                      <td>James Smith</td>
-                      <td>12-2-2020</td>
-                      <td>Food Legislation </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46,53%
-                      </td>
-                      <td className="text-center">
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Tax Payment</th>
-                      <td>Maria Garcia</td>
-                      <td>1-3-2021</td>
-                      <td>National Tax Payment </td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        40,53%
-                      </td>
-                      <td className="text-center">
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </Table>
               </Card>
@@ -193,87 +162,34 @@ class UserIndex extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">Mark Smith</th>
-                      <td>3 Mb</td>
-                      <th >Denver Louis</th>
-                      <td className="text-center"><i class="fas fa-check"></i></td>
-                      <td className="text-center">
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
+                    {this.state.documents.map(doc => {
+                      return (
+                        <tr>
+                          <th scope="row">{doc.name}</th>
+                          <td>{doc.size} KB</td>
+                          <th >Denver Louis</th>
+                          <td className="text-center"><i class="fas fa-check"></i></td>
+                          <td className="text-center">
+                            <Button
+                              color="primary"
+                              href="#pablo"
+                              onClick={e => e.preventDefault()}
+                              size="sm"
+                            >
+                              View
                         </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Maria Gracia</th>
-                      <td>5.5 Mb</td>
-                      <th >James Smith</th>
-                      <td className="text-center"><i class="fas fa-check"></i></td>
-                      <td className="text-center">
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Lillian Foard</th>
-                      <td>5.5 Mb</td>
-                      <th >John Doe</th>
-                      <td className="text-center">
-                        <Button
-                          color="success"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          Accept
-                        </Button>
-                      </td>
-                      <td className="text-center">
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Alfred Ansari</th>
-                      <td>3 Mb</td>
-                      <th >Loise Behler</th>
-                      <td className="text-center"><i class="fas fa-check"></i></td>
-                      <td className="text-center">
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </Table>
               </Card>
             </Col>
           </Row>
           <Row className="mt-5">
-          <Col xl>
-            <Card className="shadow">
+            <Col xl>
+              <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
@@ -303,66 +219,30 @@ class UserIndex extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">HR Interview Round 1</th>
-                      <td>Lillian Foard</td>  
-                      <td>13-6-2021</td>
-                      <td>Human Resource Law</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46,53%
+                    {this.state.assignedWorkflows.map(w => {
+                      return (
+                        <tr>
+                          <th scope="row">{w.name}</th>
+                          <td>{w.assignedBy.name}</td>
+                          <td>13-6-2021</td>
+                          <td>{w.standard.name}</td>
+                          <td>
+                            <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                            {w.progress} %
                       </td>
-                      <td className="text-center">
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
+                          <td className="text-center">
+                            <Button
+                              color="primary"
+                              href="#pablo"
+                              onClick={e => e.preventDefault()}
+                              size="sm"
+                            >
+                              View
                         </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Car Repair</th>
-                      <td>Denver Louis</td>  
-                      <td>4-8-2021</td>
-                      <td>Car Verification</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        41,53%
-                      </td>
-                      <td className="text-center">
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Sanitation 1.1</th>
-                      <td>Maria Gracia</td>  
-                      <td>22-5-2021</td>
-                      <td>Fumigation Law</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        43,53%
-                      </td>
-                      <td className="text-center">
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </Table>
               </Card>
