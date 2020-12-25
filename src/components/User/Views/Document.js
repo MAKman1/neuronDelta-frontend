@@ -1,6 +1,8 @@
 /*! Developed by Alinon */
 import React from "react";
-
+import { reactLocalStorage } from 'reactjs-localstorage';
+import axios from 'axios';
+import { constants } from '../../../constants.js';
 // reactstrap components
 import {
   Button,
@@ -15,13 +17,41 @@ import {
 import Header from "components/User/Headers/EmptyHeader.js";
 
 class Workflows extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-        //States
+      documents: [],
     };
   }
-  
+
+  componentDidMount() {
+    //Check if auth token in valid
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    console.warn('user ' + userId + 'client ' + clientId);
+
+    if (clientId != null && userId != null) {
+      const data = {
+        "clientId": clientId,
+        "userId": userId
+      }
+      axios.post(constants["apiUrl"] + '/dashboard/get', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(JSON.stringify(data));
+          this.setState({
+            documents: data.documents,
+          })
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    } else {
+      //TODO: go back to login
+    }
+  }
+
   render() {
     return (
       <>
@@ -30,103 +60,50 @@ class Workflows extends React.Component {
         <Container className="mt--7" fluid>
           <Row className="mt-5">
             <Col xl>
-                <Card className="shadow">
-                    <CardHeader className="border-0">
-                    <Row className="align-items-center">
-                        <div className="col">
-                        <h3 className="mb-0">Assigned Documents</h3>
-                        </div>
-                    </Row>
-                    </CardHeader>
-                    <Table className="align-items-center table-flush" responsive>
-                    <thead className="thead-light">
+              <Card className="shadow">
+                <CardHeader className="border-0">
+                  <Row className="align-items-center">
+                    <div className="col">
+                      <h3 className="mb-0">Assigned Documents</h3>
+                    </div>
+                  </Row>
+                </CardHeader>
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                      <th scope="col">Name</th>
+                      <th scope="col">File Size</th>
+                      <th scope="col">Assigned By</th>
+                      <th className="text-center" scope="col">Accepted</th>
+                      <th className="text-center" scope="col">File</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.state.documents.map(doc => {
+                      return (
                         <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">File Size</th>
-                        <th scope="col">Assigned By</th>
-                        <th className="text-center" scope="col">Accepted</th>
-                        <th className="text-center" scope="col">File</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <th scope="row">Mark Smith</th>
-                        <td>3 Mb</td>
-                        <th >Denver Louis</th>
-                        <td className="text-center"><i class="fas fa-check"></i></td>
-                        <td className="text-center">
+                          <th scope="row">{doc.name}</th>
+                          <td>{doc.size} KB</td>
+                          <th >Denver Louis</th>
+                          <td className="text-center"><i class="fas fa-check"></i></td>
+                          <td className="text-center">
                             <Button
-                            color="primary"
-                            href="#pablo"
-                            onClick={e => e.preventDefault()}
-                            size="sm"
+                              color="primary"
+                              href="#pablo"
+                              onClick={e => e.preventDefault()}
+                              size="sm"
                             >
-                            View
-                            </Button>
-                        </td>
+                              View
+                        </Button>
+                          </td>
                         </tr>
-                        <tr>
-                        <th scope="row">Maria Gracia</th>
-                        <td>5.5 Mb</td>
-                        <th >James Smith</th>
-                        <td className="text-center"><i class="fas fa-check"></i></td>
-                        <td className="text-center">
-                            <Button
-                            color="primary"
-                            href="#pablo"
-                            onClick={e => e.preventDefault()}
-                            size="sm"
-                            >
-                            View
-                            </Button>
-                        </td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Lillian Foard</th>
-                        <td>5.5 Mb</td>
-                        <th >John Doe</th>
-                        <td className="text-center">
-                            <Button
-                            color="success"
-                            href="#pablo"
-                            onClick={e => e.preventDefault()}
-                            size="sm"
-                            >
-                            Accept
-                            </Button>
-                        </td>
-                        <td className="text-center">
-                            <Button
-                            color="primary"
-                            href="#pablo"
-                            onClick={e => e.preventDefault()}
-                            size="sm"
-                            >
-                            View
-                            </Button>
-                        </td>
-                        </tr>
-                        <tr>
-                        <th scope="row">Alfred Ansari</th>
-                        <td>3 Mb</td>
-                        <th >Loise Behler</th>
-                        <td className="text-center"><i class="fas fa-check"></i></td>
-                        <td className="text-center">
-                            <Button
-                            color="primary"
-                            href="#pablo"
-                            onClick={e => e.preventDefault()}
-                            size="sm"
-                            >
-                            View
-                            </Button>
-                        </td>
-                        </tr>
-                    </tbody>
-                    </Table>
-                </Card>
-                </Col>
-            </Row>
+                      )
+                    })}
+                  </tbody>
+                </Table>
+              </Card>
+            </Col>
+          </Row>
         </Container>
       </>
     );
