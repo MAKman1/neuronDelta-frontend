@@ -1,7 +1,9 @@
 /*! Developed by Alinon */
 import React from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 import {Link} from "react-router-dom";
 
+import routes from "routes.js";
 // reactstrap components
 import {
   Button,
@@ -26,11 +28,35 @@ class ManagerIndex extends React.Component {
       roleModel: false,
       toggleDropdown: false,
       name: "None"
+      
     };
+    
   }
 
-  handleClick = () => {
-    
+
+
+  getRoutes = routes => {
+    return routes.map((prop, key) => {
+      
+      if (prop.layout === "/manager/audit") {
+        return (
+            <Route
+              path={prop.layout + prop.path}
+              component={prop.component}
+              key={key}
+            />
+          );
+      } 
+      else {
+        return null;
+      }
+
+    });
+  };
+
+  handleClick() {
+    let path = '\manager\audit\article';
+    this.props.history.push(path);
   }
   toggleModal = state => {
     console.log(state);
@@ -43,6 +69,7 @@ class ManagerIndex extends React.Component {
     return (
       <>
         <EmptyHeader />
+
         {/* Page content */}
         <Container className="mt--7" fluid>
           
@@ -85,19 +112,15 @@ class ManagerIndex extends React.Component {
                         85.65%
                       </td>
                       <td>
-                      <Link to = {{
-                            pathname: '/manager/article',
-                            state: {
-                              name: "Food Quality 1.3"
-                            }
-                          }}>
+   
                         <Button
                           color="success"
                           size="sm"
+                          onClick={this.handleClick}
                         >
                         View
                         </Button>
-                      </Link>
+                      
                       </td>
                     </tr>
                     <tr>

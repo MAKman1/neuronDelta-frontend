@@ -86,7 +86,7 @@ var routes = [
   {
     path: "/article",
     component: ManagerArticle,
-    layout: "/manager"
+    layout: "/manager/audit"
   },
 
 

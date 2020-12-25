@@ -32,7 +32,7 @@ class ManagerIndex extends React.Component {
     
   }
 
-  name = this.props.location.state.name
+ 
 
 
 
