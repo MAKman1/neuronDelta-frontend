@@ -1,5 +1,9 @@
 /*! Developed by Alinon */
 import React from "react";
+import { Link } from "react-router-dom";
+import { reactLocalStorage } from 'reactjs-localstorage';
+import axios from 'axios';
+import { constants } from '../../constants.js';
 
 import {
   Button,
@@ -23,14 +27,93 @@ class ManagerDocuments extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      documentModel: false
+      documentModel: false,
+      documents: [],
     };
   }
+
+  componentDidMount() {
+    //Check if auth token in valid
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    console.warn('user ' + userId + 'client ' + clientId);
+
+    if (clientId != null && userId != null) {
+      const data = {
+        "clientId": clientId,
+        "userId": userId
+      }
+      axios.post(constants["apiUrl"] + '/dashboard/get', data)
+        .then((res) => {
+          let data = res.data;
+          // console.warn(JSON.stringify(data));
+          this.setState({
+            documents: data.documents,
+          })
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    } else {
+      //TODO: go back to login
+    }
+  }
+
   toggleModal = state => {
+    console.log(state);
     this.setState({
       [state]: !this.state[state]
     });
   };
+
+  handleDocumentName = (event) => {
+    this.setState({ documentName: event.target.value });
+  }
+
+  handleDocumentDesc = (event) => {
+    this.setState({ documentDesc: event.target.value });
+  }
+
+  chooseFile = (event) => {
+    this.setState({
+      uploadDocument: event.target.files[0]
+    });
+  }
+
+  handleUpload = () => {
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    console.warn('user ' + userId + 'client ' + clientId);
+
+    if (clientId != null && userId != null) {
+      let data = new FormData();
+
+      data.append("clientId", clientId);
+      data.append("userId", userId);
+      data.append("name", this.state.documentName);
+      data.append("desc", this.state.documentDesc);
+      data.append("file", this.state.uploadDocument);
+
+      axios.post(constants["apiUrl"] + '/documents/upload', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(JSON.stringify(data));
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    }
+
+    this.setState({
+      documentName: '',
+      documentDesc: '',
+      uploadDocument: null,
+      documentModel: false,
+    })
+  }
+
 
   render() {
     return (
@@ -46,12 +129,11 @@ class ManagerDocuments extends React.Component {
                       <h3 className="mb-0">Uploaded Documents</h3>
                     </div>
                     <div className="col text-right">
-
                       <Button
                         color="success"
-                        href="#pablo"
+                        href="#add document"
                         onClick={() => this.toggleModal("documentModel")}
-                        size="md"
+                        size="sm"
                       >
                         Add Document
                       </Button>
@@ -78,16 +160,17 @@ class ManagerDocuments extends React.Component {
                           <form>
                             <div class="form-group">
                               <label for="recipient-name" class="col-form-label">Name:</label>
-                              <input type="text" class="form-control" id="recipient-name"></input>
+                              <input type="text" class="form-control" id="recipient-name" onChange={this.handleDocumentName}></input>
                             </div>
                             <div class="form-group">
-                              <label for="message-text" class="col-form-label">Description:</label>
+                              <label for="message-text" class="col-form-label" onChange={this.handleDocumentDesc}>Description:</label>
                               <textarea class="form-control" id="message-text"></textarea>
                             </div>
                             <div className="align-items-center">
-                              <Button color="primary" type="button">
+                              {/* <Button color="primary" type="button">
                                 Choose File
-                            </Button>
+                            </Button> */}
+                              <input type="file" name="file" onChange={e => this.chooseFile(e)} />
                             </div>
                           </form>
                         </div>
@@ -100,7 +183,7 @@ class ManagerDocuments extends React.Component {
                           >
                             Cancel
                           </Button>
-                          <Button color="success" type="button">
+                          <Button color="success" type="button" onClick={this.handleUpload}>
                             Upload
                           </Button>
                         </div>
@@ -188,171 +271,44 @@ class ManagerDocuments extends React.Component {
                     </div>
                   </Modal>
                   <tbody>
-                    <tr>
-                      <th scope="row">Company Insurance</th>
-                      <td>78 KB</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">12/5/2020</span>
-                        </div>
-                      </td>
-                      <td>3 / 5</td>
-                      <td>
-                        <h4><span className="badge badge-primary">Reception</span></h4>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          
-                          onClick={() => this.toggleModal("roleModel")}
-                          size="sm"
-                        >
-                          Edit
+                    {this.state.documents.map(doc => {
+                      // const date = moment(doc.updated_at).format('DD MMM, YYYY');
+                      const date = new Date(doc.updated_at).toLocaleString();
+                      return (
+                        <tr>
+                          <th scope="row">{doc.name}</th>
+                          <td>{doc.size} KB</td>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <span className="mr-2">{date}</span>
+                            </div>
+                          </td>
+                          <td>3 / 5</td>
+                          <td>
+                            <h4><span className="badge badge-primary">Reception</span></h4>
+                          </td>
+                          <td>
+                            <Button
+                              color="primary"
+                              onClick={() => this.toggleModal("roleModel")}
+                              size="sm"
+                            >
+                              Edit
                         </Button>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
+                          </td>
+                          <td>
+                            <Button
+                              color="primary"
+                              href="#pablo"
+                              onClick={e => e.preventDefault()}
+                              size="sm"
+                            >
+                              View
                         </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Employee Legislation</th>
-                      <td>98 KB</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">12/1/2020</span>
-                        </div>
-                      </td>
-                      <td>4 / 5</td>
-                      <td>
-                        <h4><span className="badge badge-primary">Human Resources</span></h4>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={() => this.toggleModal("roleModel")}
-                          size="sm"
-                        >
-                          Edit
-                        </Button>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Food Legislation</th>
-                      <td>25 KB</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">11/28/2020</span>
-                        </div>
-                      </td>
-                      <td>3 / 5</td>
-                      <td>
-                        <h4> <span className="badge badge-primary">Supervisor</span></h4>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={() => this.toggleModal("roleModel")}
-                          size="sm"
-                        >
-                          Edit
-                        </Button>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Car Verification</th>
-                      <td>78 KB</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">10/11/2020</span>
-                        </div>
-                      </td>
-                      <td>5 / 5</td>
-                      <td>
-                        <h4><span className="badge badge-primary">Finance Head</span></h4>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={() => this.toggleModal("roleModel")}
-                          size="sm"
-                        >
-                          Edit
-                        </Button>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Fumigation</th>
-                      <td>113 KB</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">11/10/2020</span>
-                        </div>
-                      </td>
-                      <td>1 / 5</td>
-                      <td>
-                        <h4><span className="badge badge-primary">Dormitory Manager</span></h4>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={() => this.toggleModal("roleModel")}
-                          size="sm"
-                        >
-                          Edit
-                        </Button>
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </Table>
               </Card>

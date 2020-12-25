@@ -42,6 +42,7 @@ class ManagerIndex extends React.Component {
       users: [],
       documentName: '',
       documentDesc: '',
+      uploadDocument: null,
     };
   }
 
@@ -87,6 +88,53 @@ class ManagerIndex extends React.Component {
       [state]: !this.state[state]
     });
   };
+
+  handleDocumentName = (event) => {
+    this.setState({ documentName: event.target.value });
+  }
+
+  handleDocumentDesc = (event) => {
+    this.setState({ documentDesc: event.target.value });
+  }
+
+  chooseFile = (event) => {
+    this.setState({
+      uploadDocument: event.target.files[0]
+    });
+  }
+
+  handleUpload = () => {
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    console.warn('user ' + userId + 'client ' + clientId);
+
+    if (clientId != null && userId != null) {
+      let data = new FormData();
+      
+      data.append("clientId", clientId);
+      data.append("userId", userId);
+      data.append("name", this.state.documentName);
+      data.append("desc", this.state.documentDesc);
+      data.append("file", this.state.uploadDocument);
+
+      axios.post(constants["apiUrl"] + '/documents/upload', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(JSON.stringify(data));
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    }
+
+    this.setState({
+      documentName: '',
+      documentDesc: '',
+      uploadDocument: null,
+      documentModel: false,
+    })
+  }
 
   render() {
     return (
@@ -178,7 +226,7 @@ class ManagerIndex extends React.Component {
                       </Link>
                       <Button
                         color="success"
-                        href="#pablo"
+                        href="#add document"
                         onClick={() => this.toggleModal("documentModel")}
                         size="sm"
                       >
@@ -207,16 +255,17 @@ class ManagerIndex extends React.Component {
                           <form>
                             <div class="form-group">
                               <label for="recipient-name" class="col-form-label">Name:</label>
-                              <input type="text" class="form-control" id="recipient-name"></input>
+                              <input type="text" class="form-control" id="recipient-name" onChange={this.handleDocumentName}></input>
                             </div>
                             <div class="form-group">
-                              <label for="message-text" class="col-form-label">Description:</label>
+                              <label for="message-text" class="col-form-label" onChange={this.handleDocumentDesc}>Description:</label>
                               <textarea class="form-control" id="message-text"></textarea>
                             </div>
                             <div className="align-items-center">
-                              <Button color="primary" type="button">
+                              {/* <Button color="primary" type="button">
                                 Choose File
-                            </Button>
+                            </Button> */}
+                              <input type="file" name="file" onChange={e => this.chooseFile(e)} />
                             </div>
                           </form>
                         </div>
@@ -229,7 +278,7 @@ class ManagerIndex extends React.Component {
                           >
                             Cancel
                           </Button>
-                          <Button color="success" type="button">
+                          <Button color="success" type="button" onClick={this.handleUpload}>
                             Upload
                           </Button>
                         </div>
@@ -336,7 +385,6 @@ class ManagerIndex extends React.Component {
                           <td>
                             <Button
                               color="primary"
-                              href="#pablo"
                               onClick={() => this.toggleModal("roleModel")}
                               size="sm"
                             >
