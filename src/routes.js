@@ -8,12 +8,14 @@ import ManagerUsers from "components/Manager/ManagerUsers.js"
 import ManagerSubscriptions from "components/Manager/ManagerSubscriptions.js";
 import ManagerDocuments from "components/Manager/ManagerDocuments.js";
 import ManagerProfile from "components/Manager/ManagerProfile.js";
-import ManagerArticle from "components/Manager/ManagerArticle.js";
+import ManagerArticles from "components/Manager/ManagerArticles.js";
+
+import ViewStandard from "components/Shared/ViewStandard";
+import ViewArticle from "components/Shared/ViewArticle";
 
 
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
-import ManagerAudits from "components/Manager/ManagerAudits";
 
 // User Imports
 import Audit from "components/User/Views/Audit.js"
@@ -54,10 +56,10 @@ var routes = [
     layout: "/manager"
   },
   {
-    path: "/audit",
-    name: "Audit",
+    path: "/articles",
+    name: "Articles",
     icon: "ni ni-collection text-blue",
-    component: ManagerAudits,
+    component: ManagerArticles,
     layout: "/manager"
   },
 
@@ -83,10 +85,26 @@ var routes = [
     layout: "/manager"
   },
 
+  //View docs
   {
-    path: "/article",
-    component: ManagerArticle,
-    layout: "/manager/audit"
+	path: "/standard/:standardId",
+	name: "standardView",
+    component: ViewStandard,
+    layout: "/manager/view"
+  },
+  {
+	path: "/article/:articleId",
+	name: "articleView",
+    component: ViewArticle,
+    layout: "/manager/view"
+  },
+
+  //View docs user
+  {
+	path: "/article/:articleId",
+	name: "articleView",
+    component: ViewArticle,
+    layout: "/user/view"
   },
 
 

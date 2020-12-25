@@ -213,9 +213,6 @@ class ManagerIndex extends React.Component {
                     <div className="col text-right">
                       <Link to={{
                         pathname: '/manager/docs',
-                        state: {
-                          name: "Food Quality 1.3"
-                        }
                       }} style={{ paddingRight: 5 }}>
                         <Button
                           color="success"

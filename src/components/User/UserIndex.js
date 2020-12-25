@@ -3,6 +3,8 @@ import React from "react";
 import { reactLocalStorage } from 'reactjs-localstorage';
 import axios from 'axios';
 import { constants } from '../../constants.js';
+import { Link } from "react-router-dom";
+
 
 import {
   Button,
@@ -140,14 +142,16 @@ class UserIndex extends React.Component {
                       <h3 className="mb-0">Assigned Documents</h3>
                     </div>
                     <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
+                    <Link to={{
+                        pathname: '/user/docs',
+                      }} style={{ paddingRight: 5 }}>
+                        <Button
+                          color="success"
+                          size="sm"
+                        >
+                          See All
+                        </Button>
+                      </Link>
                     </div>
                   </Row>
                 </CardHeader>
