@@ -28,7 +28,7 @@ class DashboardHeader extends React.Component {
                             Total Users
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            8
+                            {this.props.totalUsers}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -53,7 +53,7 @@ class DashboardHeader extends React.Component {
                             Pending Audits
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            15
+                          {this.props.pendAudits}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -77,7 +77,9 @@ class DashboardHeader extends React.Component {
                           >
                             Completed Audits
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">92</span>
+                          <span className="h2 font-weight-bold mb-0">
+                          {this.props.compAudits}
+                          </span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -101,7 +103,7 @@ class DashboardHeader extends React.Component {
                             Subscribed Standards
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            12
+                          {this.props.subsStandards}
                           </span>
                         </div>
                         <Col className="col-auto">

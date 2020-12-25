@@ -1,6 +1,7 @@
 /*! Developed by Alinon */
 import React from "react";
 import { Link } from "react-router-dom";
+import { reactLocalStorage } from 'reactjs-localstorage';
 // reactstrap components
 import {
   DropdownMenu,
@@ -21,7 +22,8 @@ import {
 
 class UserNavbar extends React.Component {
   logout = () => {
-    this.props.history.push("/login")
+    reactLocalStorage.clear();
+    this.props.history.push("/login");
   }
 
   render() {

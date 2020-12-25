@@ -1,6 +1,10 @@
 /*! Developed by Alinon */
 import React from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { reactLocalStorage } from 'reactjs-localstorage';
+import axios from 'axios';
+
+import { constants } from '../../constants.js';
 
 // reactstrap components
 import {
@@ -27,9 +31,55 @@ class ManagerIndex extends React.Component {
     this.state = {
       documentModel: false,
       roleModel: false,
-      toggleDropdown: false
+      toggleDropdown: false,
+      totalUsers: 0,
+      pendAudits: 0,
+      compAudits: 0,
+      subsStandards: 0,
+      standards: [],
+      documents: [],
+      articles: [],
+      workflows: [],
+      users: []
     };
   }
+
+  componentDidMount() {
+    //Check if auth token in valid
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    console.warn('user ' + userId + 'client ' + clientId);
+
+    if (clientId != null && userId != null) {
+      const data = {
+        "clientId": clientId,
+        "userId": userId
+      }
+      axios.post(constants["apiUrl"] + '/dashboard/get', data)
+        .then((res) => {
+          let data = res.data;
+          // console.warn(JSON.stringify(data));
+          this.setState({
+            totalUsers: data.totalUsers,
+            pendAudits: data.pendingArticles,
+            compAudits: data.completedArticles,
+            subsStandards: data.subscribedStandards,
+            standards: data.standards,
+            documents: data.documents,
+            articles: data.articles,
+            workflows: data.workflows,
+            users: data.workflows
+          })
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    } else {
+      //TODO: go back to login
+    }
+  }
+
   toggleModal = state => {
     console.log(state);
     this.setState({
@@ -40,7 +90,12 @@ class ManagerIndex extends React.Component {
   render() {
     return (
       <>
-        <Header />
+        <Header
+          totalUsers={this.state.totalUsers}
+          compAudits={this.state.compAudits}
+          pendAudits={this.state.pendAudits}
+          subsStandards={this.state.subsStandards}
+        />
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row className="mt-5">
@@ -52,17 +107,17 @@ class ManagerIndex extends React.Component {
                       <h3 className="mb-0">Current Standards</h3>
                     </div>
                     <div className="col text-right">
-                      <Link to = {{
-                            pathname: '/manager/standards',
-                            state: {
-                              name: "Food Quality 1.3"
-                            }
-                          }}>
+                      <Link to={{
+                        pathname: '/manager/standards',
+                        state: {
+                          name: "Food Quality 1.3"
+                        }
+                      }}>
                         <Button
                           color="success"
                           size="sm"
                         >
-                        See All
+                          See All
                         </Button>
                       </Link>
                     </div>
@@ -78,51 +133,23 @@ class ManagerIndex extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">Food Legislation</th>
-                      <td>46</td>
-                      <td>75</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Fumigation Law</th>
-                      <td>23</td>
-                      <td>45</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Can Verification</th>
-                      <td>19</td>
-                      <td>81</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        36,49%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Restaurant Sanitation</th>
-                      <td>56</td>
-                      <td>94</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        50,87%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Income Tax Payment</th>
-                      <td>104</td>
-                      <td>158</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
+                    {this.state.standards.map(e => {
+                      return (
+                        <tr>
+                          <th scope="row">{e.name}</th>
+                          <td>2</td>
+                          <td style={{maxWidth: 150}}>
+                            <text style={{whiteSpace: 'pre-wrap', overflowWrap: 'break-word'}}>
+                              {e.description}
+                            </text>
+                          </td>
+                          <td>
+                            <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                            90%
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </Table>
               </Card>
@@ -135,17 +162,17 @@ class ManagerIndex extends React.Component {
                       <h3 className="mb-0">Uploaded Documents</h3>
                     </div>
                     <div className="col text-right">
-                    <Link to = {{
-                            pathname: '/manager/docs',
-                            state: {
-                              name: "Food Quality 1.3"
-                            }
-                          }} style={{paddingRight: 5}}>
+                      <Link to={{
+                        pathname: '/manager/docs',
+                        state: {
+                          name: "Food Quality 1.3"
+                        }
+                      }} style={{ paddingRight: 5 }}>
                         <Button
                           color="success"
                           size="sm"
                         >
-                        See All
+                          See All
                         </Button>
                       </Link>
                       <Button
@@ -289,6 +316,11 @@ class ManagerIndex extends React.Component {
                     </div>
                   </Modal>
                   <tbody>
+                    {/* {this.documents.map(doc => {
+                      return (
+                        
+                      )
+                    })} */}
                     <tr>
                       <th scope="row">Company Insurance</th>
                       <td>78 KB</td>
@@ -465,20 +497,20 @@ class ManagerIndex extends React.Component {
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Audits</h3>
+                      <h3 className="mb-0">Articles</h3>
                     </div>
                     <div className="col text-right">
-                    <Link to = {{
-                            pathname: '/manager/audits',
-                            state: {
-                              name: "Food Quality 1.3"
-                            }
-                          }}>
+                      <Link to={{
+                        pathname: '/manager/audits',
+                        state: {
+                          name: "Food Quality 1.3"
+                        }
+                      }}>
                         <Button
                           color="success"
                           size="sm"
                         >
-                        See All
+                          See All
                         </Button>
                       </Link>
                     </div>
@@ -495,76 +527,25 @@ class ManagerIndex extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">Food Quality 1.3</th>
-                      <td>
-                        Will Cole
-                      </td>
-                      <td>12/07/2020</td>
-                      <td>
-                        Food Legislation
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        85.65%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Tax Audit 2.1</th>
-                      <td>
-                        Henry Greysmith
-                      </td>
-                      <td>12/20/2020</td>
-                      <td>
-                        Income Tax Audit
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        65.12%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Car Quality 1.3</th>
-                      <td>
-                        Martha Stewart
-                      </td>
-                      <td>12/26/2020</td>
-                      <td>
-                        Car Registration
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46.78%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Vehicle Tax 1.7</th>
-                      <td>
-                        Saima Malik
-                      </td>
-                      <td>01/04/2021</td>
-                      <td>
-                        Car Registration
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        21.82%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Fumigation Law 4.3</th>
-                      <td>
-                        Sakamato Yui
-                      </td>
-                      <td>01/10/2021</td>
-                      <td>
-                        Fumigation Quality
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        10.53%
-                      </td>
-                    </tr>
+                    {this.state.articles.map(a => {
+                      return (
+                        <tr>
+                          <th scope="row">{a.name}</th>
+                          <td>
+                            {/* {a.assignedBy} */}
+                            Mary Smith
+                          </td>
+                          <td>12/07/2020</td>
+                          <td>
+                            {a.standard.name}
+                          </td>
+                          <td>
+                            <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                            {a.progress} %
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </Table>
               </Card>
@@ -579,17 +560,17 @@ class ManagerIndex extends React.Component {
                       <h3 className="mb-0">Workflows</h3>
                     </div>
                     <div className="col text-right">
-                    <Link to = {{
-                            pathname: '/manager/workflows',
-                            state: {
-                              name: "Food Quality 1.3"
-                            }
-                          }}>
+                      <Link to={{
+                        pathname: '/manager/workflows',
+                        state: {
+                          name: "Food Quality 1.3"
+                        }
+                      }}>
                         <Button
                           color="success"
                           size="sm"
                         >
-                        See All
+                          See All
                         </Button>
                       </Link>
                     </div>
@@ -606,76 +587,25 @@ class ManagerIndex extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">Food Quality 1.3</th>
-                      <td>
-                        Will Cole
+                    {this.state.workflows.map(w => {
+                      return (
+                        <tr>
+                          <th scope="row">{w.name}</th>
+                          <td>
+                            {/* {w.assignedBy} */}
+                            John Doe
+                          </td>
+                          <td>12/07/2020</td>
+                          <td>
+                            {w.standard.name}
+                          </td>
+                          <td>
+                            <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                            {w.progress} %
                       </td>
-                      <td>12/07/2020</td>
-                      <td>
-                        Product Launch
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        85.65%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Tax Audit 2.1</th>
-                      <td>
-                        Henry Greysmith
-                      </td>
-                      <td>12/20/2020</td>
-                      <td>
-                        Tax Approval
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        65.12%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Car Quality 1.3</th>
-                      <td>
-                        Martha Stewart
-                      </td>
-                      <td>12/26/2020</td>
-                      <td>
-                        Insurance Verification
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46.78%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Vehicle Tax 1.7</th>
-                      <td>
-                        Saima Malik
-                      </td>
-                      <td>01/04/2021</td>
-                      <td>
-                        Recruitment
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        21.82%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Fumigation Law 4.3</th>
-                      <td>
-                        Sakamato Yui
-                      </td>
-                      <td>01/10/2021</td>
-                      <td>
-                        Pre-Flight Approval
-                      </td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        10.53%
-                      </td>
-                    </tr>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </Table>
               </Card>
@@ -690,17 +620,17 @@ class ManagerIndex extends React.Component {
                       <h3 className="mb-0">Users</h3>
                     </div>
                     <div className="col text-right">
-                    <Link to = {{
-                            pathname: '/manager/users',
-                            state: {
-                              name: "Food Quality 1.3"
-                            }
-                          }}>
+                      <Link to={{
+                        pathname: '/manager/users',
+                        state: {
+                          name: "Food Quality 1.3"
+                        }
+                      }}>
                         <Button
                           color="success"
                           size="sm"
                         >
-                        See All
+                          See All
                         </Button>
                       </Link>
                     </div>
@@ -717,106 +647,28 @@ class ManagerIndex extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">Will Cole</th>
-                      <td>
-                        <h3><span className="badge badge-primary">Supervisor</span></h3>
-                      </td>
-                      <td>2</td>
-                      <td>
-                        3
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Henry Greysmith</th>
-                      <td>
-                        <h3><span className="badge badge-primary">Finance Head</span></h3>
-                      </td>
-                      <td>1</td>
-                      <td>
-                        1
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Martha Stewart</th>
-                      <td>
-                        <h3><span className="badge badge-primary">Insurance Agent</span></h3>
-                      </td>
-                      <td>4</td>
-                      <td>
-                        2
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Saima Malik</th>
-                      <td>
-                        <h3><span className="badge badge-primary">Recruitment Officer</span></h3>
-                      </td>
-                      <td>5</td>
-                      <td>
-                        4
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Sakamato Yui</th>
-                      <td>
-                        <h3><span className="badge badge-primary">Flight Attendant</span></h3>
-                      </td>
-                      <td>3</td>
-                      <td>
-                        5
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
+                    {this.state.users.map(user => {
+                      return (
+                        <tr>
+                          <th scope="row">{user.name}</th>
+                          <td>
+                            <h3><span className="badge badge-primary">Supervisor</span></h3>
+                          </td>
+                          <td>2</td>
+                          <td>3</td>
+                          <td>
+                            <Button
+                              color="primary"
+                              href="#pablo"
+                              onClick={e => e.preventDefault()}
+                              size="sm"
+                            >
+                              View
+                            </Button>
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </Table>
               </Card>
