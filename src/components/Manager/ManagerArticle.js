@@ -9,12 +9,7 @@ import {
   Table,
   Container,
   Row,
-  Modal,
   Col,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
 } from "reactstrap";
 
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";

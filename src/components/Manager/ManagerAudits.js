@@ -1,6 +1,6 @@
 /*! Developed by Alinon */
 import React from "react";
-import {useHistory, Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 // reactstrap components
 import {
@@ -10,16 +10,11 @@ import {
   Table,
   Container,
   Row,
-  Modal,
-  Col,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
+  Col
 } from "reactstrap";
 
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
-import User from "components/User/User";
+// import User from "components/User/User";
 // import Roles from "./Popups/Roles.js"
 
 class ManagerIndex extends React.Component {
