@@ -1,5 +1,8 @@
 /*! Developed by Alinon */
 import React from "react";
+import { reactLocalStorage } from 'reactjs-localstorage';
+import axios from 'axios';
+import { constants } from '../../constants.js';
 
 // reactstrap components
 import {
@@ -20,14 +23,110 @@ class ManagerUsers extends React.Component {
     super(props);
     this.state = {
       userModel: false,
+      users: [],
+      userPassword: '',
+      userName: '',
+      userMail: '',
     };
   }
+
+  componentDidMount() {
+    //Check if auth token in valid
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    console.warn('user ' + userId + 'client ' + clientId);
+
+    if (clientId != null && userId != null) {
+      const data = {
+        "clientId": clientId,
+        "userId": userId
+      }
+      axios.post(constants["apiUrl"] + '/user/get', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(JSON.stringify(data));
+          this.setState({
+            users: data.users,
+          })
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    } else {
+      //TODO: go back to login
+    }
+  }
+
   toggleModal = state => {
     console.log(state);
     this.setState({
       [state]: !this.state[state]
     });
   };
+
+  handleUserName = (event) => {
+    this.setState({ userName: event.target.value });
+    console.warn(this.state.userName);
+  }
+
+  makeid = (length) => {
+    var result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    console.warn(result)
+    return result;
+  }
+
+  handlePassword = (event) => {
+    this.setState({ userPassword: this.makeid(10) })
+  }
+
+  handleUserEmail = (event) => {
+    this.setState({ userMail: event.target.value });
+    
+  }
+
+  handleAddUser = () => {
+    console.warn('new');
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    if (clientId != null && userId != null) {
+
+
+      const data = {
+        "email": "" + this.state.userMail,
+        "name": "" + this.state.userName,
+        "password": "" + this.state.userPassword,
+        "clientId": "" + clientId
+      }
+
+      axios.post(constants["apiUrl"] + '/user/create', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(JSON.stringify(data));
+          this.setState({
+            userName: '',
+            userPassword: '',
+            userMail: '',
+      
+          })
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    }
+
+    
+    return;
+
+  }
+
+
   render() {
     return (
       <>
@@ -72,12 +171,12 @@ class ManagerUsers extends React.Component {
                         <div className="modal-body">
                           <form>
                             <div class="form-group">
-                              <label for="recipient-name" class="col-form-label">Name:</label>
-                              <input type="text" class="form-control" id="recipient-name"></input>
+                              <label for="recipient-name" defaultValue={this.state.userName} class="col-form-label" >Name:</label>
+                              <input type="text" class="form-control" id="recipient-name" onChange={this.handleUserName}></input>
                             </div>
                             <div class="form-group">
-                              <label for="recipient-name" class="col-form-label">Email:</label>
-                              <input type="text" class="form-control" id="recipient-name"></input>
+                              <label for="recipient-name" defaultValue={this.state.userMail} class="col-form-label" >Email:</label>
+                              <input type="text" class="form-control" id="recipient-name" onChange={this.handleUserEmail}></input>
                             </div>
                             <div class="form-group">
                               <label for="message-text" class="col-form-label">About:</label>
@@ -89,9 +188,10 @@ class ManagerUsers extends React.Component {
                               </Col>
                               <Col>
                                 <div className="align-items-center">
-                                  <Button color="primary" type="button">
+                                  <Button color="primary" type="button" onClick={this.handlePassword}>
                                     Auto Generate
                                 </Button>
+                                  <p>{this.state.userPassword}</p>
                                 </div>
                               </Col>
                             </Row>
@@ -106,7 +206,7 @@ class ManagerUsers extends React.Component {
                           >
                             Cancel
                           </Button>
-                          <Button color="success" type="button">
+                          <Button color="success" type="button" onClick={this.handleAddUser}>
                             Save
                           </Button>
                         </div>
@@ -120,110 +220,23 @@ class ManagerUsers extends React.Component {
                       <th scope="col">Name</th>
                       <th scope="col">Role</th>
                       <th scope="col">Assigned Workflow</th>
-                      <th scope="col">Assigned Audit</th>
+                      <th scope="col">Assigned Article</th>
                       <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">Will Cole</th>
-                      <td>
-                        <h3><span className="badge badge-primary">Supervisor</span></h3>
-                      </td>
-                      <td>2</td>
-                      <td>
-                        3
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Henry Greysmith</th>
-                      <td>
-                        <h3><span className="badge badge-primary">Finance Head</span></h3>
-                      </td>
-                      <td>1</td>
-                      <td>
-                        1
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Martha Stewart</th>
-                      <td>
-                        <h3><span className="badge badge-primary">Insurance Agent</span></h3>
-                      </td>
-                      <td>4</td>
-                      <td>
-                        2
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Saima Malik</th>
-                      <td>
-                        <h3><span className="badge badge-primary">Recruitment Officer</span></h3>
-                      </td>
-                      <td>5</td>
-                      <td>
-                        4
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Sakamato Yui</th>
-                      <td>
-                        <h3><span className="badge badge-primary">Flight Attendant</span></h3>
-                      </td>
-                      <td>3</td>
-                      <td>
-                        5
-                      </td>
-                      <td>
-                        <Button
-                          color="primary"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          size="sm"
-                        >
-                          View
-                        </Button>
-                      </td>
-                    </tr>
+                    {this.state.users.map(user => {
+                      return (
+                        <tr>
+                          <th scope="row">{user.name}</th>
+                          <td>
+                            <h4><span className="badge badge-primary">Engineer</span></h4>
+                          </td>
+                          <td>1</td>
+                          <td>2</td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </Table>
               </Card>

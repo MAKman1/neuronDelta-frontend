@@ -15,7 +15,7 @@ import {
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
 // import Roles from "./Popups/Roles.js"
 
-class ManagerIndex extends React.Component {
+class ManagerArticles extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,10 +33,6 @@ class ManagerIndex extends React.Component {
   }
 
  
-
-
-
-  
   toggleModal = state => {
     console.log(state);
     this.setState({
@@ -191,4 +187,4 @@ class ManagerIndex extends React.Component {
   }
 }
 
-export default ManagerIndex;
+export default ManagerArticles;

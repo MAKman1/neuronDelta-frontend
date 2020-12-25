@@ -3,6 +3,9 @@ import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import {Link} from "react-router-dom";
 
+import { reactLocalStorage } from 'reactjs-localstorage';
+import axios from 'axios';
+import { constants } from '../../constants.js';
 import routes from "routes.js";
 // reactstrap components
 import {
@@ -19,7 +22,7 @@ import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
 // import User from "components/User/User";
 // import Roles from "./Popups/Roles.js"
 
-class ManagerIndex extends React.Component {
+class ManagerAudits extends React.Component {
   constructor(props) {
     super(props);
     
@@ -27,10 +30,38 @@ class ManagerIndex extends React.Component {
       documentModel: false,
       roleModel: false,
       toggleDropdown: false,
-      name: "None"
+      name: "None",
+      articles: []
       
     };
     
+  }
+
+  componentDidMount() {
+    //Check if auth token in valid
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    console.warn('user ' + userId + 'client ' + clientId);
+
+    if (clientId != null && userId != null) {
+      const data = {
+        "clientId": clientId,
+      }
+      axios.post(constants["apiUrl"] + '/articles/getAll', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(JSON.stringify(data));
+          this.setState({
+            articles: data.article,
+          })
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    } else {
+      //TODO: go back to login
+    }
   }
 
 
@@ -78,7 +109,7 @@ class ManagerIndex extends React.Component {
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Audits</h3>
+                      <h3 className="mb-0">Articles</h3>
                       
                     </div>
 
@@ -137,7 +168,7 @@ class ManagerIndex extends React.Component {
                       </td>
                       <td>
                       <Link to = {{
-                            pathname: '/manager/article',
+                            pathname: '/manager/audit/article',
                             state: {
                               name: "Tax Audit 2.1"
                             }
@@ -166,7 +197,7 @@ class ManagerIndex extends React.Component {
                       </td>
                       <td>
                       <Link to = {{
-                            pathname: '/manager/article',
+                            pathname: '/manager/audit/article',
                             state: {
                               name: "Car Quality 1.3"
                             }
@@ -250,4 +281,4 @@ class ManagerIndex extends React.Component {
   }
 }
 
-export default ManagerIndex;
+export default ManagerAudits;

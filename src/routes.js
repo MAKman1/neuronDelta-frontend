@@ -55,7 +55,7 @@ var routes = [
   },
   {
     path: "/audit",
-    name: "Audit",
+    name: "Article",
     icon: "ni ni-collection text-blue",
     component: ManagerAudits,
     layout: "/manager"
