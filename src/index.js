@@ -11,6 +11,8 @@ import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "components/Login/Auth.js";
 import ManagerLayout from "components/Manager/Manager.js";
 import UserLayout from "components/User/User.js";
+import AuditLayout from "components/Manager/ManagerAudits.js";
+import Manager from "components/Manager/Manager";
 
 
 ReactDOM.render(

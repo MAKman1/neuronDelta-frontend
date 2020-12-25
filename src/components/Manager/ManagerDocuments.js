@@ -47,7 +47,7 @@ class ManagerDocuments extends React.Component {
       axios.post(constants["apiUrl"] + '/dashboard/get', data)
         .then((res) => {
           let data = res.data;
-          // console.warn(JSON.stringify(data));
+          console.warn(JSON.stringify(data));
           this.setState({
             documents: data.documents,
           })
@@ -69,6 +69,7 @@ class ManagerDocuments extends React.Component {
 
   handleDocumentName = (event) => {
     this.setState({ documentName: event.target.value });
+    console.warn(this.state.documentName)
   }
 
   handleDocumentDesc = (event) => {
@@ -86,6 +87,7 @@ class ManagerDocuments extends React.Component {
     let clientId = reactLocalStorage.get('clientId', true);
 
     console.warn('user ' + userId + 'client ' + clientId);
+
 
     if (clientId != null && userId != null) {
       let data = new FormData();

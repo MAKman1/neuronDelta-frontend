@@ -1,5 +1,9 @@
 /*! Developed by Alinon */
 import React from "react";
+import { Link } from "react-router-dom";
+import { reactLocalStorage } from 'reactjs-localstorage';
+import axios from 'axios';
+import { constants } from '../../constants.js';
 
 // reactstrap components
 import {
@@ -19,8 +23,36 @@ class ManagerStandards extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      // State
+      standards: []
     };
+  }
+
+  componentDidMount() {
+    //Check if auth token in valid
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    console.warn('user ' + userId + 'client ' + clientId);
+
+    if (clientId != null && userId != null) {
+      const data = {
+        "clientId": clientId,
+        "userId": userId
+      }
+      axios.post(constants["apiUrl"] + '/standards/get', data)
+        .then((res) => {
+          let data = res.data;
+          //console.warn(JSON.stringify(data));
+          this.setState({
+            standards: data.standards,
+          })
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    } else {
+      //TODO: go back to login
+    }
   }
 
   render() {
@@ -50,120 +82,37 @@ class ManagerStandards extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">Food Legislation</th>
-                      <td>46</td>
-                      <td>75</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46,53%
-                      </td>
-                      <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
-                        View
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Fumigation Law</th>
-                      <td>23</td>
-                      <td>45</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        46,53%
-                      </td>
-                      <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
-                        View
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Can Verification</th>
-                      <td>19</td>
-                      <td>81</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        36,49%
-                      </td>
-                      <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
-                        View
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Restaurant Sanitation</th>
-                      <td>56</td>
-                      <td>94</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        50,87%
-                      </td>
-                      <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
-                        View
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Income Tax Payment</th>
-                      <td>104</td>
-                      <td>158</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                        46,53%
-                      </td>
-                      <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
-                        View
-                      </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Income Tax Payment</th>
-                      <td>104</td>
-                      <td>158</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                        46,53%
-                      </td>
-                      <td>
-                      <Button
-                        color="success"
-                        href="#pablo"
-                        onClick={() => this.toggleModal("documentModel")}
-                        size="sm"
-                      >
-                        View
-                      </Button>
-                      </td>
-                    </tr>
+                    {this.state.standards.map(standard => {
+                      return(
+                        <tr>
+                          <th scope="row">
+                            {standard.name}
+                          </th>
+                          <td>
+                            76
+                          </td>
+                          <td style={{ maxWidth: 150 }}>
+                            <text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
+                              {standard.description}
+                            </text>
+                          </td>
+                          <td>
+                            <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                            90%
+                          </td>
+                          <td>
+                            <Button
+                              color="primary"
+                              href="#pablo"
+                              onClick={e => e.preventDefault()}
+                              size="sm"
+                            >
+                              View
+                            </Button>
+                          </td>
+                        </tr>
+                      )
+                    })}
                     
                   </tbody>
                 </Table>
