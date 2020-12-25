@@ -54,9 +54,8 @@ class ManagerIndex extends React.Component {
     });
   };
 
-  handleClick() {
-    let path = '\manager\audit\article';
-    this.props.history.push(path);
+  handleClick = () => {
+    this.props.history.push('/manager/audit/article');
   }
   toggleModal = state => {
     console.log(state);
