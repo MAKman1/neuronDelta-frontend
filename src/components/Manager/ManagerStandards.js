@@ -32,7 +32,7 @@ class ManagerStandards extends React.Component {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
 
-    console.warn('user ' + userId + 'client ' + clientId);
+    //console.warn('user ' + userId + 'client ' + clientId);
 
     if (clientId != null && userId != null) {
       const data = {
@@ -83,6 +83,7 @@ class ManagerStandards extends React.Component {
                   </thead>
                   <tbody>
                     {this.state.standards.map(standard => {
+                      this.state.pathname = '/manager/view/standard/' + standard.id
                       return(
                         <tr>
                           <th scope="row">
@@ -101,15 +102,20 @@ class ManagerStandards extends React.Component {
                             90%
                           </td>
                           <td>
-                            <Button
-                              color="primary"
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
-                              size="sm"
-                            >
-                              View
-                            </Button>
-                          </td>
+                          <Link to={{
+                                    pathname: this.state.pathname,
+                                    state: {
+                                      name: "Food Quality 1.3"
+                                    }
+                                  }}>
+                                <Button
+                                  color="primary"
+                                  size="sm"
+                                >
+                                  View
+                                </Button>
+                              </Link>
+                            </td>
                         </tr>
                       )
                     })}

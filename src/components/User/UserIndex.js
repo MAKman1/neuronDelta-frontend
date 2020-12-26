@@ -36,7 +36,7 @@ class UserIndex extends React.Component {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
 
-    console.warn('user ' + userId + 'client ' + clientId);
+    //onsole.warn('user ' + userId + 'client ' + clientId);
 
     if (clientId != null && userId != null) {
       const data = {
@@ -46,7 +46,7 @@ class UserIndex extends React.Component {
       axios.post(constants["apiUrl"] + '/dashboard/get', data)
         .then((res) => {
           let data = res.data;
-          console.warn(JSON.stringify(data));
+          //console.warn(JSON.stringify(data));
           this.setState({
             pendArticles: data.pendingArticles,
             compArticles: data.completedArticles,

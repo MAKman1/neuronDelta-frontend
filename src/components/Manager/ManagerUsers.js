@@ -35,7 +35,7 @@ class ManagerUsers extends React.Component {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
 
-    console.warn('user ' + userId + 'client ' + clientId);
+    //console.warn('user ' + userId + 'client ' + clientId);
 
     if (clientId != null && userId != null) {
       const data = {
@@ -45,7 +45,7 @@ class ManagerUsers extends React.Component {
       axios.post(constants["apiUrl"] + '/user/get', data)
         .then((res) => {
           let data = res.data;
-          console.warn(JSON.stringify(data));
+          //console.warn(JSON.stringify(data));
           this.setState({
             users: data.users,
           })
@@ -67,7 +67,7 @@ class ManagerUsers extends React.Component {
 
   handleUserName = (event) => {
     this.setState({ userName: event.target.value });
-    console.warn(this.state.userName);
+    //console.warn(this.state.userName);
   }
 
   makeid = (length) => {
@@ -77,7 +77,7 @@ class ManagerUsers extends React.Component {
     for (var i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-    console.warn(result)
+    //console.warn(result)
     return result;
   }
 
@@ -91,7 +91,7 @@ class ManagerUsers extends React.Component {
   }
 
   handleAddUser = () => {
-    console.warn('new');
+    //console.warn('new');
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
 
@@ -108,13 +108,14 @@ class ManagerUsers extends React.Component {
       axios.post(constants["apiUrl"] + '/user/create', data)
         .then((res) => {
           let data = res.data;
-          console.warn(JSON.stringify(data));
+          //console.warn(JSON.stringify(data));
           this.setState({
             userName: '',
             userPassword: '',
             userMail: '',
       
           })
+          this.toggleModal("userModel");
         })
         .catch((error) => {
           console.warn(JSON.stringify(error));
@@ -188,10 +189,11 @@ class ManagerUsers extends React.Component {
                               </Col>
                               <Col>
                                 <div className="align-items-center">
-                                  <Button color="primary" type="button" onClick={this.handlePassword}>
+                                <Button  color="primary" type="button" onClick={this.handlePassword}>
                                     Auto Generate
                                 </Button>
-                                  <p>{this.state.userPassword}</p>
+                                 <text class="px-3">   {this.state.userPassword} </text> 
+
                                 </div>
                               </Col>
                             </Row>
@@ -234,6 +236,14 @@ class ManagerUsers extends React.Component {
                           </td>
                           <td>1</td>
                           <td>2</td>
+                          <td>
+                          <Button
+                                  color="primary"
+                                  size="sm"
+                                >
+                                  View
+                                </Button>
+                          </td>
                         </tr>
                       )
                     })}

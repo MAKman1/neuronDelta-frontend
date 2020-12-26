@@ -37,7 +37,7 @@ class ManagerDocuments extends React.Component {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
 
-    console.warn('user ' + userId + 'client ' + clientId);
+    //console.warn('user ' + userId + 'client ' + clientId);
 
     if (clientId != null && userId != null) {
       const data = {
@@ -47,7 +47,7 @@ class ManagerDocuments extends React.Component {
       axios.post(constants["apiUrl"] + '/dashboard/get', data)
         .then((res) => {
           let data = res.data;
-          console.warn(JSON.stringify(data));
+          //console.warn(JSON.stringify(data));
           this.setState({
             documents: data.documents,
           })
@@ -69,7 +69,7 @@ class ManagerDocuments extends React.Component {
 
   handleDocumentName = (event) => {
     this.setState({ documentName: event.target.value });
-    console.warn(this.state.documentName)
+    //console.warn(this.state.documentName)
   }
 
   handleDocumentDesc = (event) => {
@@ -86,7 +86,7 @@ class ManagerDocuments extends React.Component {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
 
-    console.warn('user ' + userId + 'client ' + clientId);
+    //console.warn('user ' + userId + 'client ' + clientId);
 
 
     if (clientId != null && userId != null) {
@@ -101,7 +101,7 @@ class ManagerDocuments extends React.Component {
       axios.post(constants["apiUrl"] + '/documents/upload', data)
         .then((res) => {
           let data = res.data;
-          console.warn(JSON.stringify(data));
+          //console.warn(JSON.stringify(data));
         })
         .catch((error) => {
           console.warn(JSON.stringify(error));

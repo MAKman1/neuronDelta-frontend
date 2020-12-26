@@ -125,7 +125,7 @@ var routes = [
   },
   {
     path: "/audit",
-    name: "Audits",
+    name: "Articles",
     icon: "ni ni-collection text-blue",
     component: Audit,
     layout: "/user"

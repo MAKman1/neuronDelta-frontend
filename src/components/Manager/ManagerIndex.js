@@ -51,7 +51,7 @@ class ManagerIndex extends React.Component {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
 
-    console.warn('user ' + userId + 'client ' + clientId);
+    //console.warn('user ' + userId + 'client ' + clientId);
 
     if (clientId != null && userId != null) {
       const data = {
@@ -107,7 +107,7 @@ class ManagerIndex extends React.Component {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
 
-    console.warn('user ' + userId + 'client ' + clientId);
+    //console.warn('user ' + userId + 'client ' + clientId);
 
     if (clientId != null && userId != null) {
       let data = new FormData();
@@ -121,7 +121,7 @@ class ManagerIndex extends React.Component {
       axios.post(constants["apiUrl"] + '/documents/upload', data)
         .then((res) => {
           let data = res.data;
-          console.warn(JSON.stringify(data));
+          //console.warn(JSON.stringify(data));
         })
         .catch((error) => {
           console.warn(JSON.stringify(error));

@@ -1,6 +1,10 @@
 /*! Developed by Alinon */
 import React from "react";
 
+import { reactLocalStorage } from 'reactjs-localstorage';
+import axios from 'axios';
+import { constants } from '../../constants.js';
+
 // reactstrap components
 import {
 	Button,
@@ -35,6 +39,36 @@ class ManagerIndex extends React.Component {
 
 	}
 
+	
+	componentDidMount() {
+		//Check if auth token in valid
+		let userId = reactLocalStorage.get('userId', true);
+		let clientId = reactLocalStorage.get('clientId', true);
+	
+		//console.warn('user ' + userId + 'client ' + clientId + this.articleId);
+	
+		if (clientId != null && userId != null) {
+		  const data = {
+			"clientId": clientId,
+			"articleId": this.articleId,
+			"userId": userId
+		  }
+		  axios.post(constants["apiUrl"] + '/checklists/get', data)
+			.then((res) => {
+			  let data = res.data;
+			  //console.warn(JSON.stringify(data));
+			  this.setState({
+				articles: data.articles,
+			  })
+			})
+			.catch((error) => {
+			  console.warn(JSON.stringify(error));
+			});
+		} else {
+		  //TODO: go back to login
+		}
+	  }
+
 	toggleModal = state => {
 		console.log(state);
 		this.setState({
@@ -56,7 +90,7 @@ class ManagerIndex extends React.Component {
 								<CardHeader className="border-0">
 									<Row className="align-items-center">
 										<div className="col">
-											<h3 className="mb-0">{"Article name"}</h3>
+											<h3 className="mb-0">Article  {this.articleId}</h3>
 										</div>
 										<div className="col text-right">
 
