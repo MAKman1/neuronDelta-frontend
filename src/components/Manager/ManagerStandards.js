@@ -39,7 +39,7 @@ class ManagerStandards extends React.Component {
         "clientId": clientId,
         "userId": userId
       }
-      axios.post(constants["apiUrl"] + '/standards/get', data)
+      axios.post(constants["apiUrl"] + '/standards/getAll', data)
         .then((res) => {
           let data = res.data;
           //console.warn(JSON.stringify(data));

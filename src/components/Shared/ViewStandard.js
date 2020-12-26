@@ -28,10 +28,7 @@ class ViewStandard extends React.Component {
 		super(props);
 
 		this.state = {
-			documentModel: false,
-			roleModel: false,
-			toggleDropdown: false,
-			name: "None",
+			standard: null,
 			articles: []
 		};
 	}
@@ -50,30 +47,31 @@ class ViewStandard extends React.Component {
 		//Check if auth token in valid
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
-	
+
 		//console.warn('user ' + userId + 'client ' + clientId);
-	
+
 		if (clientId != null && userId != null) {
-		  const data = {
-			"standardId": this.standardId,
-			"clientId": clientId,
-			
-		  }
-		  axios.post(constants["apiUrl"] + '/articles/getAll', data)
-			.then((res) => {
-			  let data = res.data;
-			  //console.warn(JSON.stringify(data));
-			  this.setState({
-				articles: data.articles,
-			  })
-			})
-			.catch((error) => {
-			  console.warn(JSON.stringify(error));
-			});
+			const data = {
+				"standardId": this.standardId,
+				"clientId": clientId,
+
+			}
+			axios.post(constants["apiUrl"] + '/standards/get', data)
+				.then((res) => {
+					let data = res.data;
+					//console.warn(JSON.stringify(data));
+					this.setState({
+						articles: data.articles,
+						standard: data.standard
+					})
+				})
+				.catch((error) => {
+					console.warn(JSON.stringify(error));
+				});
 		} else {
-		  //TODO: go back to login
+			//TODO: go back to login
 		}
-	  }
+	}
 
 	render() {
 		return (
@@ -81,6 +79,25 @@ class ViewStandard extends React.Component {
 				<EmptyHeader />
 				{/* Page content */}
 				<Container className="mt--7" fluid>
+					<Row className="mt-5 justify-content-center">
+						<Col className="mb-5 mb-xl-0" xl="12">
+							<Card className="shadow">
+								<CardHeader className="border-0">
+									<Row className="align-items-center" style={{ marginBottom: 10 }}>
+										<div className="col">
+											<h1 className="mb-0">{this.state.standard == null ? "" : this.state.standard.name}</h1>
+										</div>
+									</Row>
+									<Row className="align-items-center">
+										<div className="col">
+											<h4 className="mb-0">{this.state.standard == null ? "" : this.state.standard.description}</h4>
+										</div>
+									</Row>
+								</CardHeader>
+
+							</Card>
+						</Col>
+					</Row>
 
 					<Row className="mt-5">
 						<Col className="mb-5 mb-xl-0" xl="12">
@@ -107,7 +124,7 @@ class ViewStandard extends React.Component {
 									</thead>
 									<tbody>
 										{this.state.articles.map(article => {
-											return(
+											return (
 												<tr>
 													<th scope="row">{article.name}</th>
 													<td>Will Cole</td>

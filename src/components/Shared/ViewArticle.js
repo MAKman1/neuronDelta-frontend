@@ -26,7 +26,9 @@ class ManagerIndex extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			checklists: []
+			checklists: [],
+			article: null,
+			standard: null
 		};
 	}
 
@@ -49,6 +51,8 @@ class ManagerIndex extends React.Component {
 					//console.warn(JSON.stringify(data));
 					this.setState({
 						checklists: data.checklists,
+						article: data.article,
+						standard: data.standard
 					})
 				})
 				.catch((error) => {
@@ -92,6 +96,30 @@ class ManagerIndex extends React.Component {
 				<EmptyHeader />
 				{/* Page content */}
 				<Container className="mt--7" fluid>
+					<Row className="mt-5 justify-content-center">
+						<Col className="mb-5 mb-xl-0" xl="12">
+							<Card className="shadow">
+								<CardHeader className="border-0">
+									<Row className="align-items-center">
+										<div className="col">
+											<span className="mb-0 badge badge-primary">{this.state.standard == null ? "" : this.state.standard.name}</span>
+										</div>
+									</Row>
+									<Row className="align-items-center" style={{marginBottom: 10}}>
+										<div className="col">
+											<h1 className="mb-0">{this.state.article == null ? "" : this.state.article.name}</h1>
+										</div>
+									</Row>
+									<Row className="align-items-center">
+										<div className="col">
+											<h4 className="mb-0">{this.state.article == null ? "" : this.state.article.description}</h4>
+										</div>
+									</Row>
+								</CardHeader>
+
+							</Card>
+						</Col>
+					</Row>
 
 					<Row className="mt-5 justify-content-center">
 						<Col className="mb-5 mb-xl-0" xl="12">

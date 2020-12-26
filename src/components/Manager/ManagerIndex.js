@@ -71,7 +71,7 @@ class ManagerIndex extends React.Component {
             documents: data.documents,
             articles: data.articles,
             workflows: data.workflows,
-            users: data.workflows
+            users: data.users
           })
         })
         .catch((error) => {
@@ -187,7 +187,7 @@ class ManagerIndex extends React.Component {
                         <tr>
                           <th scope="row">{e.name}</th>
                           <td>2</td>
-                          <td style={{ maxWidth: 150 }}>
+                          <td >
                             <text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
                               {e.description}
                             </text>
