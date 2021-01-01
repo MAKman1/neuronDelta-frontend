@@ -14,6 +14,7 @@ import {
 	Container,
 	Row,
 	Col,
+	Modal
 } from "reactstrap";
 
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
@@ -28,7 +29,10 @@ class ManagerIndex extends React.Component {
 		this.state = {
 			checklists: [],
 			article: null,
-			standard: null
+			standard: null,
+			documentModel: false,
+			uploadDocument: null,
+			currentChecklistIndex: null
 		};
 	}
 
@@ -48,7 +52,7 @@ class ManagerIndex extends React.Component {
 			axios.post(constants["apiUrl"] + '/checklists/get', data)
 				.then((res) => {
 					let data = res.data;
-					//console.warn(JSON.stringify(data));
+					console.warn(JSON.stringify(data));
 					this.setState({
 						checklists: data.checklists,
 						article: data.article,
@@ -63,7 +67,7 @@ class ManagerIndex extends React.Component {
 		}
 	}
 
-	handleCheckClick = (id, current) => {
+	handleCheckClick = (checklist, current) => {
 		//Check if auth token in valid
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
@@ -73,20 +77,72 @@ class ManagerIndex extends React.Component {
 		if (clientId != null && userId != null) {
 			const data = {
 				"clientId": clientId,
-				"checklistId": id,
+				"checklistId": checklist.id,
 				"userId": userId
 			}
 			axios.post(constants["apiUrl"] + url, data)
 				.then((res) => {
-					let data = res.data;
-					//Show that it's done
+
+					if (current)
+						checklist.progress = null;
+					else
+						checklist.progress = res.data.progress;
+
+					this.forceUpdate();
+
 				})
 				.catch((error) => {
+					this.forceUpdate();
 					console.warn(JSON.stringify(error));
 				});
 		} else {
 			//TODO: go back to login
 		}
+	}
+
+	toggleModal = (state, index) => {
+		this.setState({
+			[state]: !this.state[state],
+			currentChecklistIndex: index
+		});
+	};
+
+	chooseFile = (event) => {
+		this.setState({
+			uploadDocument: event.target.files[0],
+		});
+	}
+
+	handleUpload = () => {
+		let userId = reactLocalStorage.get('userId', true);
+		let clientId = reactLocalStorage.get('clientId', true);
+
+		if (clientId != null && userId != null) {
+			let data = new FormData();
+
+			data.append("clientId", clientId);
+			data.append("userId", userId);
+			data.append('checklistId', this.state.checklists[ this.state.currentChecklistIndex].id);
+			data.append("file", this.state.uploadDocument);
+
+			// console.warn(...data);
+
+			axios.post(constants["apiUrl"] + '/checklists/attachDocument', data)
+				.then((res) => {
+					let data = res.data;
+					this.state.checklists[ this.state.currentChecklistIndex].progress.document_id = res.data.uploaded.id;
+					this.forceUpdate();
+					console.warn(JSON.stringify(data));
+				})
+				.catch((error) => {
+					console.warn(JSON.stringify(error));
+				});
+		}
+
+		this.setState({
+			uploadDocument: null,
+			documentModel: false,
+		})
 	}
 
 	render() {
@@ -105,7 +161,7 @@ class ManagerIndex extends React.Component {
 											<span className="mb-0 badge badge-primary">{this.state.standard == null ? "" : this.state.standard.name}</span>
 										</div>
 									</Row>
-									<Row className="align-items-center" style={{marginBottom: 10}}>
+									<Row className="align-items-center" style={{ marginBottom: 10 }}>
 										<div className="col">
 											<h1 className="mb-0">{this.state.article == null ? "" : this.state.article.name}</h1>
 										</div>
@@ -146,23 +202,29 @@ class ManagerIndex extends React.Component {
 									</thead>
 									<tbody>
 										{
-											this.state.checklists.map(c => {
+											this.state.checklists.map((c, index) => {
 												return (
 													<tr>
 														<th scope="row">
 															<div class="form-check">
 																{c.progress == null ?
-																	<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox" onChange={() => this.handleCheckClick(c.id, false)} id={"Check" + c.id} />
+																	<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox" onChange={() => this.handleCheckClick(c, false)} id={"Check" + c.id} />
 																	:
-																	<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox" onChange={() => this.handleCheckClick(c.id, true)} defaultChecked id={"Check" + c.id} />
+																	<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox" onChange={() => this.handleCheckClick(c, true)} defaultChecked id={"Check" + c.id} />
 																}
 																<label class="form-check-label " for="defaultCheck1"></label>
 															</div>
 														</th>
-														<td>Food Safety</td>
-														<td>The Kitchen used to prepare the food should follow Health Standard 1.3</td>
+														<td>{c.name}</td>
 														<td>
-															{c.progress != null && <Button color="success" size="sm"> Add Document </Button>}
+															<text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
+																{c.details}
+															</text>
+														</td>
+														<td>
+															{c.progress == null ? null
+																: (c.progress.document_id == null ? <Button color="success" href="#add document" onClick={() => this.toggleModal("documentModel", index)} size="sm"> Add Document </Button> : <Button color="primary" size="sm"> View Document </Button>)
+															}
 														</td>
 													</tr>
 												)
@@ -170,6 +232,46 @@ class ManagerIndex extends React.Component {
 										}
 
 									</tbody>
+									<Modal
+										className="modal-dialog-centered"
+										isOpen={this.state.documentModel}
+										toggle={() => this.toggleModal("documentModel")}
+									>
+										<div className="modal-header">
+											<h2 className="modal-title" id="documentModelLabel">
+												Add Document
+                          					</h2>
+											<button
+												aria-label="Close"
+												className="close"
+												data-dismiss="modal"
+												type="button"
+												onClick={() => this.toggleModal("documentModel")}
+											>
+												<span aria-hidden={true}>×</span>
+											</button>
+										</div>
+										<div className="modal-body">
+											<form>
+												<div className="align-items-center">
+													<input type="file" name="file" onChange={e => this.chooseFile(e)} />
+												</div>
+											</form>
+										</div>
+										<div className="modal-footer">
+											<Button
+												color="secondary"
+												data-dismiss="modal"
+												type="button"
+												onClick={() => this.toggleModal("documentModel")}
+											>
+												Cancel
+                          					</Button>
+											<Button color="success" type="button" onClick={this.handleUpload}>
+												Upload
+                          					</Button>
+										</div>
+									</Modal>
 								</Table>
 							</Card>
 						</Col>

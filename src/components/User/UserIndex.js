@@ -64,6 +64,31 @@ class UserIndex extends React.Component {
     }
   }
 
+  acceptDocument(index) {
+    this.state.documents[index].accepted = true
+    this.forceUpdate();
+
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    if (clientId != null && userId != null) {
+      let data = new FormData();
+      
+      data.append("clientId", clientId);
+      data.append("userId", userId);
+      data.append("documentId", index);
+
+      axios.post(constants["apiUrl"] + '/documents/accept', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(JSON.stringify(data));
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    }
+  }
+
   render() {
     return (
       <>
@@ -106,9 +131,9 @@ class UserIndex extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.articles.map(a => {
+                    {this.state.articles.map((a, index) => {
                       return (
-                        <tr>
+                        <tr key={index}>
                           <th scope="row">{a.name}</th>
                           <td>{a.assignedBy.name}</td>
                           <td>12-2-2020</td>
@@ -116,7 +141,7 @@ class UserIndex extends React.Component {
                           <td>
                             <i className="fas fa-arrow-up text-success mr-3" />{" "}
                             {a.progress} %
-                      </td>
+                          </td>
                           <td className="text-center">
                             <Button
                               color="primary"
@@ -142,11 +167,11 @@ class UserIndex extends React.Component {
                       <h3 className="mb-0">Assigned Documents</h3>
                     </div>
                     <div className="col text-right">
-                    <Link to={{
+                      <Link to={{
                         pathname: '/user/docs',
                       }} style={{ paddingRight: 5 }}>
                         <Button
-                          color="success"
+                          color="primary"
                           size="sm"
                         >
                           See All
@@ -166,13 +191,17 @@ class UserIndex extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.documents.map(doc => {
+                    {this.state.documents.map((doc, index) => {
                       return (
-                        <tr>
+                        <tr key={index}>
                           <th scope="row">{doc.name}</th>
                           <td>{doc.size} KB</td>
                           <th >Denver Louis</th>
-                          <td className="text-center"><i class="fas fa-check"></i></td>
+                          <td className="text-center">
+                            {doc.accepted ? <i class="fas fa-check"></i>
+                              : <Button color="success" href="#pablo" onClick={() => this.acceptDocument(index)} size="sm"> Accept </Button>
+                            }
+                          </td>
                           <td className="text-center">
                             <Button
                               color="primary"
@@ -181,7 +210,7 @@ class UserIndex extends React.Component {
                               size="sm"
                             >
                               View
-                        </Button>
+                            </Button>
                           </td>
                         </tr>
                       )
@@ -223,9 +252,9 @@ class UserIndex extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.assignedWorkflows.map(w => {
+                    {this.state.assignedWorkflows.map((w, index) => {
                       return (
-                        <tr>
+                        <tr key={index}>
                           <th scope="row">{w.name}</th>
                           <td>{w.assignedBy.name}</td>
                           <td>13-6-2021</td>

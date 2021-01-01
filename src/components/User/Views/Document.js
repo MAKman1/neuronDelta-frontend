@@ -29,20 +29,17 @@ class Workflows extends React.Component {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
 
-    //console.warn('user ' + userId + 'client ' + clientId);
-
     if (clientId != null && userId != null) {
       const data = {
-        "clientId": clientId,
         "userId": userId
       }
-      axios.post(constants["apiUrl"] + '/dashboard/get', data)
+      axios.post(constants["apiUrl"] + 'documents/getAssigned', data)
         .then((res) => {
           let data = res.data;
-          //console.warn(JSON.stringify(data));
-          this.setState({
-            documents: data.documents,
-          })
+          console.warn(JSON.stringify(data));
+          // this.setState({
+          //   documents: data.documents,
+          // })
         })
         .catch((error) => {
           console.warn(JSON.stringify(error));
