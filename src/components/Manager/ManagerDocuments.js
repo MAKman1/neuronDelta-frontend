@@ -48,7 +48,7 @@ class ManagerDocuments extends React.Component {
       axios.post(constants["apiUrl"] + '/dashboard/get', data)
         .then((res) => {
           let data = res.data;
-          //console.warn(JSON.stringify(data));
+          console.warn(JSON.stringify(data.documents));
           this.setState({
             documents: data.documents,
           })
@@ -102,7 +102,7 @@ class ManagerDocuments extends React.Component {
       axios.post(constants["apiUrl"] + '/documents/upload', data)
         .then((res) => {
           let data = res.data;
-          //console.warn(JSON.stringify(data));
+          //console.warn(JSON.stringify(res.data));
         })
         .catch((error) => {
           console.warn(JSON.stringify(error));
@@ -286,7 +286,7 @@ class ManagerDocuments extends React.Component {
                               <span className="mr-2">{date}</span>
                             </div>
                           </td>
-                          <td>3 / 5</td>
+                          <td>{doc.acceptedCount}/{doc.acceptedTotal}</td>
                           <td>
                             <h4><span className="badge badge-primary">Reception</span></h4>
                           </td>
