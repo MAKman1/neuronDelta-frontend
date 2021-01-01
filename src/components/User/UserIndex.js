@@ -109,7 +109,7 @@ class UserIndex extends React.Component {
                   </thead>
                   <tbody>
                     {this.state.articles.map(a => {
-                      {this.state.pathname = '/manager/view/article/' + a.id}
+                      {this.state.pathname = '/user/view/article/' + a.id}
                       return (
                         <tr>
                           <th scope="row">{a.name}</th>
@@ -121,7 +121,7 @@ class UserIndex extends React.Component {
                             {a.progress} %
                       </td>
                           <td className="text-center">
-                              <Link to={{
+                            <Link to={{
                                     pathname: this.state.pathname,
                                     state: {
                                       name: "Food Quality 1.3"

@@ -43,7 +43,7 @@ class Audits extends React.Component {
       axios.post(constants["apiUrl"] + '/articles/getAssigned', data)
         .then((res) => {
           let data = res.data;
-          //console.warn(JSON.stringify(data));
+          console.warn(JSON.stringify(data));
           this.setState({
             articles: data.articles
           })

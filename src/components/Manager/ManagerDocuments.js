@@ -29,6 +29,7 @@ class ManagerDocuments extends React.Component {
     this.state = {
       documentModel: false,
       documents: [],
+      uploadDocument: null
     };
   }
 
