@@ -83,14 +83,16 @@ class UserIndex extends React.Component {
                       <h3 className="mb-0">Assigned Articles</h3>
                     </div>
                     <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
+                      <Link to={{
+                        pathname: '/user/audit',
+                      }} style={{ paddingRight: 5 }}>
+                        <Button
+                          color="primary"
+                          size="sm"
+                        >
+                          See All
+                        </Button>
+                      </Link>
                     </div>
                   </Row>
                 </CardHeader>
@@ -107,6 +109,7 @@ class UserIndex extends React.Component {
                   </thead>
                   <tbody>
                     {this.state.articles.map(a => {
+                      {this.state.pathname = '/manager/view/article/' + a.id}
                       return (
                         <tr>
                           <th scope="row">{a.name}</th>
@@ -118,14 +121,19 @@ class UserIndex extends React.Component {
                             {a.progress} %
                       </td>
                           <td className="text-center">
-                            <Button
-                              color="primary"
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
-                              size="sm"
-                            >
-                              View
-                        </Button>
+                              <Link to={{
+                                    pathname: this.state.pathname,
+                                    state: {
+                                      name: "Food Quality 1.3"
+                                    }
+                                  }}>
+                                <Button
+                                  color="primary"
+                                  size="sm"
+                                >
+                                  View
+                                </Button>
+                              </Link>
                           </td>
                         </tr>
                       )
@@ -146,7 +154,7 @@ class UserIndex extends React.Component {
                         pathname: '/user/docs',
                       }} style={{ paddingRight: 5 }}>
                         <Button
-                          color="success"
+                          color="primary"
                           size="sm"
                         >
                           See All
@@ -200,14 +208,16 @@ class UserIndex extends React.Component {
                       <h3 className="mb-0">Assigned Workflows</h3>
                     </div>
                     <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
+                      <Link to={{
+                        pathname: '/user/workflow',
+                      }} style={{ paddingRight: 5 }}>
+                        <Button
+                          color="primary"
+                          size="sm"
+                        >
+                          See All
+                        </Button>
+                      </Link>
                     </div>
                   </Row>
                 </CardHeader>

@@ -416,7 +416,7 @@ class ManagerIndex extends React.Component {
                     </div>
                     <div className="col text-right">
                       <Link to={{
-                        pathname: '/manager/audits',
+                        pathname: '/manager/articles',
                         state: {
                           name: "Food Quality 1.3"
                         }
