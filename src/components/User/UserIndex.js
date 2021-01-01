@@ -108,14 +108,16 @@ class UserIndex extends React.Component {
                       <h3 className="mb-0">Assigned Articles</h3>
                     </div>
                     <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
+                      <Link to={{
+                        pathname: '/user/audit',
+                      }} style={{ paddingRight: 5 }}>
+                        <Button
+                          color="primary"
+                          size="sm"
+                        >
+                          See All
+                        </Button>
+                      </Link>
                     </div>
                   </Row>
                 </CardHeader>
@@ -131,9 +133,10 @@ class UserIndex extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.articles.map((a, index) => {
+                    {this.state.articles.map(a => {
+                      {this.state.pathname = '/user/view/article/' + a.id}
                       return (
-                        <tr key={index}>
+                        <tr>
                           <th scope="row">{a.name}</th>
                           <td>{a.assignedBy.name}</td>
                           <td>12-2-2020</td>
@@ -141,16 +144,21 @@ class UserIndex extends React.Component {
                           <td>
                             <i className="fas fa-arrow-up text-success mr-3" />{" "}
                             {a.progress} %
-                          </td>
+                      </td>
                           <td className="text-center">
-                            <Button
-                              color="primary"
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
-                              size="sm"
-                            >
-                              View
-                        </Button>
+                            <Link to={{
+                                    pathname: this.state.pathname,
+                                    state: {
+                                      name: "Food Quality 1.3"
+                                    }
+                                  }}>
+                                <Button
+                                  color="primary"
+                                  size="sm"
+                                >
+                                  View
+                                </Button>
+                              </Link>
                           </td>
                         </tr>
                       )
@@ -167,7 +175,7 @@ class UserIndex extends React.Component {
                       <h3 className="mb-0">Assigned Documents</h3>
                     </div>
                     <div className="col text-right">
-                      <Link to={{
+                    <Link to={{
                         pathname: '/user/docs',
                       }} style={{ paddingRight: 5 }}>
                         <Button
@@ -191,17 +199,13 @@ class UserIndex extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.documents.map((doc, index) => {
+                    {this.state.documents.map(doc => {
                       return (
-                        <tr key={index}>
+                        <tr>
                           <th scope="row">{doc.name}</th>
                           <td>{doc.size} KB</td>
                           <th >Denver Louis</th>
-                          <td className="text-center">
-                            {doc.accepted ? <i class="fas fa-check"></i>
-                              : <Button color="success" href="#pablo" onClick={() => this.acceptDocument(index)} size="sm"> Accept </Button>
-                            }
-                          </td>
+                          <td className="text-center"><i class="fas fa-check"></i></td>
                           <td className="text-center">
                             <Button
                               color="primary"
@@ -210,7 +214,7 @@ class UserIndex extends React.Component {
                               size="sm"
                             >
                               View
-                            </Button>
+                        </Button>
                           </td>
                         </tr>
                       )
@@ -229,14 +233,16 @@ class UserIndex extends React.Component {
                       <h3 className="mb-0">Assigned Workflows</h3>
                     </div>
                     <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
+                      <Link to={{
+                        pathname: '/user/workflow',
+                      }} style={{ paddingRight: 5 }}>
+                        <Button
+                          color="primary"
+                          size="sm"
+                        >
+                          See All
+                        </Button>
+                      </Link>
                     </div>
                   </Row>
                 </CardHeader>
@@ -252,9 +258,9 @@ class UserIndex extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.assignedWorkflows.map((w, index) => {
+                    {this.state.assignedWorkflows.map(w => {
                       return (
-                        <tr key={index}>
+                        <tr>
                           <th scope="row">{w.name}</th>
                           <td>{w.assignedBy.name}</td>
                           <td>13-6-2021</td>

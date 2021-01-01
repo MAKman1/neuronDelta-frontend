@@ -76,6 +76,7 @@ class Audits extends React.Component {
                   <thead className="thead-light">
                     <tr>
                       <th scope="col">Name</th>
+                      <th scope="col">CheckList Count</th>
                       <th scope="col">Assigned By</th>
                       <th scope="col">Due By</th>
                       <th scope="col">Standard</th>
@@ -89,6 +90,7 @@ class Audits extends React.Component {
                       return(
                         <tr>
                           <th scope="row">{article.name}</th>
+                          <td>Checklist Count</td> 
                           <td>{article.assignedBy.name}</td> 
                           <td>31/12/2020</td>
                           <td>{article.standard.name}</td>

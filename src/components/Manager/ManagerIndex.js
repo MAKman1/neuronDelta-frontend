@@ -188,7 +188,7 @@ class ManagerIndex extends React.Component {
                       return (
                         <tr>
                           <th scope="row">{e.name}</th>
-                          <td>2</td>
+                          <td>{e.articleCount}</td>
                           <td >
                             <text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
                               {e.description}
@@ -196,7 +196,7 @@ class ManagerIndex extends React.Component {
                           </td>
                           <td>
                             <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                            90%
+                            {e.progress}%
                           </td>
                         </tr>
                       )
@@ -418,7 +418,7 @@ class ManagerIndex extends React.Component {
                     </div>
                     <div className="col text-right">
                       <Link to={{
-                        pathname: '/manager/audits',
+                        pathname: '/manager/articles',
                         state: {
                           name: "Food Quality 1.3"
                         }

@@ -51,7 +51,7 @@ class ManagerArticles extends React.Component {
       axios.post(constants["apiUrl"] + '/articles/getAllManager', data)
         .then((res) => {
           let data = res.data;
-          //console.warn(JSON.stringify(data));
+          console.warn(JSON.stringify(data));
           this.setState({
             articles: data.articles,
           })
@@ -102,6 +102,7 @@ class ManagerArticles extends React.Component {
                   <thead className="thead-light">
                     <tr>
                       <th scope="col">Name</th>
+                      <th scope="col">Checklist Count</th>
                       <th scope="col">Assigned To</th>
                       <th scope="col">Due Date</th>
                       <th scope="col">Standards</th>
@@ -112,12 +113,13 @@ class ManagerArticles extends React.Component {
                   <tbody>
                     
                    {this.state.articles.map(article => {
-                     {this.state.pathname = '/manager/view/article/' + article.id}
+                     
                      return (
                        <tr>
                          <th scope="row">{article.name}</th>
-                         <td>Will Cole</td>
-                         <td>30/12/2020</td>
+                         <td>{article.checklistCount}</td>
+                         <td>{article.assignedTo == null ? "-": article.assignedTo.name}</td>
+                         <td>-</td>
                          <td>
                             <div className="d-flex align-items-center">
                               <span className="mr-2">{article.standard.id}</span>
@@ -125,13 +127,13 @@ class ManagerArticles extends React.Component {
                           </td>
                          <td>
                             <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                            90%
+                            {article.progress}%
                           </td>
                           
                           <td>
                             
                               <Link to={{
-                                    pathname: this.state.pathname,
+                                    pathname: '/manager/view/article/' + article.id,
                                     state: {
                                       name: "Food Quality 1.3"
                                     }

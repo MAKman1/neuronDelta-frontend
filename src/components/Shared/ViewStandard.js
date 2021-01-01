@@ -115,8 +115,10 @@ class ViewStandard extends React.Component {
 									<thead className="thead-light">
 										<tr>
 											<th scope="col">Name</th>
+											<th scope="col">CheckList Count</th>
 											<th scope="col">Assigned To</th>
 											<th scope="col">Due Date</th>
+
 											<th scope="col">Standards</th>
 											<th scope="col">Progress</th>
 											<th scope="col"></th>
@@ -127,12 +129,13 @@ class ViewStandard extends React.Component {
 											return (
 												<tr>
 													<th scope="row">{article.name}</th>
-													<td>Will Cole</td>
-													<td>2/01/2021</td>
+													<td>{article.checklistCount}</td>
+													<td>{article.assignedTo == null ? "-": article.assignedTo.name}</td>
+													<td>-</td>
 													<td>{article.standard.id}</td>
 													<td>
 														<i className="fas fa-arrow-up text-success mr-3" />{" "}
-														90%
+														{article.progress}%
 													</td>
 												</tr>
 											)

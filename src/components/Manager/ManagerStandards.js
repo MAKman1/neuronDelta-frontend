@@ -42,7 +42,7 @@ class ManagerStandards extends React.Component {
       axios.post(constants["apiUrl"] + '/standards/getAll', data)
         .then((res) => {
           let data = res.data;
-          //console.warn(JSON.stringify(data));
+          console.warn(JSON.stringify(data));
           this.setState({
             standards: data.standards,
           })
@@ -90,7 +90,7 @@ class ManagerStandards extends React.Component {
                             {standard.name}
                           </th>
                           <td>
-                            76
+                            {standard.articleCount}
                           </td>
                           <td style={{ maxWidth: 150 }}>
                             <text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
@@ -99,7 +99,7 @@ class ManagerStandards extends React.Component {
                           </td>
                           <td>
                             <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                            90%
+                            {standard.articleCount}%
                           </td>
                           <td>
                           <Link to={{
