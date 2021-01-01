@@ -65,7 +65,7 @@ class UserIndex extends React.Component {
   }
 
   acceptDocument(index) {
-    this.state.documents[index].accepted = true
+    this.state.documents[index].accepted = true;
     this.forceUpdate();
 
     let userId = reactLocalStorage.get('userId', true);
@@ -76,7 +76,7 @@ class UserIndex extends React.Component {
       
       data.append("clientId", clientId);
       data.append("userId", userId);
-      data.append("documentId", index);
+      data.append("documentId", this.state.documents[index].id);
 
       axios.post(constants["apiUrl"] + '/documents/accept', data)
         .then((res) => {
