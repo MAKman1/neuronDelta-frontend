@@ -45,7 +45,7 @@ class ManagerUsers extends React.Component {
       axios.post(constants["apiUrl"] + '/user/getAll', data)
         .then((res) => {
           let data = res.data;
-          //console.warn(JSON.stringify(data));
+          console.warn(JSON.stringify(data));
           this.setState({
             users: data.users,
           })
@@ -234,8 +234,8 @@ class ManagerUsers extends React.Component {
                           <td>
                             <h4><span className="badge badge-primary">Engineer</span></h4>
                           </td>
-                          <td>1</td>
-                          <td>2</td>
+                          <td>{user.assignedWorkflows}</td>
+                          <td>{user.assignedArticles}</td>
                           <td>
                           <Button
                                   color="primary"

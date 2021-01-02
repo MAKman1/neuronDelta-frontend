@@ -1,6 +1,11 @@
 /*! Developed by Alinon */
 import React from "react";
 
+
+import { reactLocalStorage } from 'reactjs-localstorage';
+import axios from 'axios';
+import { constants } from '../../constants.js';
+
 // reactstrap components
 import {
   Button,
@@ -18,8 +23,36 @@ class ManagerSubscriptions extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      // States
+      subscriptions: []
     };
+  }
+
+  componentDidMount() {
+    //Check if auth token in valid
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    //console.warn('user ' + userId + 'client ' + clientId);
+
+    if (clientId != null && userId != null) {
+      const data = {
+        "clientId": clientId,
+      }
+      axios.post(constants["apiUrl"] + '/subscriptions/get', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(JSON.stringify(data));
+          this.setState({
+            subscriptions: data.subscriptions,
+          })
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+
+    } else {
+      //TODO: go back to login
+    }
   }
   render() {
     return (

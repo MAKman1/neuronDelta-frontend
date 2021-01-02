@@ -107,7 +107,7 @@ class Workflows extends React.Component {
                         <tr key={index}>
                           <th scope="row">{doc.name}</th>
                           <td>{doc.size} KB</td>
-                          <th >Denver Louis</th>
+                          <th >{doc.assignedBy}</th>
                           <td className="text-center">
                             {doc.accepted ? <i class="fas fa-check"></i>
                               : <Button color="success" href="#pablo" onClick={() => this.acceptDocument(index)} size="sm"> Accept </Button>

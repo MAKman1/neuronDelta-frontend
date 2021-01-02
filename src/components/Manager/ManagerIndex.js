@@ -315,9 +315,6 @@ class ManagerIndex extends React.Component {
                               <textarea class="form-control" id="message-text"></textarea>
                             </div>
                             <div className="align-items-center">
-                              {/* <Button color="primary" type="button">
-                                Choose File
-                            </Button> */}
                               <input type="file" name="file" onChange={e => this.chooseFile(e)} />
                             </div>
                           </form>
@@ -382,14 +379,20 @@ class ManagerIndex extends React.Component {
                         </Button>
                           </td>
                           <td>
-                            <Button
-                              color="primary"
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
-                              size="sm"
-                            >
-                              View
-                        </Button>
+                            <div className="col text-right">
+                              <Link to={{
+                                pathname: 'google.com'
+                              }}>
+                                <Button
+                                  color="primary"
+                                  href="#pablo"
+                                  onClick={e => e.preventDefault()}
+                                  size="sm"
+                                >
+                                  View
+                                </Button>
+                              </Link>
+                            </div>
                           </td>
                         </tr>
                       )
@@ -444,16 +447,14 @@ class ManagerIndex extends React.Component {
                             </DropdownToggle>
                             <DropdownMenu>
                               {this.state.roles.map((role, index) => {
-                                if (this.state.documents[this.state.documentIndex] != null && this.state.documents[this.state.documentIndex].userRoles.includes(role)) {
-                                  console.warn('stufff '  + this.state.documents[this.state.documentIndex].userRoles);
+                                if (this.state.documents[this.state.documentIndex] != null && this.state.documents[this.state.documentIndex].userRoles.some(r => r.id === role.id)) {
                                   return (
-                                    <DropdownItem key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
+                                    <DropdownItem disabled key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
                                   )
                                 }
                                 else {
-                                  console.warn(this.state.documents[this.state.documentIndex].userRoles);
                                   return (
-                                    <DropdownItem disabled key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
+                                    <DropdownItem key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
                                   )
                                 }
                               })}
@@ -472,7 +473,7 @@ class ManagerIndex extends React.Component {
                         Cancel
                           </Button>
                       <Button onClick={() => this.addRole()} color="success" type="button">
-                        Save
+                        Add Role
                           </Button>
                     </div>
                   </Modal>
@@ -524,7 +525,7 @@ class ManagerIndex extends React.Component {
                             {/* {a.assignedBy} */}
                             Mary Smith
                           </td>
-                          <td>12/07/2020</td>
+                          <td>-</td>
                           <td>
                             {a.standard.name}
                           </td>
@@ -582,7 +583,7 @@ class ManagerIndex extends React.Component {
                           <th scope="row">{w.name}</th>
                           <td>
                             {/* {w.assignedBy} */}
-                            John Doe
+                            John Smith
                           </td>
                           <td>12/07/2020</td>
                           <td>
@@ -630,8 +631,8 @@ class ManagerIndex extends React.Component {
                     <tr>
                       <th scope="col">Name</th>
                       <th scope="col">Role</th>
-                      <th scope="col">Assigned List</th>
-                      <th scope="col">Assigned Audit</th>
+                      <th scope="col">Assigned Workflows</th>
+                      <th scope="col">Assigned Articles</th>
                       <th scope="col"></th>
                     </tr>
                   </thead>
@@ -641,10 +642,10 @@ class ManagerIndex extends React.Component {
                         <tr>
                           <th scope="row">{user.name}</th>
                           <td>
-                            <h3><span className="badge badge-primary">Supervisor</span></h3>
+                            <h3><span className="badge badge-primary"> Reception</span></h3>
                           </td>
-                          <td>2</td>
-                          <td>3</td>
+                          <td>{user.assignedWorkflows}</td>
+                          <td>{user.assignedArticles}</td>
                           <td>
                             <Button
                               color="primary"
