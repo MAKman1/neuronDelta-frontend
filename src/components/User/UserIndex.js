@@ -73,7 +73,7 @@ class UserIndex extends React.Component {
 
     if (clientId != null && userId != null) {
       let data = new FormData();
-      
+
       data.append("clientId", clientId);
       data.append("userId", userId);
       data.append("documentId", this.state.documents[index].id);
@@ -134,7 +134,7 @@ class UserIndex extends React.Component {
                   </thead>
                   <tbody>
                     {this.state.articles.map(a => {
-                      {this.state.pathname = '/user/view/article/' + a.id}
+                      { this.state.pathname = '/user/view/article/' + a.id }
                       return (
                         <tr>
                           <th scope="row">{a.name}</th>
@@ -147,18 +147,18 @@ class UserIndex extends React.Component {
                       </td>
                           <td className="text-center">
                             <Link to={{
-                                    pathname: this.state.pathname,
-                                    state: {
-                                      name: "Food Quality 1.3"
-                                    }
-                                  }}>
-                                <Button
-                                  color="primary"
-                                  size="sm"
-                                >
-                                  View
+                              pathname: this.state.pathname,
+                              state: {
+                                name: "Food Quality 1.3"
+                              }
+                            }}>
+                              <Button
+                                color="primary"
+                                size="sm"
+                              >
+                                View
                                 </Button>
-                              </Link>
+                            </Link>
                           </td>
                         </tr>
                       )
@@ -175,7 +175,7 @@ class UserIndex extends React.Component {
                       <h3 className="mb-0">Assigned Documents</h3>
                     </div>
                     <div className="col text-right">
-                    <Link to={{
+                      <Link to={{
                         pathname: '/user/docs',
                       }} style={{ paddingRight: 5 }}>
                         <Button
@@ -270,14 +270,17 @@ class UserIndex extends React.Component {
                             {w.progress} %
                       </td>
                           <td className="text-center">
-                            <Button
-                              color="primary"
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
-                              size="sm"
-                            >
-                              View
-                        </Button>
+                            <Link to={{
+                              pathname: 'user/view/document/1'
+                            }}>
+                              <Button
+                                color="primary"
+                                href="#pablo"
+                                size="sm"
+                              >
+                                View
+                              </Button>
+                            </Link>
                           </td>
                         </tr>
                       )
