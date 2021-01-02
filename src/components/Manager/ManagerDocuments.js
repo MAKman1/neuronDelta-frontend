@@ -246,7 +246,7 @@ class ManagerDocuments extends React.Component {
                         <Col xl="auto">
                           <Dropdown isOpen={this.state.toggleDropdown} toggle={() => this.toggleModal("toggleDropdown")}>
                             <DropdownToggle caret>
-                              Select Roles
+                              
                               </DropdownToggle>
                             <DropdownMenu>
                               <DropdownItem disabled>Reception</DropdownItem>
