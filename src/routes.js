@@ -22,6 +22,7 @@ import Audit from "components/User/Views/Audit.js"
 import Document from "components/User/Views/Document.js"
 import Workflows from "components/User/Views/Workflows.js"
 import Profile from "components/User/Views/Profile.js";
+import ViewDocument from "components/Shared/ViewDocument";
 
 
 
@@ -98,6 +99,12 @@ var routes = [
     component: ViewArticle,
     layout: "/manager/view"
   },
+  {
+	path: "/document/:documentId",
+	name: "documentView",
+    component: ViewDocument,
+    layout: "/manager/view"
+  },
 
   //View docs user
   {
@@ -106,6 +113,13 @@ var routes = [
     component: ViewArticle,
     layout: "/user/view"
   },
+  {
+	path: "/document/:documentId",
+	name: "documentView",
+    component: ViewDocument,
+    layout: "/user/view"
+  },
+
 
 
   // User
