@@ -83,6 +83,12 @@ class ManagerDocuments extends React.Component {
     });
   }
 
+  closeRoleModal = () => {
+    this.setState({
+      roleModel: false,
+    })
+  }
+
   handleUpload = () => {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
@@ -246,8 +252,8 @@ class ManagerDocuments extends React.Component {
                         <Col xl="auto">
                           <Dropdown isOpen={this.state.toggleDropdown} toggle={() => this.toggleModal("toggleDropdown")}>
                             <DropdownToggle caret>
-                              
-                              </DropdownToggle>
+
+                            </DropdownToggle>
                             <DropdownMenu>
                               <DropdownItem disabled>Reception</DropdownItem>
                               <DropdownItem>Human Resources</DropdownItem>
@@ -264,7 +270,7 @@ class ManagerDocuments extends React.Component {
                         color="secondary"
                         data-dismiss="modal"
                         type="button"
-                        onClick={() => this.toggleModal("roleModel")}
+                        onClick={() => this.closeRoleModal()}
                       >
                         Cancel
                           </Button>
@@ -300,14 +306,17 @@ class ManagerDocuments extends React.Component {
                         </Button>
                           </td>
                           <td>
-                            <Button
-                              color="primary"
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
-                              size="sm"
-                            >
-                              View
-                        </Button>
+                            <Link to={{
+                              pathname: 'manager/view/document/2'
+                            }}>
+                              <Button
+                                color="primary"
+                                href="#pablo"
+                                size="sm"
+                              >
+                                View
+                              </Button>
+                            </Link>
                           </td>
                         </tr>
                       )

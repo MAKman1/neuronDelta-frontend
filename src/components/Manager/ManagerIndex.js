@@ -89,9 +89,17 @@ class ManagerIndex extends React.Component {
   toggleModal = (state, index = null) => {
     this.setState({
       [state]: !this.state[state],
-      documentIndex: index
+      documentIndex: index,
     });
   };
+
+  closeRoleModal = () => {
+    this.setState({
+      currentRole: null,
+      roleModel: false,
+      documentIndex: null
+    })
+  }
 
   toggleDropdown = (state) => {
     this.setState({
@@ -379,20 +387,17 @@ class ManagerIndex extends React.Component {
                         </Button>
                           </td>
                           <td>
-                            <div className="col text-right">
-                              <Link to={{
-                                pathname: 'google.com'
-                              }}>
-                                <Button
-                                  color="primary"
-                                  href="#pablo"
-                                  onClick={e => e.preventDefault()}
-                                  size="sm"
-                                >
-                                  View
+                            <Link to={{
+                              pathname: 'manager/view/document/2'
+                            }}>
+                              <Button
+                                color="primary"
+                                href="#pablo"
+                                size="sm"
+                              >
+                                View
                                 </Button>
-                              </Link>
-                            </div>
+                            </Link>
                           </td>
                         </tr>
                       )
@@ -468,7 +473,7 @@ class ManagerIndex extends React.Component {
                         color="secondary"
                         data-dismiss="modal"
                         type="button"
-                        onClick={() => this.toggleModal("roleModel")}
+                        onClick={() => this.closeRoleModal()}
                       >
                         Cancel
                           </Button>

@@ -2,6 +2,7 @@
 import React from "react";
 import { reactLocalStorage } from 'reactjs-localstorage';
 import axios from 'axios';
+import { Link } from "react-router-dom";
 import { constants } from '../../../constants.js';
 // reactstrap components
 import {
@@ -114,14 +115,17 @@ class Workflows extends React.Component {
                             }
                           </td>
                           <td className="text-center">
-                            <Button
-                              color="primary"
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
-                              size="sm"
-                            >
-                              View
-                        </Button>
+                            <Link to={{
+                              pathname: 'user/view/document/1'
+                            }}>
+                              <Button
+                                color="primary"
+                                href="#pablo"
+                                size="sm"
+                              >
+                                View
+                              </Button>
+                            </Link>
                           </td>
                         </tr>
                       )
