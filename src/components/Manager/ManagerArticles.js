@@ -73,10 +73,7 @@ class ManagerArticles extends React.Component {
     }
   }
 
-  viewArticle = (articleId) => {
-    //console.warn("MEW")
-    this.props.history.push("/manager/view/"+articleId);
-  }
+
 
   handleSelect = (username) => {
     console.warn('fuck');
@@ -131,7 +128,8 @@ class ManagerArticles extends React.Component {
   render() {
     return (
       <>
-        <EmptyHeader />
+        <EmptyHeader />'
+      
 
         {/* Page content */}
         <Container className="mt--7" fluid>
@@ -264,7 +262,6 @@ class ManagerArticles extends React.Component {
                             </div>
                           </Modal>
                           </td>
-
 
                        </tr>
                      )
