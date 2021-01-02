@@ -444,16 +444,14 @@ class ManagerIndex extends React.Component {
                             </DropdownToggle>
                             <DropdownMenu>
                               {this.state.roles.map((role, index) => {
-                                if (this.state.documents[this.state.documentIndex] != null && this.state.documents[this.state.documentIndex].userRoles.includes(role)) {
-                                  console.warn('stufff '  + this.state.documents[this.state.documentIndex].userRoles);
+                                if (this.state.documents[this.state.documentIndex] != null && this.state.documents[this.state.documentIndex].userRoles.some(r => r.id === role.id)) {
                                   return (
-                                    <DropdownItem key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
+                                    <DropdownItem disabled key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
                                   )
                                 }
                                 else {
-                                  // console.warn(this.state.documents[this.state.documentIndex].userRoles);
                                   return (
-                                    <DropdownItem disabled key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
+                                    <DropdownItem key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
                                   )
                                 }
                               })}
@@ -472,7 +470,7 @@ class ManagerIndex extends React.Component {
                         Cancel
                           </Button>
                       <Button onClick={() => this.addRole()} color="success" type="button">
-                        Save
+                        Add Role
                           </Button>
                     </div>
                   </Modal>
