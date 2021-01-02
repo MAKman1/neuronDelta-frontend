@@ -39,6 +39,7 @@ class ManagerIndex extends React.Component {
       documents: [],
       articles: [],
       workflows: [],
+      roles: [],
       users: [],
       documentName: '',
       documentDesc: '',
@@ -71,7 +72,8 @@ class ManagerIndex extends React.Component {
             documents: data.documents,
             articles: data.articles,
             workflows: data.workflows,
-            users: data.users
+            users: data.users,
+            roles: data.roles
           })
         })
         .catch((error) => {
@@ -338,11 +340,11 @@ class ManagerIndex extends React.Component {
                               Select Roles
                               </DropdownToggle>
                             <DropdownMenu>
-                              <DropdownItem disabled>Reception</DropdownItem>
-                              <DropdownItem>Human Resources</DropdownItem>
-                              <DropdownItem>Supervisor</DropdownItem>
-                              <DropdownItem>Finance Head</DropdownItem>
-                              <DropdownItem>Dormitory Manager</DropdownItem>
+                              {this.state.roles.map( role => {
+                                return (
+                                  <DropdownItem>{role.name}</DropdownItem>
+                                )
+                              })}
                             </DropdownMenu>
                           </Dropdown>
                         </Col>

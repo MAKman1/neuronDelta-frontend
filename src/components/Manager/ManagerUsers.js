@@ -42,7 +42,7 @@ class ManagerUsers extends React.Component {
         "clientId": clientId,
         "userId": userId
       }
-      axios.post(constants["apiUrl"] + '/user/get', data)
+      axios.post(constants["apiUrl"] + '/user/getAll', data)
         .then((res) => {
           let data = res.data;
           //console.warn(JSON.stringify(data));

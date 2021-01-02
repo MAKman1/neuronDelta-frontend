@@ -27,25 +27,51 @@ class Workflows extends React.Component {
   componentDidMount() {
     //Check if auth token in valid
     let userId = reactLocalStorage.get('userId', true);
-    let clientId = reactLocalStorage.get('clientId', true);
 
-    if (clientId != null && userId != null) {
+    if (userId != null) {
       const data = {
         "userId": userId
       }
-      axios.post(constants["apiUrl"] + 'documents/getAssigned', data)
+      axios.post(constants["apiUrl"] + '/documents/getAssigned', data)
         .then((res) => {
           let data = res.data;
           console.warn(JSON.stringify(data));
-          // this.setState({
-          //   documents: data.documents,
-          // })
+          this.setState({
+            documents: data.documents,
+          })
         })
         .catch((error) => {
           console.warn(JSON.stringify(error));
         });
     } else {
       //TODO: go back to login
+    }
+  }
+
+  acceptDocument(index) {
+    this.state.documents[index].accepted = true;
+    this.forceUpdate();
+
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    if (clientId != null && userId != null) {
+      let data = new FormData();
+
+      console.warn("client ID: " + clientId);
+
+      data.append("clientId", clientId);
+      data.append("userId", userId);
+      data.append("documentId", this.state.documents[index].id);
+
+      axios.post(constants["apiUrl"] + '/documents/accept', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(JSON.stringify(data));
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
     }
   }
 
@@ -76,13 +102,17 @@ class Workflows extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.documents.map(doc => {
+                    {this.state.documents.map((doc, index) => {
                       return (
-                        <tr>
+                        <tr key={index}>
                           <th scope="row">{doc.name}</th>
                           <td>{doc.size} KB</td>
                           <th >Denver Louis</th>
-                          <td className="text-center"><i class="fas fa-check"></i></td>
+                          <td className="text-center">
+                            {doc.accepted ? <i class="fas fa-check"></i>
+                              : <Button color="success" href="#pablo" onClick={() => this.acceptDocument(index)} size="sm"> Accept </Button>
+                            }
+                          </td>
                           <td className="text-center">
                             <Button
                               color="primary"

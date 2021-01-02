@@ -64,6 +64,31 @@ class UserIndex extends React.Component {
     }
   }
 
+  acceptDocument(index) {
+    this.state.documents[index].accepted = true;
+    this.forceUpdate();
+
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    if (clientId != null && userId != null) {
+      let data = new FormData();
+      
+      data.append("clientId", clientId);
+      data.append("userId", userId);
+      data.append("documentId", this.state.documents[index].id);
+
+      axios.post(constants["apiUrl"] + '/documents/accept', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(JSON.stringify(data));
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    }
+  }
+
   render() {
     return (
       <>
