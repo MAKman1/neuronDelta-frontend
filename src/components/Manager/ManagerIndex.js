@@ -315,9 +315,6 @@ class ManagerIndex extends React.Component {
                               <textarea class="form-control" id="message-text"></textarea>
                             </div>
                             <div className="align-items-center">
-                              {/* <Button color="primary" type="button">
-                                Choose File
-                            </Button> */}
                               <input type="file" name="file" onChange={e => this.chooseFile(e)} />
                             </div>
                           </form>
@@ -382,14 +379,20 @@ class ManagerIndex extends React.Component {
                         </Button>
                           </td>
                           <td>
-                            <Button
-                              color="primary"
-                              href="#pablo"
-                              onClick={e => e.preventDefault()}
-                              size="sm"
-                            >
-                              View
-                        </Button>
+                            <div className="col text-right">
+                              <Link to={{
+                                pathname: 'google.com'
+                              }}>
+                                <Button
+                                  color="primary"
+                                  href="#pablo"
+                                  onClick={e => e.preventDefault()}
+                                  size="sm"
+                                >
+                                  View
+                                </Button>
+                              </Link>
+                            </div>
                           </td>
                         </tr>
                       )
