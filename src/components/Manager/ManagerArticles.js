@@ -15,7 +15,12 @@ import {
   Table,
   Container,
   Row,
-  Col
+  Col,
+  Modal,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from "reactstrap";
 
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
@@ -27,11 +32,14 @@ class ManagerArticles extends React.Component {
     super(props);
     
     this.state = {
-      documentModel: false,
+      assignModel: false,
       roleModel: false,
       toggleDropdown: false,
+      modelName: '',
       name: "None",
-      articles: []
+      articles: [],
+      selected: 'Select User',
+      users: []
       
     };
     
@@ -59,29 +67,69 @@ class ManagerArticles extends React.Component {
         .catch((error) => {
           console.warn(JSON.stringify(error));
         });
+      
     } else {
       //TODO: go back to login
     }
   }
 
-  viewArticle = (articleId) => {
-    //console.warn("MEW")
-    this.props.history.push("/manager/view/"+articleId);
+
+
+  handleSelect = (username) => {
+    console.warn('fuck');
+    this.setState({
+      selected: username
+    });
   }
+
+
 
 
  
   toggleModal = state => {
     console.log(state);
     this.setState({
-      [state]: !this.state[state]
+      [state]: !this.state[state],
     });
+    let userId = reactLocalStorage.get('userId', true);
+    let clientId = reactLocalStorage.get('clientId', true);
+
+    //console.warn('user ' + userId + 'client ' + clientId);
+
+    if (clientId != null && userId != null) {
+      const data = {
+        "clientId": clientId,
+      }
+      axios.post(constants["apiUrl"] + '/user/get', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(JSON.stringify(data));
+          this.setState({
+            users: data.users,
+          })
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+      
+    } else {
+      //TODO: go back to login
+    }
+  };
+
+  toggleModalDrop = state => {
+    console.log(state);
+    this.setState({
+      [state]: !this.state[state],
+    });
+
   };
 
   render() {
     return (
       <>
-        <EmptyHeader />
+        <EmptyHeader />'
+      
 
         {/* Page content */}
         <Container className="mt--7" fluid>
@@ -108,12 +156,12 @@ class ManagerArticles extends React.Component {
                       <th scope="col">Standards</th>
                       <th scope="col">Progress</th>
                       <th scope="col"></th>
+                      <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
                     
                    {this.state.articles.map(article => {
-                     
                      return (
                        <tr>
                          <th scope="row">{article.name}</th>
@@ -146,6 +194,75 @@ class ManagerArticles extends React.Component {
                                 </Button>
                               </Link>
                           </td>
+
+                          <td> 
+                          <Button
+                            color="success"
+                            href="#add document"
+                            onClick={() => this.toggleModal("assignModel")}
+                            size="sm"
+                          >
+                            Assign
+                          </Button>
+                          <Modal
+                            className="modal-dialog-centered"
+                            isOpen={this.state.assignModel}
+                            defaultValue = {article.id}
+                            toggle={() => this.toggleModal("assignModel")}
+                          >
+                            <div className="modal-header">
+                              <h2 className="modal-title" id="assignModelLabel">
+                                Article {this.state.articleName}
+                              </h2>
+                              <button
+                                aria-label="Close"
+                                className="close"
+                                data-dismiss="modal"
+                                type="button"
+                                onClick={() => this.toggleModal("assignModel")}
+                              >
+                                <span aria-hidden={true}>×</span>
+                              </button>
+                            </div>
+                            <div className="modal-body">
+                            <Row className="justify-content-md-center">
+                              <Col xl="auto">
+                                <Dropdown isOpen={this.state.toggleDropdown} toggle={() => this.toggleModalDrop("toggleDropdown")}>
+                                  <DropdownToggle caret>
+                                    {this.state.selected}
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+
+                                    {this.state.users.map(user => {
+                                      return (
+                                        <DropdownItem onClick={() => this.handleSelect(user.name)}>
+                                         {user.name}
+                                        </DropdownItem>
+                                      )
+                                    })}
+                                    </DropdownMenu>
+
+                                  
+                                </Dropdown>
+                              </Col>
+                            </Row>
+                            </div>
+                            <div className="modal-footer">
+                              <Button
+                                color="secondary"
+                                data-dismiss="modal"
+                                type="button"
+                                onClick={() => this.toggleModal("assignModel")}
+                              >
+                                Cancel
+                              </Button>
+                              <Button color="success" type="button" >
+                                Assign
+                              </Button>
+                            </div>
+                          </Modal>
+                          </td>
+
                        </tr>
                      )
                    })}
