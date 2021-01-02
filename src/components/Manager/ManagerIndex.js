@@ -451,7 +451,7 @@ class ManagerIndex extends React.Component {
                                   )
                                 }
                                 else {
-                                  // console.warn(this.state.documents[this.state.documentIndex].userRoles);
+                                  console.warn(this.state.documents[this.state.documentIndex].userRoles);
                                   return (
                                     <DropdownItem disabled key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
                                   )
