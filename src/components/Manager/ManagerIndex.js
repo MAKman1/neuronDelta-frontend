@@ -590,7 +590,7 @@ class ManagerIndex extends React.Component {
                             {/* {w.assignedBy} */}
                             John Smith
                           </td>
-                          <td>12/07/2020</td>
+                          <td>-</td>
                           <td>
                             {w.standard.name}
                           </td>

@@ -20,7 +20,7 @@ import {
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
 // import Roles from "./Popups/Roles.js"
 
-class ManagerIndex extends React.Component {
+class ViewArticle extends React.Component {
 
 	articleId = this.props.match.params.articleId;
 
@@ -283,4 +283,4 @@ class ManagerIndex extends React.Component {
 	}
 }
 
-export default ManagerIndex;
+export default ViewArticle;

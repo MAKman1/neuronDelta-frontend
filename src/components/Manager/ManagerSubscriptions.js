@@ -36,7 +36,7 @@ class ManagerSubscriptions extends React.Component {
 
     if (clientId != null && userId != null) {
       const data = {
-        "clientId": clientId,
+        "clientId": clientId
       }
       axios.post(constants["apiUrl"] + '/subscriptions/get', data)
         .then((res) => {
@@ -81,52 +81,16 @@ class ManagerSubscriptions extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">Food Legislation</th>
-                      <td>
-                        12/07/2020
-                      </td>
-                      <td>Food Quality 1.3</td>
-                      <td>
-                      <Button
-                          color="success"
-                          size="sm"
-                        >
-                        View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Health Guidelines</th>
-                      <td>
-                        12/07/2020
-                      </td>
-                      <td>Customer Safety 1.4</td>
-                      <td>
-                      <Button
-                          color="success"
-                          size="sm"
-                        >
-                        View
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Kitchen Standard</th>
-                      <td>
-                        12/07/2020
-                      </td>
-                      <td>Food Quality 1.3</td>
-                      <td>
-                      <Button
-                          color="success"
-                          size="sm"
-                        >
-                        View
-                        </Button>
-                      </td>
-                    </tr>
-                    
+                    {this.state.subscriptions.map(subs => {
+                        return(
+                          <tr scope="row">
+                            <th>{subs.standard.name}</th>
+                            <td>{subs.notes}</td>
+                            <td>{subs.standard.version}</td>
+                          </tr>
+                        )
+                    })}
+
                   </tbody>
                 </Table>
               </Card>
