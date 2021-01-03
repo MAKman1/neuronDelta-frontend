@@ -287,7 +287,6 @@ class ManagerIndex extends React.Component {
                       </Link>
                       <Button
                         color="success"
-                        href="#add document"
                         onClick={() => this.toggleModal("documentModel")}
                         size="sm"
                       >
