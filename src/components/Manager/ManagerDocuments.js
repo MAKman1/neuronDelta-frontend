@@ -140,7 +140,6 @@ class ManagerDocuments extends React.Component {
                     <div className="col text-right">
                       <Button
                         color="success"
-                        href="#add document"
                         onClick={() => this.toggleModal("documentModel")}
                         size="sm"
                       >
@@ -307,11 +306,10 @@ class ManagerDocuments extends React.Component {
                           </td>
                           <td>
                             <Link to={{
-                              pathname: 'manager/view/document/2'
+                              pathname: '/manager/view/document/' + doc.id
                             }}>
                               <Button
                                 color="primary"
-                                href="#pablo"
                                 size="sm"
                               >
                                 View

@@ -223,7 +223,7 @@ class ViewArticle extends React.Component {
 														</td>
 														<td>
 															{c.progress == null ? null
-																: (c.progress.document_id == null ? <Button color="success" href="#add document" onClick={() => this.toggleModal("documentModel", index)} size="sm"> Add Document </Button> : <Button color="primary" size="sm"> View Document </Button>)
+																: (c.progress.document_id == null ? <Button color="success" onClick={() => this.toggleModal("documentModel", index)} size="sm"> Add Document </Button> : <Button color="primary" size="sm"> View Document </Button>)
 															}
 														</td>
 													</tr>

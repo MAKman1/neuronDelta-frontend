@@ -116,7 +116,7 @@ class Workflows extends React.Component {
                           </td>
                           <td className="text-center">
                             <Link to={{
-                              pathname: 'user/view/document/1'
+                              pathname: '/user/view/document/' + doc.id
                             }}>
                               <Button
                                 color="primary"
