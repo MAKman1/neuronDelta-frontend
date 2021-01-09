@@ -11,19 +11,22 @@ import {
   Button,
   Card,
   CardHeader,
+  CardBody,
   Table,
   Container,
   Row,
-  Col
+  Col,
+  Spinner
 } from "reactstrap";
 
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
 
 class ManagerSubscriptions extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      subscriptions: []
+      subscriptions: [],
+      loading: true
     };
   }
 
@@ -44,6 +47,7 @@ class ManagerSubscriptions extends React.Component {
           console.warn(JSON.stringify(data));
           this.setState({
             subscriptions: data.subscriptions,
+            loading: false
           })
         })
         .catch((error) => {
@@ -60,7 +64,7 @@ class ManagerSubscriptions extends React.Component {
         <EmptyHeader />
         {/* Page content */}
         <Container className="mt--7" fluid>
-        <Row className="mt-5">
+          <Row className="mt-5">
             <Col className="mb-5 mb-xl-0" xl="12">
               <Card className="shadow">
                 <CardHeader className="border-0">
@@ -68,31 +72,37 @@ class ManagerSubscriptions extends React.Component {
                     <div className="col">
                       <h3 className="mb-0">Subscriptions</h3>
                     </div>
-
                   </Row>
                 </CardHeader>
-                <Table className="align-items-center table-flush">
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">Subscribed On</th>
-                      <th scope="col">Version</th>
-                      <th scope="col"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.subscriptions.map(subs => {
-                        return(
+                {this.state.loading ?
+                  <CardBody>
+                    <div style={{ borderColor: 'black' }} className="text-center">
+                      <Spinner st color="primary" />
+                    </div>
+                  </CardBody>
+                  :
+                  <Table className="align-items-center table-flush">
+                    <thead className="thead-light">
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Subscribed On</th>
+                        <th scope="col">Version</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.subscriptions.map(subs => {
+                        return (
                           <tr scope="row">
                             <th>{subs.standard.name}</th>
                             <td>{subs.notes}</td>
                             <td>{subs.standard.version}</td>
                           </tr>
                         )
-                    })}
-
-                  </tbody>
-                </Table>
+                      })}
+                    </tbody>
+                  </Table>
+                }
               </Card>
             </Col>
           </Row>

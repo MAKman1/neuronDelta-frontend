@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   CardHeader,
+  CardBody,
   Table,
   Container,
   Row,
@@ -17,7 +18,8 @@ import {
   Dropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Spinner
 } from "reactstrap";
 
 
@@ -29,7 +31,8 @@ class ManagerDocuments extends React.Component {
     this.state = {
       documentModel: false,
       documents: [],
-      uploadDocument: null
+      uploadDocument: null,
+      loading: true
     };
   }
 
@@ -51,6 +54,7 @@ class ManagerDocuments extends React.Component {
           console.warn(JSON.stringify(data.documents));
           this.setState({
             documents: data.documents,
+            loading: false
           })
         })
         .catch((error) => {
@@ -199,128 +203,136 @@ class ManagerDocuments extends React.Component {
                     </div>
                   </Row>
                 </CardHeader>
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">Size</th>
-                      <th scope="col">Uploaded On</th>
-                      <th scope="col">Accepted</th>
-                      <th scope="col">Assigned Roles</th>
-                      <th scope="col"></th>
-                      <th scope="col"></th>
-                    </tr>
-                  </thead>
-                  <Modal
-                    size="sm"
-                    className="modal-dialog-centered"
-                    isOpen={this.state.roleModel}
-                    toggle={() => this.toggleModal("roleModel")}
-                  >
-                    <div className="modal-header">
-                      <h2 className="modal-title" id="roleModelLabel">
-                        Add/Remove Role
+                {this.state.loading ?
+                  <CardBody>
+                    <div style={{borderColor: 'black'}} className="text-center">
+                      <Spinner st color="primary" />
+                    </div>
+                  </CardBody>
+                  :
+                  <Table className="align-items-center table-flush" responsive>
+                    <thead className="thead-light">
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Size</th>
+                        <th scope="col">Uploaded On</th>
+                        <th scope="col">Accepted</th>
+                        <th scope="col">Assigned Roles</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <Modal
+                      size="sm"
+                      className="modal-dialog-centered"
+                      isOpen={this.state.roleModel}
+                      toggle={() => this.toggleModal("roleModel")}
+                    >
+                      <div className="modal-header">
+                        <h2 className="modal-title" id="roleModelLabel">
+                          Add/Remove Role
                           </h2>
-                      <button
-                        aria-label="Close"
-                        className="close"
-                        data-dismiss="modal"
-                        type="button"
-                        onClick={() => this.toggleModal("roleModel")}
-                      >
-                        <span aria-hidden={true}>×</span>
-                      </button>
-                    </div>
-                    <div className="modal-body">
-                      <Row>
-                        <Col sm="auto">
-                          <h4><span class="badge badge-primary">Reception</span>
-                            <button
-                              aria-label="Close"
-                              className="close"
-                              data-dismiss="modal"
-                              type="button"
-                            >
-                              <span class="badge badge-warning" aria-hidden={true}>×</span>
-                            </button>
-                          </h4>
-                        </Col>
-                      </Row>
-                      <br></br>
-                      <Row className="justify-content-md-center">
-                        <Col xl="auto">
-                          <Dropdown isOpen={this.state.toggleDropdown} toggle={() => this.toggleModal("toggleDropdown")}>
-                            <DropdownToggle caret>
+                        <button
+                          aria-label="Close"
+                          className="close"
+                          data-dismiss="modal"
+                          type="button"
+                          onClick={() => this.toggleModal("roleModel")}
+                        >
+                          <span aria-hidden={true}>×</span>
+                        </button>
+                      </div>
+                      <div className="modal-body">
+                        <Row>
+                          <Col sm="auto">
+                            <h4><span class="badge badge-primary">Reception</span>
+                              <button
+                                aria-label="Close"
+                                className="close"
+                                data-dismiss="modal"
+                                type="button"
+                              >
+                                <span class="badge badge-warning" aria-hidden={true}>×</span>
+                              </button>
+                            </h4>
+                          </Col>
+                        </Row>
+                        <br></br>
+                        <Row className="justify-content-md-center">
+                          <Col xl="auto">
+                            <Dropdown isOpen={this.state.toggleDropdown} toggle={() => this.toggleModal("toggleDropdown")}>
+                              <DropdownToggle caret>
 
-                            </DropdownToggle>
-                            <DropdownMenu>
-                              <DropdownItem disabled>Reception</DropdownItem>
-                              <DropdownItem>Human Resources</DropdownItem>
-                              <DropdownItem>Supervisor</DropdownItem>
-                              <DropdownItem>Finance Head</DropdownItem>
-                              <DropdownItem>Dormitory Manager</DropdownItem>
-                            </DropdownMenu>
-                          </Dropdown>
-                        </Col>
-                      </Row>
-                    </div>
-                    <div className="modal-footer">
-                      <Button
-                        color="secondary"
-                        data-dismiss="modal"
-                        type="button"
-                        onClick={() => this.closeRoleModal()}
-                      >
-                        Cancel
+                              </DropdownToggle>
+                              <DropdownMenu>
+                                <DropdownItem disabled>Reception</DropdownItem>
+                                <DropdownItem>Human Resources</DropdownItem>
+                                <DropdownItem>Supervisor</DropdownItem>
+                                <DropdownItem>Finance Head</DropdownItem>
+                                <DropdownItem>Dormitory Manager</DropdownItem>
+                              </DropdownMenu>
+                            </Dropdown>
+                          </Col>
+                        </Row>
+                      </div>
+                      <div className="modal-footer">
+                        <Button
+                          color="secondary"
+                          data-dismiss="modal"
+                          type="button"
+                          onClick={() => this.closeRoleModal()}
+                        >
+                          Cancel
                           </Button>
-                      <Button color="success" type="button">
-                        Save
+                        <Button color="success" type="button">
+                          Save
                           </Button>
-                    </div>
-                  </Modal>
-                  <tbody>
-                    {this.state.documents.map(doc => {
-                      // const date = moment(doc.updated_at).format('DD MMM, YYYY');
-                      const date = new Date(doc.updated_at).toLocaleString();
-                      return (
-                        <tr>
-                          <th scope="row">{doc.name}</th>
-                          <td>{doc.size} KB</td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <span className="mr-2">{date}</span>
-                            </div>
-                          </td>
-                          <td>{doc.acceptedCount}/{doc.acceptedTotal}</td>
-                          <td>
-                            <h4><span className="badge badge-primary">Reception</span></h4>
-                          </td>
-                          <td>
-                            <Button
-                              color="primary"
-                              onClick={() => this.toggleModal("roleModel")}
-                              size="sm"
-                            >
-                              Edit
-                        </Button>
-                          </td>
-                          <td>
-                            <Link to={{
-                              pathname: '/manager/view/document/' + doc.id
-                            }}>
+                      </div>
+                    </Modal>
+                    <tbody>
+                      {this.state.documents.map(doc => {
+                        // const date = moment(doc.updated_at).format('DD MMM, YYYY');
+                        const date = new Date(doc.updated_at).toLocaleString();
+                        return (
+                          <tr>
+                            <th scope="row">{doc.name}</th>
+                            <td>{doc.size} KB</td>
+                            <td>
+                              <div className="d-flex align-items-center">
+                                <span className="mr-2">{date}</span>
+                              </div>
+                            </td>
+                            <td>{doc.acceptedCount}/{doc.acceptedTotal}</td>
+                            <td>
+                              <h4><span className="badge badge-primary">Reception</span></h4>
+                            </td>
+                            <td>
                               <Button
                                 color="primary"
+                                onClick={() => this.toggleModal("roleModel")}
                                 size="sm"
                               >
-                                View
+                                Edit
+                        </Button>
+                            </td>
+                            <td>
+                              <Link to={{
+                                pathname: '/manager/view/document/' + doc.id
+                              }}>
+                                <Button
+                                  color="primary"
+                                  size="sm"
+                                >
+                                  View
                               </Button>
-                            </Link>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </Table>
+                              </Link>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </Table>
+                }
               </Card>
             </Col>
           </Row>

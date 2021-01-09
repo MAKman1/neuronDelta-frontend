@@ -10,10 +10,12 @@ import {
 	Button,
 	Card,
 	CardHeader,
+	CardBody,
 	Table,
 	Container,
 	Row,
-	Col
+	Col,
+	Spinner
 } from "reactstrap";
 
 import Header from "components/User/Headers/DashboardHeader.js";
@@ -27,7 +29,8 @@ class UserIndex extends React.Component {
 			assignedDocs: 0,
 			articles: [],
 			documents: [],
-			assignedWorkflows: []
+			assignedWorkflows: [],
+			loading: true
 		};
 	}
 
@@ -53,7 +56,8 @@ class UserIndex extends React.Component {
 						assignedDocs: data.assignedDocuments,
 						articles: data.assignedArticles,
 						documents: data.documents,
-						assignedWorkflows: data.assignedWorkflows
+						assignedWorkflows: data.assignedWorkflows,
+						loading: false
 					})
 				})
 				.catch((error) => {
@@ -111,60 +115,62 @@ class UserIndex extends React.Component {
 											<Link to={{
 												pathname: '/user/audit',
 											}} style={{ paddingRight: 5 }}>
-												<Button
-													color="primary"
-													size="sm"
-												>
+												<Button color="primary" size="sm">
 													See All
-                        </Button>
+                        						</Button>
 											</Link>
 										</div>
 									</Row>
 								</CardHeader>
-								<Table className="align-items-center table-flush" responsive>
-									<thead className="thead-light">
-										<tr>
-											<th scope="col">Name</th>
-											<th scope="col">Assigned By</th>
-											<th scope="col">Due By</th>
-											<th scope="col">Standard</th>
-											<th scope="col">Progress</th>
-											<th scope="col"></th>
-										</tr>
-									</thead>
-									<tbody>
-										{this.state.articles.map(a => {
-											{ this.state.pathname = '/user/view/article/' + a.id }
-											return (
-												<tr>
-													<th scope="row">{a.name}</th>
-													<td>{a.assignedBy.name}</td>
-													<td>12-2-2020</td>
-													<td>{a.standard.name}</td>
-													<td>
-														<i className="fas fa-arrow-up text-success mr-3" />{" "}
-														{a.progress} %
-                      </td>
-													<td className="text-center">
-														<Link to={{
-															pathname: this.state.pathname,
-															state: {
-																name: "Food Quality 1.3"
-															}
-														}}>
-															<Button
-																color="primary"
-																size="sm"
-															>
-																View
-                                </Button>
-														</Link>
-													</td>
-												</tr>
-											)
-										})}
-									</tbody>
-								</Table>
+								{this.state.loading ?
+									<CardBody>
+										<div style={{ borderColor: 'black' }} className="text-center">
+											<Spinner st color="primary" />
+										</div>
+									</CardBody>
+									:
+									<Table className="align-items-center table-flush" responsive>
+										<thead className="thead-light">
+											<tr>
+												<th scope="col">Name</th>
+												<th scope="col">Assigned By</th>
+												<th scope="col">Due By</th>
+												<th scope="col">Standard</th>
+												<th scope="col">Progress</th>
+												<th scope="col"></th>
+											</tr>
+										</thead>
+										<tbody>
+											{this.state.articles.map(a => {
+												{ this.state.pathname = '/user/view/article/' + a.id }
+												return (
+													<tr>
+														<th scope="row">{a.name}</th>
+														<td>{a.assignedBy.name}</td>
+														<td>12-2-2020</td>
+														<td>{a.standard.name}</td>
+														<td>
+															<i className="fas fa-arrow-up text-success mr-3" />{" "}
+															{a.progress} %
+                      									</td>
+														<td className="text-center">
+															<Link to={{
+																pathname: this.state.pathname,
+																state: {
+																	name: "Food Quality 1.3"
+																}
+															}}>
+																<Button color="primary" size="sm">
+																	View
+                               								 	</Button>
+															</Link>
+														</td>
+													</tr>
+												)
+											})}
+										</tbody>
+									</Table>
+								}
 							</Card>
 						</Col>
 						<Col xl="5">
@@ -178,51 +184,53 @@ class UserIndex extends React.Component {
 											<Link to={{
 												pathname: '/user/docs',
 											}} style={{ paddingRight: 5 }}>
-												<Button
-													color="primary"
-													size="sm"
-												>
+												<Button color="primary" size="sm">
 													See All
-                        </Button>
+                        						</Button>
 											</Link>
 										</div>
 									</Row>
 								</CardHeader>
-								<Table className="align-items-center table-flush" responsive>
-									<thead className="thead-light">
-										<tr>
-											<th scope="col">Name</th>
-											<th scope="col">File Size</th>
-											<th scope="col">Assigned By</th>
-											<th className="text-center" scope="col">Accepted</th>
-											<th className="text-center" scope="col">File</th>
-										</tr>
-									</thead>
-									<tbody>
-										{this.state.documents.map(doc => {
-											return (
-												<tr>
-													<th scope="row">{doc.name}</th>
-													<td>{doc.size} KB</td>
-													<th >{doc.assignedBy.name}</th>
-													<td className="text-center"><i class="fas fa-check"></i></td>
-													<td className="text-center">
-														<Link to={{
-															pathname: '/user/view/document/' + doc.id
-														}}>
-															<Button
-																color="primary"
-																size="sm"
-															>
-																View
-                              </Button>
-														</Link>
-													</td>
-												</tr>
-											)
-										})}
-									</tbody>
-								</Table>
+								{this.state.loading ?
+									<CardBody>
+										<div style={{ borderColor: 'black' }} className="text-center">
+											<Spinner st color="primary" />
+										</div>
+									</CardBody>
+									:
+									<Table className="align-items-center table-flush" responsive>
+										<thead className="thead-light">
+											<tr>
+												<th scope="col">Name</th>
+												<th scope="col">File Size</th>
+												<th scope="col">Assigned By</th>
+												<th className="text-center" scope="col">Accepted</th>
+												<th className="text-center" scope="col">File</th>
+											</tr>
+										</thead>
+										<tbody>
+											{this.state.documents.map(doc => {
+												return (
+													<tr>
+														<th scope="row">{doc.name}</th>
+														<td>{doc.size} KB</td>
+														<th >{doc.assignedBy.name}</th>
+														<td className="text-center"><i class="fas fa-check"></i></td>
+														<td className="text-center">
+															<Link to={{
+																pathname: '/user/view/document/' + doc.id
+															}}>
+																<Button color="primary" size="sm">
+																	View
+                             									 </Button>
+															</Link>
+														</td>
+													</tr>
+												)
+											})}
+										</tbody>
+									</Table>
+								}
 							</Card>
 						</Col>
 					</Row>
@@ -238,56 +246,58 @@ class UserIndex extends React.Component {
 											<Link to={{
 												pathname: '/user/workflow',
 											}} style={{ paddingRight: 5 }}>
-												<Button
-													color="primary"
-													size="sm"
-												>
+												<Button color="primary" size="sm">
 													See All
-                        </Button>
+                        						</Button>
 											</Link>
 										</div>
 									</Row>
 								</CardHeader>
-								<Table className="align-items-center table-flush" responsive>
-									<thead className="thead-light">
-										<tr>
-											<th scope="col">Name</th>
-											<th scope="col">Assigned By</th>
-											<th scope="col">Due By</th>
-											<th scope="col">Standard</th>
-											<th scope="col">Progress</th>
-											<th scope="col"></th>
-										</tr>
-									</thead>
-									<tbody>
-										{this.state.assignedWorkflows.map(w => {
-											return (
-												<tr>
-													<th scope="row">{w.name}</th>
-													<td>{w.assignedBy.name}</td>
-													<td>13-6-2021</td>
-													<td>{w.standard.name}</td>
-													<td>
-														<i className="fas fa-arrow-up text-success mr-3" />{" "}
-														{w.progress} %
-                      </td>
-													<td className="text-center">
-														<Link to={{
-															pathname: 'user/view/document/1'
-														}}>
-															<Button
-																color="primary"
-																size="sm"
-															>
-																View
-                              </Button>
-														</Link>
-													</td>
-												</tr>
-											)
-										})}
-									</tbody>
-								</Table>
+								{this.state.loading ?
+									<CardBody>
+										<div style={{ borderColor: 'black' }} className="text-center">
+											<Spinner st color="primary" />
+										</div>
+									</CardBody>
+									:
+									<Table className="align-items-center table-flush" responsive>
+										<thead className="thead-light">
+											<tr>
+												<th scope="col">Name</th>
+												<th scope="col">Assigned By</th>
+												<th scope="col">Due By</th>
+												<th scope="col">Standard</th>
+												<th scope="col">Progress</th>
+												<th scope="col"></th>
+											</tr>
+										</thead>
+										<tbody>
+											{this.state.assignedWorkflows.map(w => {
+												return (
+													<tr>
+														<th scope="row">{w.name}</th>
+														<td>{w.assignedBy.name}</td>
+														<td>13-6-2021</td>
+														<td>{w.standard.name}</td>
+														<td>
+															<i className="fas fa-arrow-up text-success mr-3" />{" "}
+															{w.progress} %
+                      								</td>
+														<td className="text-center">
+															<Link to={{
+																pathname: 'user/view/document/1'
+															}}>
+																<Button color="primary" size="sm">
+																	View
+                              								</Button>
+															</Link>
+														</td>
+													</tr>
+												)
+											})}
+										</tbody>
+									</Table>
+								}
 							</Card>
 						</Col>
 					</Row>

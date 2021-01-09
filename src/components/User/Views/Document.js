@@ -9,6 +9,8 @@ import {
   Button,
   Card,
   CardHeader,
+  CardBody,
+  Spinner,
   Table,
   Container,
   Row,
@@ -22,6 +24,7 @@ class Workflows extends React.Component {
     super(props);
     this.state = {
       documents: [],
+      loading: true
     };
   }
 
@@ -39,6 +42,7 @@ class Workflows extends React.Component {
           console.warn(JSON.stringify(data));
           this.setState({
             documents: data.documents,
+            loading: false
           })
         })
         .catch((error) => {
@@ -92,46 +96,54 @@ class Workflows extends React.Component {
                     </div>
                   </Row>
                 </CardHeader>
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">File Size</th>
-                      <th scope="col">Assigned By</th>
-                      <th className="text-center" scope="col">Accepted</th>
-                      <th className="text-center" scope="col">File</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.documents.map((doc, index) => {
-                      return (
-                        <tr key={index}>
-                          <th scope="row">{doc.name}</th>
-                          <td>{doc.size} KB</td>
-                          <th >{doc.assignedBy}</th>
-                          <td className="text-center">
-                            {doc.accepted ? <i class="fas fa-check"></i>
-                              : <Button color="success" href="#pablo" onClick={() => this.acceptDocument(index)} size="sm"> Accept </Button>
-                            }
-                          </td>
-                          <td className="text-center">
-                            <Link to={{
-                              pathname: '/user/view/document/' + doc.id
-                            }}>
-                              <Button
-                                color="primary"
-                                href="#pablo"
-                                size="sm"
-                              >
-                                View
+                {this.state.loading ?
+                  <CardBody>
+                    <div style={{ borderColor: 'black' }} className="text-center">
+                      <Spinner st color="primary" />
+                    </div>
+                  </CardBody>
+                  :
+                  <Table className="align-items-center table-flush" responsive>
+                    <thead className="thead-light">
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">File Size</th>
+                        <th scope="col">Assigned By</th>
+                        <th className="text-center" scope="col">Accepted</th>
+                        <th className="text-center" scope="col">File</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.documents.map((doc, index) => {
+                        return (
+                          <tr key={index}>
+                            <th scope="row">{doc.name}</th>
+                            <td>{doc.size} KB</td>
+                            <th >{doc.assignedBy}</th>
+                            <td className="text-center">
+                              {doc.accepted ? <i class="fas fa-check"></i>
+                                : <Button color="success" href="#pablo" onClick={() => this.acceptDocument(index)} size="sm"> Accept </Button>
+                              }
+                            </td>
+                            <td className="text-center">
+                              <Link to={{
+                                pathname: '/user/view/document/' + doc.id
+                              }}>
+                                <Button
+                                  color="primary"
+                                  href="#pablo"
+                                  size="sm"
+                                >
+                                  View
                               </Button>
-                            </Link>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </Table>
+                              </Link>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </Table>
+                }
               </Card>
             </Col>
           </Row>

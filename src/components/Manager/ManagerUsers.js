@@ -9,11 +9,13 @@ import {
   Col,
   Card,
   CardHeader,
+  CardBody,
   Row,
   Modal,
   Table,
   Button,
   Container,
+  Spinner
 } from "reactstrap";
 
 import Header from "components/Manager/Headers/EmptyHeader.js";
@@ -27,6 +29,7 @@ class ManagerUsers extends React.Component {
       userPassword: '',
       userName: '',
       userMail: '',
+      loading: true
     };
   }
 
@@ -48,6 +51,7 @@ class ManagerUsers extends React.Component {
           console.warn(JSON.stringify(data));
           this.setState({
             users: data.users,
+            loading: false
           })
         })
         .catch((error) => {
@@ -87,7 +91,7 @@ class ManagerUsers extends React.Component {
 
   handleUserEmail = (event) => {
     this.setState({ userMail: event.target.value });
-    
+
   }
 
   handleAddUser = () => {
@@ -113,7 +117,7 @@ class ManagerUsers extends React.Component {
             userName: '',
             userPassword: '',
             userMail: '',
-      
+
           })
           this.toggleModal("userModel");
         })
@@ -121,10 +125,7 @@ class ManagerUsers extends React.Component {
           console.warn(JSON.stringify(error));
         });
     }
-
-    
     return;
-
   }
 
 
@@ -189,10 +190,10 @@ class ManagerUsers extends React.Component {
                               </Col>
                               <Col>
                                 <div className="align-items-center">
-                                <Button  color="primary" type="button" onClick={this.handlePassword}>
+                                  <Button color="primary" type="button" onClick={this.handlePassword}>
                                     Auto Generate
                                 </Button>
-                                 <text class="px-3">   {this.state.userPassword} </text> 
+                                  <text class="px-3">   {this.state.userPassword} </text>
 
                                 </div>
                               </Col>
@@ -216,39 +217,47 @@ class ManagerUsers extends React.Component {
                     </div>
                   </Row>
                 </CardHeader>
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">Role</th>
-                      <th scope="col">Assigned Workflow</th>
-                      <th scope="col">Assigned Article</th>
-                      <th scope="col"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.users.map(user => {
-                      return (
-                        <tr>
-                          <th scope="row">{user.name}</th>
-                          <td>
-                            <h4><span className="badge badge-primary">Engineer</span></h4>
-                          </td>
-                          <td>{user.assignedWorkflows}</td>
-                          <td>{user.assignedArticles}</td>
-                          <td>
-                          <Button
-                                  color="primary"
-                                  size="sm"
-                                >
-                                  View
+                {this.state.loading ?
+                  <CardBody>
+                    <div style={{ borderColor: 'black' }} className="text-center">
+                      <Spinner st color="primary" />
+                    </div>
+                  </CardBody>
+                  :
+                  <Table className="align-items-center table-flush" responsive>
+                    <thead className="thead-light">
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Assigned Workflow</th>
+                        <th scope="col">Assigned Article</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.users.map(user => {
+                        return (
+                          <tr>
+                            <th scope="row">{user.name}</th>
+                            <td>
+                              <h4><span className="badge badge-primary">Engineer</span></h4>
+                            </td>
+                            <td>{user.assignedWorkflows}</td>
+                            <td>{user.assignedArticles}</td>
+                            <td>
+                              <Button
+                                color="primary"
+                                size="sm"
+                              >
+                                View
                                 </Button>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </Table>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </Table>
+                }
               </Card>
             </Col>
           </Row>
