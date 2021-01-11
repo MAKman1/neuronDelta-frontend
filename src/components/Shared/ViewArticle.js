@@ -43,7 +43,7 @@ class ViewArticle extends React.Component {
 
 		//console.warn('user ' + userId + 'client ' + clientId + this.articleId);
 
-		if (clientId != null && userId != null) {
+		if (clientId !== null && userId !== null) {
 			const data = {
 				"clientId": clientId,
 				"articleId": this.articleId,
@@ -74,7 +74,7 @@ class ViewArticle extends React.Component {
 
 		let url = current == true ? "/checklists/uncheck" : "/checklists/check";
 
-		if (clientId != null && userId != null) {
+		if (clientId !== null && userId !== null) {
 			const data = {
 				"clientId": clientId,
 				"checklistId": checklist.id,
@@ -117,7 +117,7 @@ class ViewArticle extends React.Component {
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
 
-		if (clientId != null && userId != null) {
+		if (clientId !== null && userId !== null) {
 			let data = new FormData();
 
 			data.append("clientId", clientId);

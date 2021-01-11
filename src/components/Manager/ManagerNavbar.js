@@ -43,6 +43,7 @@ class ManagerNavbar extends React.Component {
 		reactLocalStorage.clear();
 		this.props.history.push("/login");
 	}
+	
 	render() {
 		return (
 			<>

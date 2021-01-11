@@ -30,9 +30,13 @@ class ManagerDocuments extends React.Component {
     super(props);
     this.state = {
       documentModel: false,
+      roleModel: false,
       documents: [],
+      roles: [],
       uploadDocument: null,
-      loading: true
+      loading: true,
+      documentIndex: null,
+      currentRole: null,
     };
   }
 
@@ -54,6 +58,7 @@ class ManagerDocuments extends React.Component {
           console.warn(JSON.stringify(data.documents));
           this.setState({
             documents: data.documents,
+            roles: data.roles,
             loading: false
           })
         })
@@ -87,9 +92,23 @@ class ManagerDocuments extends React.Component {
     });
   }
 
+  toggleDropdown = (state) => {
+    this.setState({
+      [state]: !this.state[state]
+    });
+  };
+
+  selectRole = (role) => {
+    this.setState({
+      currentRole: role
+    })
+  }
+
   closeRoleModal = () => {
     this.setState({
+      currentRole: null,
       roleModel: false,
+      documentIndex: null
     })
   }
 
@@ -149,63 +168,12 @@ class ManagerDocuments extends React.Component {
                       >
                         Add Document
                       </Button>
-                      <Modal
-                        className="modal-dialog-centered"
-                        isOpen={this.state.documentModel}
-                        toggle={() => this.toggleModal("documentModel")}
-                      >
-                        <div className="modal-header">
-                          <h2 className="modal-title" id="documentModelLabel">
-                            Add Document
-                          </h2>
-                          <button
-                            aria-label="Close"
-                            className="close"
-                            data-dismiss="modal"
-                            type="button"
-                            onClick={() => this.toggleModal("documentModel")}
-                          >
-                            <span aria-hidden={true}>×</span>
-                          </button>
-                        </div>
-                        <div className="modal-body">
-                          <form>
-                            <div class="form-group">
-                              <label for="recipient-name" class="col-form-label">Name:</label>
-                              <input type="text" class="form-control" id="recipient-name" onChange={this.handleDocumentName}></input>
-                            </div>
-                            <div class="form-group">
-                              <label for="message-text" class="col-form-label" onChange={this.handleDocumentDesc}>Description:</label>
-                              <textarea class="form-control" id="message-text"></textarea>
-                            </div>
-                            <div className="align-items-center">
-                              {/* <Button color="primary" type="button">
-                                Choose File
-                            </Button> */}
-                              <input type="file" name="file" onChange={e => this.chooseFile(e)} />
-                            </div>
-                          </form>
-                        </div>
-                        <div className="modal-footer">
-                          <Button
-                            color="secondary"
-                            data-dismiss="modal"
-                            type="button"
-                            onClick={() => this.toggleModal("documentModel")}
-                          >
-                            Cancel
-                          </Button>
-                          <Button color="success" type="button" onClick={this.handleUpload}>
-                            Upload
-                          </Button>
-                        </div>
-                      </Modal>
                     </div>
                   </Row>
                 </CardHeader>
                 {this.state.loading ?
                   <CardBody>
-                    <div style={{borderColor: 'black'}} className="text-center">
+                    <div style={{ borderColor: 'black' }} className="text-center">
                       <Spinner st color="primary" />
                     </div>
                   </CardBody>
@@ -222,7 +190,102 @@ class ManagerDocuments extends React.Component {
                         <th scope="col"></th>
                       </tr>
                     </thead>
-                    <Modal
+                    <tbody>
+                      {this.state.documents.map(doc => {
+                        // const date = moment(doc.updated_at).format('DD MMM, YYYY');
+                        const date = new Date(doc.updated_at).toLocaleString();
+                        return (
+                          <tr>
+                            <th scope="row">{doc.name}</th>
+                            <td>{doc.size} KB</td>
+                            <td>
+                              <div className="d-flex align-items-center">
+                                <span className="mr-2">{date}</span>
+                              </div>
+                            </td>
+                            <td>{doc.acceptedCount}/{doc.acceptedTotal}</td>
+                            <td >
+                              {doc.userRoles.map(role => {
+                                return (
+                                  <h4><span className="badge badge-primary">{role.name}</span></h4>
+                                )
+                              })}
+                            </td>
+                            <td>
+                              <Button color="primary" onClick={() => this.toggleModal("roleModel")} size="sm">
+                                Edit
+                              </Button>
+                            </td>
+                            <td>
+                              <Link to={{
+                                pathname: '/manager/view/document/' + doc.id
+                              }}>
+                                <Button
+                                  color="primary"
+                                  size="sm"
+                                >
+                                  View
+                              </Button>
+                              </Link>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </Table>
+                }
+                <Modal
+                  className="modal-dialog-centered"
+                  isOpen={this.state.documentModel}
+                  toggle={() => this.toggleModal("documentModel")}
+                >
+                  <div className="modal-header">
+                    <h2 className="modal-title" id="documentModelLabel">
+                      Add Document
+                          </h2>
+                    <button
+                      aria-label="Close"
+                      className="close"
+                      data-dismiss="modal"
+                      type="button"
+                      onClick={() => this.toggleModal("documentModel")}
+                    >
+                      <span aria-hidden={true}>×</span>
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                    <form>
+                      <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="recipient-name" onChange={this.handleDocumentName}></input>
+                      </div>
+                      <div class="form-group">
+                        <label for="message-text" class="col-form-label" onChange={this.handleDocumentDesc}>Description:</label>
+                        <textarea class="form-control" id="message-text"></textarea>
+                      </div>
+                      <div className="align-items-center">
+                        {/* <Button color="primary" type="button">
+                                Choose File
+                            </Button> */}
+                        <input type="file" name="file" onChange={e => this.chooseFile(e)} />
+                      </div>
+                    </form>
+                  </div>
+                  <div className="modal-footer">
+                    <Button
+                      color="secondary"
+                      data-dismiss="modal"
+                      type="button"
+                      onClick={() => this.toggleModal("documentModel")}
+                    >
+                      Cancel
+                          </Button>
+                    <Button color="success" type="button" onClick={this.handleUpload}>
+                      Upload
+                          </Button>
+                  </div>
+                </Modal>
+                <Modal
                       size="sm"
                       className="modal-dialog-centered"
                       isOpen={this.state.roleModel}
@@ -244,32 +307,44 @@ class ManagerDocuments extends React.Component {
                       </div>
                       <div className="modal-body">
                         <Row>
-                          <Col sm="auto">
-                            <h4><span class="badge badge-primary">Reception</span>
-                              <button
-                                aria-label="Close"
-                                className="close"
-                                data-dismiss="modal"
-                                type="button"
-                              >
-                                <span class="badge badge-warning" aria-hidden={true}>×</span>
-                              </button>
-                            </h4>
-                          </Col>
+                          {this.state.documentIndex != null ? this.state.documents[this.state.documentIndex].userRoles.map((role, index) => {
+                            return (
+                              <Col key={index} sm="auto">
+                                <h4><span class="badge badge-primary">{role.name}</span>
+                                  <button
+                                    aria-label="Close"
+                                    className="close"
+                                    data-dismiss="modal"
+                                    type="button"
+                                  >
+                                    <span class="badge badge-warning" onClick={() => this.removeRole(role.id)} aria-hidden={true}>×</span>
+                                  </button>
+                                </h4>
+                              </Col>
+                            )
+                          })
+                            : null}
                         </Row>
                         <br></br>
                         <Row className="justify-content-md-center">
                           <Col xl="auto">
-                            <Dropdown isOpen={this.state.toggleDropdown} toggle={() => this.toggleModal("toggleDropdown")}>
+                            <Dropdown isOpen={this.state.toggleDropdown} toggle={() => this.toggleDropdown("toggleDropdown")}>
                               <DropdownToggle caret>
-
+                                {this.state.currentRole == null ? <>Select Role</> : this.state.currentRole.name}
                               </DropdownToggle>
                               <DropdownMenu>
-                                <DropdownItem disabled>Reception</DropdownItem>
-                                <DropdownItem>Human Resources</DropdownItem>
-                                <DropdownItem>Supervisor</DropdownItem>
-                                <DropdownItem>Finance Head</DropdownItem>
-                                <DropdownItem>Dormitory Manager</DropdownItem>
+                                {this.state.roles.map((role, index) => {
+                                  if (this.state.documents[this.state.documentIndex] != null && this.state.documents[this.state.documentIndex].userRoles.some(r => r.id === role.id)) {
+                                    return (
+                                      <DropdownItem disabled key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
+                                    )
+                                  }
+                                  else {
+                                    return (
+                                      <DropdownItem key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
+                                    )
+                                  }
+                                })}
                               </DropdownMenu>
                             </Dropdown>
                           </Col>
@@ -284,55 +359,11 @@ class ManagerDocuments extends React.Component {
                         >
                           Cancel
                           </Button>
-                        <Button color="success" type="button">
-                          Save
+                        <Button onClick={() => this.addRole()} color="success" type="button">
+                          Add Role
                           </Button>
                       </div>
                     </Modal>
-                    <tbody>
-                      {this.state.documents.map(doc => {
-                        // const date = moment(doc.updated_at).format('DD MMM, YYYY');
-                        const date = new Date(doc.updated_at).toLocaleString();
-                        return (
-                          <tr>
-                            <th scope="row">{doc.name}</th>
-                            <td>{doc.size} KB</td>
-                            <td>
-                              <div className="d-flex align-items-center">
-                                <span className="mr-2">{date}</span>
-                              </div>
-                            </td>
-                            <td>{doc.acceptedCount}/{doc.acceptedTotal}</td>
-                            <td>
-                              <h4><span className="badge badge-primary">Reception</span></h4>
-                            </td>
-                            <td>
-                              <Button
-                                color="primary"
-                                onClick={() => this.toggleModal("roleModel")}
-                                size="sm"
-                              >
-                                Edit
-                        </Button>
-                            </td>
-                            <td>
-                              <Link to={{
-                                pathname: '/manager/view/document/' + doc.id
-                              }}>
-                                <Button
-                                  color="primary"
-                                  size="sm"
-                                >
-                                  View
-                              </Button>
-                              </Link>
-                            </td>
-                          </tr>
-                        )
-                      })}
-                    </tbody>
-                  </Table>
-                }
               </Card>
             </Col>
           </Row>
