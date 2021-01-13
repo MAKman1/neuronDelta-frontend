@@ -10,20 +10,22 @@ import {
   Button,
   Card,
   CardHeader,
-
+  CardBody,
   Table,
   Container,
   Row,
-  Col
+  Col,
+  Spinner
 } from "reactstrap";
 
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
 
 class ManagerStandards extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      standards: []
+      standards: [],
+      loading: true
     };
   }
 
@@ -45,6 +47,7 @@ class ManagerStandards extends React.Component {
           console.warn(JSON.stringify(data));
           this.setState({
             standards: data.standards,
+            loading: false
           })
         })
         .catch((error) => {
@@ -58,11 +61,11 @@ class ManagerStandards extends React.Component {
   render() {
     return (
       <>
-        <EmptyHeader/>
+        <EmptyHeader />
         {/* Page content */}
         <Container className="mt--7" fluid>
-          <Row className = "mt-5">
-          <Col className="mb-5 mb-xl-0" xl="12">
+          <Row className="mt-5">
+            <Col className="mb-5 mb-xl-0" xl="12">
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
@@ -71,43 +74,50 @@ class ManagerStandards extends React.Component {
                     </div>
                   </Row>
                 </CardHeader>
-                <Table className="align-items-center table-flush">
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">Article Count</th>
-                      <th scope="col">Details</th>
-                      <th scope="col">Progress</th>
-                      <th scope="col"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.standards.map(standard => {
-                      this.state.pathname = '/manager/view/standard/' + standard.id
-                      return(
-                        <tr>
-                          <th scope="row">
-                            {standard.name}
-                          </th>
-                          <td>
-                            {standard.articleCount}
+                {this.state.loading ?
+                  <CardBody>
+                    <div style={{ borderColor: 'black' }} className="text-center">
+                      <Spinner st color="primary" />
+                    </div>
+                  </CardBody>
+                  :
+                  <Table className="align-items-center table-flush">
+                    <thead className="thead-light">
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Article Count</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Progress</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.standards.map(standard => {
+                        this.state.pathname = '/manager/view/standard/' + standard.id
+                        return (
+                          <tr>
+                            <th scope="row">
+                              {standard.name}
+                            </th>
+                            <td>
+                              {standard.articleCount}
+                            </td>
+                            <td style={{ maxWidth: 150 }}>
+                              <text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
+                                {standard.description}
+                              </text>
+                            </td>
+                            <td>
+                              <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                              {standard.articleCount}%
                           </td>
-                          <td style={{ maxWidth: 150 }}>
-                            <text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
-                              {standard.description}
-                            </text>
-                          </td>
-                          <td>
-                            <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                            {standard.articleCount}%
-                          </td>
-                          <td>
-                          <Link to={{
-                                    pathname: this.state.pathname,
-                                    state: {
-                                      name: "Food Quality 1.3"
-                                    }
-                                  }}>
+                            <td>
+                              <Link to={{
+                                pathname: this.state.pathname,
+                                state: {
+                                  name: "Food Quality 1.3"
+                                }
+                              }}>
                                 <Button
                                   color="primary"
                                   size="sm"
@@ -116,18 +126,18 @@ class ManagerStandards extends React.Component {
                                 </Button>
                               </Link>
                             </td>
-                        </tr>
-                      )
-                    })}
-                    
-                  </tbody>
-                </Table>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </Table>
+                }
               </Card>
             </Col>
-           
+
           </Row>
-          
-          
+
+
         </Container>
       </>
     );

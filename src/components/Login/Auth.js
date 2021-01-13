@@ -2,7 +2,6 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import { reactLocalStorage } from 'reactjs-localstorage';
-import { Spinner } from 'reactstrap';
 import axios from 'axios';
 // reactstrap components
 
@@ -18,7 +17,8 @@ import {
   InputGroup,
   Container,
   Row,
-  Col
+  Col,
+  Spinner
 } from "reactstrap";
 
 // core components
@@ -104,7 +104,6 @@ class Auth extends React.Component {
   }
 
   userlogin = () => {
-
     //Api call time
     const data = {
       "email": "" + this.state.email,
@@ -130,6 +129,9 @@ class Auth extends React.Component {
         }
       })
       .catch((error) => {
+        this.setState({
+          valid: 1
+        })
         console.warn(JSON.stringify(error));
       });
 

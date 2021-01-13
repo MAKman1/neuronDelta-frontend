@@ -11,6 +11,8 @@ import {
   Button,
   Card,
   CardHeader,
+  CardBody,
+  Spinner,
   Table,
   Container,
   Row,
@@ -23,8 +25,8 @@ class Audits extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      //States
-      articles: []
+      articles: [],
+      loading: true
     };
   }
 
@@ -45,7 +47,8 @@ class Audits extends React.Component {
           let data = res.data;
           console.warn(JSON.stringify(data));
           this.setState({
-            articles: data.articles
+            articles: data.articles,
+            loading: false
           })
         })
         .catch((error) => {
@@ -72,52 +75,60 @@ class Audits extends React.Component {
                     </div>
                   </Row>
                 </CardHeader>
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">CheckList Count</th>
-                      <th scope="col">Assigned By</th>
-                      <th scope="col">Due By</th>
-                      <th scope="col">Standard</th>
-                      <th scope="col">Progress</th>
-                      <th scope="col"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.articles.map(article => {
-                      {this.state.pathname = '/user/view/article/' + article.id}
-                      return(
-                        <tr>
-                          <th scope="row">{article.name}</th>
-                          <td>Checklist Count</td> 
-                          <td>{article.assignedBy.name}</td> 
-                          <td>31/12/2020</td>
-                          <td>{article.standard.name}</td>
-                          <td>
-                            <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                {this.state.loading ?
+                  <CardBody>
+                    <div style={{ borderColor: 'black' }} className="text-center">
+                      <Spinner st color="primary" />
+                    </div>
+                  </CardBody>
+                  :
+                  <Table className="align-items-center table-flush" responsive>
+                    <thead className="thead-light">
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">CheckList Count</th>
+                        <th scope="col">Assigned By</th>
+                        <th scope="col">Due By</th>
+                        <th scope="col">Standard</th>
+                        <th scope="col">Progress</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.articles.map(article => {
+                        { this.state.pathname = '/user/view/article/' + article.id }
+                        return (
+                          <tr>
+                            <th scope="row">{article.name}</th>
+                            <td>Checklist Count</td>
+                            <td>{article.assignedBy.name}</td>
+                            <td>31/12/2020</td>
+                            <td>{article.standard.name}</td>
+                            <td>
+                              <i className="fas fa-arrow-up text-success mr-3" />{" "}
                             90%
                           </td>
-                          <td>
-                          <Link to={{
-                                    pathname: this.state.pathname,
-                                    state: {
-                                      name: "Food Quality 1.3"
-                                    }
-                                  }}>
+                            <td>
+                              <Link to={{
+                                pathname: this.state.pathname,
+                                state: {
+                                  name: "Food Quality 1.3"
+                                }
+                              }}>
                                 <Button
                                   color="primary"
                                   size="sm"
                                 >
                                   View
                                 </Button>
-                                </Link>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </Table>
+                              </Link>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </Table>
+                }
               </Card>
             </Col>
           </Row>

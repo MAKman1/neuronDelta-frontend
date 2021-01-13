@@ -2,6 +2,7 @@
 /*eslint-disable*/
 import React from "react";
 import { NavLink as NavLinkRRD, Link } from "react-router-dom";
+import { reactLocalStorage } from 'reactjs-localstorage';
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
 
@@ -53,6 +54,12 @@ class ManagerSidebar extends React.Component {
 			collapseOpen: false
 		});
 	};
+
+	logout = () => {
+		reactLocalStorage.clear();
+		this.props.history.push("/login");
+	}
+
 	// creates the links that appear in the left menu / Sidebar
 	createLinks = routes => {
 		return routes.map((prop, key) => {
@@ -162,7 +169,7 @@ class ManagerSidebar extends React.Component {
 									<span>Support</span>
 								</DropdownItem>
 								<DropdownItem divider />
-								<DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+								<DropdownItem href="#pablo" onClick={this.logout}>
 									<i className="ni ni-user-run" />
 									<span>Logout</span>
 								</DropdownItem>

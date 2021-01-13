@@ -65,6 +65,7 @@ class UserSidebar extends React.Component {
   };
   logout = () => {
     reactLocalStorage.clear();
+    this.props.history.push("/login");
   }
   // creates the links that appear in the left menu / Sidebar
   createLinks = routes => {
@@ -175,7 +176,7 @@ class UserSidebar extends React.Component {
                   <span>Support</span>
                 </DropdownItem> */}
                 <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={e => e.logout()}>
+                <DropdownItem href="#pablo" onClick={this.logout}>
                   <i className="ni ni-user-run" />
                   <span>Logout</span>
                 </DropdownItem>
