@@ -209,13 +209,17 @@ class UserIndex extends React.Component {
 											</tr>
 										</thead>
 										<tbody>
-											{this.state.documents.map(doc => {
+											{this.state.documents.map( (doc, index) => {
 												return (
 													<tr>
 														<th scope="row">{doc.name}</th>
 														<td>{doc.size} KB</td>
 														<th >{doc.assignedBy.name}</th>
-														<td className="text-center"><i class="fas fa-check"></i></td>
+														<td className="text-center">
+															{doc.accepted ? <i class="fas fa-check"></i>
+																: <Button color="success" href="#pablo" onClick={() => this.acceptDocument(index)} size="sm"> Accept </Button>
+															}
+														</td>
 														<td className="text-center">
 															<Link to={{
 																pathname: '/user/view/document/' + doc.id
