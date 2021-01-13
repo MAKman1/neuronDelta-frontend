@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { reactLocalStorage } from 'reactjs-localstorage';
 import axios from 'axios';
 import { constants } from '../../constants.js';
+import '../../assets/customcss/dropdown.css';
 import routes from "routes.js";
 // reactstrap components
 import {
@@ -47,6 +48,8 @@ class ManagerArticles extends React.Component {
 		// this.handleSelect = this.handleSelect.bind(this);
 
 	}
+
+
 
 	handleSelect(username) {
 		console.warn('fuck');
