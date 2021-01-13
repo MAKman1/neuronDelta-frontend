@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { reactLocalStorage } from 'reactjs-localstorage';
 import axios from 'axios';
 import { constants } from '../../constants.js';
-import '../../assets/customcss/dropdown.css';
+
 import routes from "routes.js";
 // reactstrap components
 import {
@@ -23,7 +23,8 @@ import {
 	DropdownToggle,
 	DropdownMenu,
 	DropdownItem,
-	Spinner
+	Spinner,
+	UncontrolledDropdown
 } from "reactstrap";
 
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
@@ -40,9 +41,12 @@ class ManagerArticles extends React.Component {
 			toggleDropdown: false,
 			modelName: '',
 			name: "None",
+			assignArticleId: 0,
+			assignUserId: 0,
 			articles: [],
 			selected: 'Select User',
 			users: null,
+			index: 0,
 			loading: true
 		};
 
@@ -53,11 +57,42 @@ class ManagerArticles extends React.Component {
 
 
 
-	handleSelect(username) {
+	handleSelect = (username, userId) => {
 		console.warn('fuck');
 		this.setState({
-			selected: username
+			selected: username,
+			assignUserId: userId,
+	
 		});
+	}
+
+	handleAssign = () => {
+		console.warn('meow');
+		let managerId = reactLocalStorage.get('userId', true);
+		let clientId = reactLocalStorage.get('clientId', true);
+		console.warn(this.state.assignArticleId)
+		if (this.state.assignArticleId != 0) {
+			const data = {
+				"clientId": clientId,
+				"articleId": this.state.assignArticleId,
+				"userId": this.state.assignUserId,
+				"managerId": managerId
+			}
+			axios.post(constants["apiUrl"] + '/articles/assign', data)
+			.then((res) => {
+				let data = res.data;
+				console.warn(JSON.stringify(data));
+				if (data.message == 'done') {
+					this.closeModal();
+				}
+			})
+			.catch((error) => {
+				console.warn(JSON.stringify(error));
+			});
+			
+		}
+
+
 	}
 
 	componentDidMount() {
@@ -90,9 +125,10 @@ class ManagerArticles extends React.Component {
 	}
 
 
-	toggleModal = (state) => {
+	openModal = (state, index) => {
 		this.setState({
 			[state]: !this.state[state],
+			assignArticleId: index
 		});
 
 
@@ -119,7 +155,7 @@ class ManagerArticles extends React.Component {
 					});
 
 			} else {
-				//TODO: go back to login
+				//Meow
 			}
 		} else {
 			this.setState({
@@ -129,11 +165,17 @@ class ManagerArticles extends React.Component {
 
 	};
 
-	toggleDropdown = () => {
+	closeModal = () => {
+
 		this.setState({
-			toggleDropdown: !this.state["toggleDropdown"],
+			assignModel: false,
+			assignUserId: 0,
+			username: 'Select User',
+			assignArticleId: 0
 		});
-	};
+	}
+
+
 
 	render() {
 		return (
@@ -203,25 +245,33 @@ class ManagerArticles extends React.Component {
 															</Link>
 														</td>
 														<td>
-															<Button color="success" onClick={() => this.toggleModal("assignModel")} size="sm">
+														{article.assignedTo == null ?
+														<Button color="success" onClick={() => this.openModal("assignModel", article.id)} size="sm">
 																Assign
                           								</Button>
-															<Modal
+														: <p></p>}
+														</td>
+													</tr>
+												
+												)
+											})}
+										</tbody>
+										<Modal
 																className="modal-dialog-centered"
 																isOpen={this.state.assignModel}
-																defaultValue={article.id}
-																toggle={() => this.toggleModal("assignModel")}
+																defaultValue={this.state.index}
+																toggle={() => this.closeModal()}
 															>
 																<div className="modal-header">
 																	<h2 className="modal-title" id="assignModelLabel">
-																		Article {this.state.articleName}
+																		Article {this.state.assignArticleId}
 																	</h2>
 																	<button
 																		aria-label="Close"
 																		className="close"
 																		data-dismiss="modal"
 																		type="button"
-																		onClick={() => this.toggleModal("assignModel")}
+																		onClick={() => this.closeModal()}
 																	>
 																		<span aria-hidden={true}>×</span>
 																	</button>
@@ -230,21 +280,21 @@ class ManagerArticles extends React.Component {
 																	<Row className="justify-content-md-center">
 																		<Col xl="auto">
 																			{this.state.users != null ?
-																				<Dropdown isOpen={this.state.toggleDropdown} toggle={() => this.toggleDropdown()}>
+																				<UncontrolledDropdown>
 																					<DropdownToggle caret>
 																						{this.state.selected}
 																					</DropdownToggle>
 																					<DropdownMenu container="body">
-
 																						{this.state.users.map((user, index) => {
-
-																							return (<DropdownItem key={index}>
-																								<div onClick={console.warn("left")}>{user.name}</div>
+																							return (
+																							<DropdownItem onClick={() => this.handleSelect(user.name, user.id, this.state.assignArticleId)} key={index}>
+																								{user.name}
 																							</DropdownItem>
 																							)
 																						})}
 																					</DropdownMenu>
-																				</Dropdown>
+																				</UncontrolledDropdown>
+																															
 																				:
 																				<div>Loading...</div>
 																			}
@@ -252,19 +302,14 @@ class ManagerArticles extends React.Component {
 																	</Row>
 																</div>
 																<div className="modal-footer">
-																	<Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.toggleModal("assignModel")}>
+																	<Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.closeModal()}>
 																		Cancel
                               									</Button>
-																	<Button color="success" type="button">
+																	<Button color="success" type="button" onClick={() => this.handleAssign()}>
 																		Assign
                               									</Button>
 																</div>
 															</Modal>
-														</td>
-													</tr>
-												)
-											})}
-										</tbody>
 									</Table>
 								}
 							</Card>
