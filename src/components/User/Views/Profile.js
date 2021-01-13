@@ -1,6 +1,8 @@
 /*! Developed by Alinon */
 import React from "react";
-
+import axios from 'axios';
+import { constants } from '../../../constants';
+import { reactLocalStorage } from 'reactjs-localstorage';
 // reactstrap components
 import {
   Card,
@@ -15,6 +17,25 @@ import {
 import UserHeader from "../Headers/EmptyHeader";
 
 class Profile extends React.Component {
+  constructor(props) {
+		super(props);
+		this.state = {
+      user: []
+    }
+  }
+
+  componentDidMount() {
+    let user = reactLocalStorage.getObject('currentUser', true);
+    console.log(user);
+		if (user != null) {
+			this.setState({
+				user: user
+			});
+    }
+    
+	}
+
+
   render() {
     return (
       <>
@@ -60,15 +81,15 @@ class Profile extends React.Component {
                   </Row>
                   <div className="text-center">
                     <h1>
-                      Jessica Jones
+                      {this.state.user.name}
                     </h1>
                     <div className="h5 font-weight-300">
                       <i className="ni location_pin mr-2" />
-                      jessicajones@gmail.com
+                      {this.state.user.email}
                     </div>
                     <div className="h5 mt-5">
-                      <i className="ni business_briefcase-24 mr-2" />
-                      Ankara Sehir Hastanesi
+                      <i className="ni business_briefcase-24 mr-2"></i>
+                      {this.state.user.about}
                     </div>
                     <div className="">
                       <i className="ni business_briefcase-24 mr-2" />
