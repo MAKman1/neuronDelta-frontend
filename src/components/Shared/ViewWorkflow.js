@@ -27,9 +27,13 @@ class ViewWorkflow extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			checklists: [],
-			article: null,
-			standard: null,
+			name: null,
+			itemName: null,
+			itemDesc: null,
+			desc: null,
+			items: [],
+			
+			addItemModal: false,
 			documentModel: false,
 			uploadDocument: null,
 			currentChecklistIndex: null
@@ -54,9 +58,9 @@ class ViewWorkflow extends React.Component {
 					let data = res.data;
 					console.warn(JSON.stringify(data));
 					this.setState({
-						checklists: data.checklists,
-						article: data.article,
-						standard: data.standard
+						name: data.workflow.name,
+						desc: data.workflow.description,
+						items: data.workflow.items
 					})
 				})
 				.catch((error) => {
@@ -67,83 +71,66 @@ class ViewWorkflow extends React.Component {
 		}
 	}
 
-	handleCheckClick = (checklist, current) => {
-		//Check if auth token in valid
-		let userId = reactLocalStorage.get('userId', true);
+	handleItemName = (event) => {
+
+		this.setState({itemName: event.target.value})
+		
+	}
+
+	handleItemDesc = (event)=> {
+		console.warn(this.state.itemDesc)
+		this.setState({
+			itemDesc: event.target.value
+		})
+	}
+
+	handleAddNewItem = () => {
+		
 		let clientId = reactLocalStorage.get('clientId', true);
-
-		let url = current == true ? "/checklists/uncheck" : "/checklists/check";
-
-		if (clientId !== null && userId !== null) {
+		if (clientId !== null) {
 			const data = {
-				"clientId": clientId,
-				"checklistId": checklist.id,
-				"userId": userId
+				
+				"workflowId": this.state.workflowId,
+				"name": this.state.itemName,
+				"description": this.state.itemDesc
+				
 			}
-			axios.post(constants["apiUrl"] + url, data)
+			axios.post(constants["apiUrl"] + '/workflows/addWorkflowItem', data)
 				.then((res) => {
-
-					if (current)
-						checklist.progress = null;
-					else
-						checklist.progress = res.data.progress;
-
-					this.forceUpdate();
-
+					let data = res.data;
+					console.warn(JSON.stringify(data));
+					this.setState({
+						
+					})
+					this.closeAddItemModal();
 				})
 				.catch((error) => {
-					this.forceUpdate();
 					console.warn(JSON.stringify(error));
 				});
 		} else {
 			//TODO: go back to login
 		}
+
+
+
 	}
 
-	toggleModal = (state, index) => {
+	openAddItemModal = () => {
 		this.setState({
-			[state]: !this.state[state],
-			currentChecklistIndex: index
-		});
-	};
+			addItemModal: true
+		})
 
-	chooseFile = (event) => {
-		this.setState({
-			uploadDocument: event.target.files[0],
-		});
 	}
 
-	handleUpload = () => {
-		let userId = reactLocalStorage.get('userId', true);
-		let clientId = reactLocalStorage.get('clientId', true);
-
-		if (clientId !== null && userId !== null) {
-			let data = new FormData();
-
-			data.append("clientId", clientId);
-			data.append("userId", userId);
-			data.append('checklistId', this.state.checklists[ this.state.currentChecklistIndex].id);
-			data.append("file", this.state.uploadDocument);
-
-			// console.warn(...data);
-
-			axios.post(constants["apiUrl"] + '/checklists/attachDocument', data)
-				.then((res) => {
-					let data = res.data;
-					this.state.checklists[ this.state.currentChecklistIndex].progress.document_id = res.data.uploaded.id;
-					this.forceUpdate();
-					console.warn(JSON.stringify(data));
-				})
-				.catch((error) => {
-					console.warn(JSON.stringify(error));
-				});
-		}
-
+	closeAddItemModal = () => {
 		this.setState({
-			uploadDocument: null,
-			documentModel: false,
+			addItemModal: false
 		})
 	}
+
+	
+
+	
 
 	render() {
 
@@ -156,19 +143,15 @@ class ViewWorkflow extends React.Component {
 						<Col className="mb-5 mb-xl-0" xl="12">
 							<Card className="shadow">
 								<CardHeader className="border-0">
-									<Row className="align-items-center">
-										<div className="col">
-											<span className="mb-0 badge badge-primary">{this.state.standard == null ? "" : this.state.standard.name}</span>
-										</div>
-									</Row>
+									
 									<Row className="align-items-center" style={{ marginBottom: 10 }}>
 										<div className="col">
-											<h1 className="mb-0">{this.state.article == null ? "" : this.state.article.name}</h1>
+											<h1 className="mb-0">{this.state.name == null ? "" : this.state.name}</h1>
 										</div>
 									</Row>
 									<Row className="align-items-center">
 										<div className="col">
-											<h4 className="mb-0">{this.state.article == null ? "" : this.state.article.description}</h4>
+											<h4 className="mb-0">{this.state.desc == null ? "" : this.state.desc}</h4>
 										</div>
 									</Row>
 								</CardHeader>
@@ -183,10 +166,58 @@ class ViewWorkflow extends React.Component {
 								<CardHeader className="border-0">
 									<Row className="align-items-center">
 										<div className="col">
-											<h3 className="mb-0">Article  {this.articleId}</h3>
+											<h3 className="mb-0">Workflow Items</h3>
 										</div>
 										<div className="col text-right">
-
+											<Button color="success" onClick = {() => this.openAddItemModal()} size="sm"> 
+												Add New Item
+											</Button> 
+											<Modal
+												className="modal-dialog-centered"
+												isOpen={this.state.addItemModal}
+												toggle={() => this.closeAddItemModal()}
+											>
+												<div className="modal-header">
+												<h2 className="modal-title" id="userModelLabel">
+													Add New Item
+												</h2>
+												<button
+													aria-label="Close"
+													className="close"
+													data-dismiss="modal"
+													type="button"
+													onClick={() => this.closeAddItemModal()}
+												>
+													<span aria-hidden={true}>×</span>
+												</button>
+												</div>
+												<div className="modal-body">
+												<form>
+													<div class="form-group">
+													<label for="recipient-name" defaultValue={this.state.itemName} class="col-form-label" >Name:</label>
+													<input type="text" class="form-control" id="recipient-name" onChange={this.handleItemName}></input>
+													</div>
+													
+													<div class="form-group">
+													<label for="message-text" class="col-form-label" defaultValue={this.state.itemDesc}>Description:</label>
+													<textarea type="text" class="form-control" id="message-text" onChange={this.handleItemDesc}></textarea>
+													</div>
+												</form>
+												</div>
+												<div className="modal-footer">
+												<Button
+													color="secondary"
+													data-dismiss="modal"
+													type="button"
+													onClick={() => this.closeAddItemModal()}
+												>
+													Cancel
+												</Button>
+												<Button color="success" type="button" onClick={() => this.handleAddNewItem()}>
+													Add
+												</Button>
+												</div>
+											</Modal>
 										</div>
 
 									</Row>
@@ -197,34 +228,41 @@ class ViewWorkflow extends React.Component {
 											<th scope="col"></th>
 											<th scope="col">Name</th>
 											<th scope="col">Description</th>
+											<th scope="col">Details</th>
 											<th scope="col"></th>
 										</tr>
 									</thead>
 									<tbody>
 										{
-											this.state.checklists.map((c, index) => {
+											this.state.items.map(item => {
 												return (
 													<tr>
-														<th scope="row">
+														<th scope = "row">
 															<div class="form-check">
-																{c.progress == null ?
-																	<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox" onChange={() => this.handleCheckClick(c, false)} id={"Check" + c.id} />
+																{item.done == 0 ?
+																	<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox"  id={"Check" + item.id} />
 																	:
-																	<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox" onChange={() => this.handleCheckClick(c, true)} defaultChecked id={"Check" + c.id} />
+																	<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox"  defaultChecked id={"Check" + item.id} />
 																}
 																<label class="form-check-label " for="defaultCheck1"></label>
 															</div>
+
 														</th>
-														<td>{c.name}</td>
 														<td>
-															<text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
-																{c.details}
-															</text>
+															{item.name}
 														</td>
 														<td>
-															{c.progress == null ? null
-																: (c.progress.document_id == null ? <Button color="success" onClick={() => this.toggleModal("documentModel", index)} size="sm"> Add Document </Button> : <Button color="primary" size="sm"> View Document </Button>)
-															}
+															{item.description}
+														</td>
+														<td>
+															{item.details}
+														</td>
+
+														<td>
+														<Button color="success" size="sm"> 
+														Add Document 
+														</Button> 
+														
 														</td>
 													</tr>
 												)
@@ -232,46 +270,7 @@ class ViewWorkflow extends React.Component {
 										}
 
 									</tbody>
-									<Modal
-										className="modal-dialog-centered"
-										isOpen={this.state.documentModel}
-										toggle={() => this.toggleModal("documentModel")}
-									>
-										<div className="modal-header">
-											<h2 className="modal-title" id="documentModelLabel">
-												Add Document
-                          					</h2>
-											<button
-												aria-label="Close"
-												className="close"
-												data-dismiss="modal"
-												type="button"
-												onClick={() => this.toggleModal("documentModel")}
-											>
-												<span aria-hidden={true}>×</span>
-											</button>
-										</div>
-										<div className="modal-body">
-											<form>
-												<div className="align-items-center">
-													<input type="file" name="file" onChange={e => this.chooseFile(e)} />
-												</div>
-											</form>
-										</div>
-										<div className="modal-footer">
-											<Button
-												color="secondary"
-												data-dismiss="modal"
-												type="button"
-												onClick={() => this.toggleModal("documentModel")}
-											>
-												Cancel
-                          					</Button>
-											<Button color="success" type="button" onClick={this.handleUpload}>
-												Upload
-                          					</Button>
-										</div>
-									</Modal>
+									
 								</Table>
 							</Card>
 						</Col>

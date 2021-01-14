@@ -72,7 +72,7 @@ class ManagerIndex extends React.Component {
       axios.post(constants["apiUrl"] + '/dashboard/get', data)
         .then((res) => {
           let data = res.data;
-          // console.warn(JSON.stringify(data));
+          console.warn(JSON.stringify(data));
           this.setState({
             totalUsers: data.totalUsers,
             pendAudits: data.pendingArticles,
@@ -583,7 +583,7 @@ class ManagerIndex extends React.Component {
                             <th scope="row">{a.name}</th>
                             <td>
                               {/* {a.assignedBy} */}
-                            Mary Smith
+                          
                           </td>
                             <td>-</td>
                             <td>
