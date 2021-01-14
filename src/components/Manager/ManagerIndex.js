@@ -33,6 +33,7 @@ class ManagerIndex extends React.Component {
     this.state = {
       documentModel: false,
       roleModel: false,
+      userModal: false,
       toggleDropdown: false,
       totalUsers: 0,
       pendAudits: 0,
@@ -49,6 +50,7 @@ class ManagerIndex extends React.Component {
       documentName: '',
       documentDesc: '',
       documentIndex: null,
+      userIndex: null,
       uploadDocument: null,
       currentRole: null,
       loading: true
@@ -105,6 +107,13 @@ class ManagerIndex extends React.Component {
       [state]: !this.state[state],
       documentIndex: index,
       tempRoles: [...this.state.documents[index].userRoles]
+    });
+  };
+
+  toggleUserModal = (state, index = null) => {
+    this.setState({
+      [state]: !this.state[state],
+      userIndex: index,
     });
   };
 
@@ -676,10 +685,7 @@ class ManagerIndex extends React.Component {
                           name: "Food Quality 1.3"
                         }
                       }}>
-                        <Button
-                          color="success"
-                          size="sm"
-                        >
+                        <Button color="success" size="sm">
                           See All
                         </Button>
                       </Link>
@@ -704,9 +710,9 @@ class ManagerIndex extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.users.map(user => {
+                      {this.state.users.map((user, index) => {
                         return (
-                          <tr>
+                          <tr key={index}>
                             <th scope="row">{user.name}</th>
                             <td>
                               <h3><span className="badge badge-primary"> Reception</span></h3>
@@ -714,14 +720,9 @@ class ManagerIndex extends React.Component {
                             <td>{user.assignedWorkflows}</td>
                             <td>{user.assignedArticles}</td>
                             <td>
-                              <Button
-                                color="primary"
-                                href="#pablo"
-                                onClick={e => e.preventDefault()}
-                                size="sm"
-                              >
+                              <Button color="primary" onClick={() => this.toggleUserModal('userModal', index)} size="sm">
                                 View
-                            </Button>
+                              </Button>
                             </td>
                           </tr>
                         )
@@ -729,6 +730,62 @@ class ManagerIndex extends React.Component {
                     </tbody>
                   </Table>
                 }
+                <Modal
+                  className="modal-dialog-centered"
+                  isOpen={this.state.userModal}
+                  toggle={() => this.toggleUserModal("userModal")}
+                >
+                  <div className="modal-header-centered">
+                    <div className="card-profile-image">
+                      <a href="#pablo" onClick={e => e.preventDefault()}>
+                        {/* {this.state.user.profile_image === null ? */}
+                          <img
+                            alt="..."
+                            className="rounded-circle"
+                            src={require("assets/img/default/defaultProfile.png")}
+                          />
+                          {/* :
+                          <img
+                            alt="..."
+                            className="rounded-circle"
+                            src={require("assets/img/default/defaultProfile.jpg")}
+                          />
+                        } */}
+                      </a>
+                    </div>
+                    <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => this.toggleUserModal("userModal")}>
+                      <span aria-hidden={true}>×</span>
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                    <div className="text-center" style={{ paddingTop: 100 }}>
+                      <h1>
+                        {this.state.userIndex != null ? this.state.users[this.state.userIndex].name : null}
+                      </h1>
+                      <div className="h5 font-weight-300">
+                        <i className="ni location_pin mr-2" />
+                        {this.state.userIndex != null ? this.state.users[this.state.userIndex].email : null}
+                      </div>
+                      <div className="h5 mt-5">
+                        <i className="ni business_briefcase-24 mr-2"></i>
+                        {this.state.userIndex != null ? this.state.users[this.state.userIndex].about : null}
+                      </div>
+                      <div className="">
+                        <i className="ni business_briefcase-24 mr-2" />
+                        <span class="badge badge-primary">Manager</span>
+
+                        <span class="badge badge-primary">Doctor</span>
+
+                        <span class="badge badge-primary">HealthExpert</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="modal-footer">
+                    <Button color="warning" data-dismiss="modal" type="button" onClick={() => this.toggleUserModal("userModal")}>
+                      Close
+                    </Button>
+                  </div>
+                </Modal>
               </Card>
             </Col>
           </Row>
