@@ -30,6 +30,8 @@ class ViewArticle extends React.Component {
 			checklists: [],
 			article: null,
 			standard: null,
+			index: null,
+			detModal: false,
 			documentModel: false,
 			uploadDocument: null,
 			currentChecklistIndex: null
@@ -145,6 +147,46 @@ class ViewArticle extends React.Component {
 		})
 	}
 
+	openDetModal = (itemId) => {
+		this.setState({
+			detModal: true,
+			index: itemId
+		})
+	}
+
+	closeDetModal = () => {
+		this.setState({
+			detModal: false,
+			index: null
+		})
+	}
+
+	handleItemDet = (event) => {
+		this.setState({
+			details: event.target.value
+		})
+	}
+
+	handleAddDetail = () => {
+		// const data = {
+				
+		// 	"workflowItemId": this.state.index,
+		// 	"description": this.state.details
+			
+		// }
+		// axios.post(constants["apiUrl"] + '/checklists/addDesciption', data)
+		// 		.then((res) => {
+		// 			let data = res.data;
+		// 			console.warn(JSON.stringify(data));
+		// 			this.closeDetModal()
+		// 			window.location.reload(false)
+					
+		// 		})
+		// 		.catch((error) => {
+		// 			console.warn(JSON.stringify(error));
+		// 		});
+	}
+
 	render() {
 
 		return (
@@ -223,7 +265,20 @@ class ViewArticle extends React.Component {
 															</text>
 														</td>
 														<td>
-															
+															{c.progress !== null ? 
+															 c.progress.description == "" ?
+															 <Button color="success" size="sm" onClick={() => this.openDetModal(c.id)}> 
+																	Add Description
+															</Button>
+															 :
+															 <div>
+															 	{c.progress.description}
+														 	</div>
+															 :
+															 <div>
+
+															 </div>
+															}
 														</td>
 														<td>
 															{c.progress == null ? null
@@ -274,6 +329,48 @@ class ViewArticle extends React.Component {
 											<Button color="success" type="button" onClick={this.handleUpload}>
 												Upload
                           					</Button>
+										</div>
+									</Modal>
+									<Modal
+										className="modal-dialog-centered"
+										isOpen={this.state.detModal}
+										toggle={() => this.closeDetModal()}
+									>
+										<div className="modal-header">
+										<h2 className="modal-title" id="userModelLabel">
+											Add Details
+										</h2>
+										<button
+											aria-label="Close"
+											className="close"
+											data-dismiss="modal"
+											type="button"
+											onClick={() => this.closeDetModal()}
+										>
+											<span aria-hidden={true}>×</span>
+										</button>
+										</div>
+										<div className="modal-body">
+										<form>
+											
+											<div class="form-group">
+											<label for="message-text" class="col-form-label" defaultValue={this.state.itemDesc}>Details:</label>
+											<textarea type="text" class="form-control" id="message-text" onChange={this.handleItemDet}></textarea>
+											</div>
+										</form>
+										</div>
+										<div className="modal-footer">
+										<Button
+											color="secondary"
+											data-dismiss="modal"
+											type="button"
+											onClick={() => this.closeDetModal()}
+										>
+											Cancel
+										</Button>
+										<Button color="success" type="button" onClick={() => this.handleAddDetail()}>
+											Add
+										</Button>
 										</div>
 									</Modal>
 								</Table>

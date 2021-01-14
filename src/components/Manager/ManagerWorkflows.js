@@ -156,6 +156,7 @@ class ManagerWorkflows extends React.Component {
       name: null,
       desc: null
     });
+    
   }
 
   handleName = (event) => {
@@ -184,11 +185,15 @@ class ManagerWorkflows extends React.Component {
       axios.post(constants["apiUrl"] + '/workflows/addWorkflow', data)
 				.then((res) => {
 					let data = res.data;
-					console.warn(JSON.stringify(data));
-					if (data.workflow.name == this.state.name) {
+          console.warn(JSON.stringify(data));
+          
+					if (data.done == 1) {
+            
             this.closeAddModal()
             
           }
+          
+          
 				})
 				.catch((error) => {
 					console.warn(JSON.stringify(error));
