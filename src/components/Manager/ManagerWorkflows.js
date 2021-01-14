@@ -187,6 +187,7 @@ class ManagerWorkflows extends React.Component {
 					console.warn(JSON.stringify(data));
 					if (data.workflow.name == this.state.name) {
             this.closeAddModal()
+            
           }
 				})
 				.catch((error) => {
@@ -194,6 +195,23 @@ class ManagerWorkflows extends React.Component {
 				});
     }
 
+  }
+
+  removeAssign = (workflowId, userId) => {
+    let clientId = reactLocalStorage.get('clientId', true);
+      const data = {
+        "workflowId": workflowId,
+        "userId": userId
+      }
+      axios.post(constants["apiUrl"] + '/workflows/removeAssignment', data)
+				.then((res) => {
+					let data = res.data;
+					console.warn(JSON.stringify(data));
+					window.location.reload(false);
+				})
+				.catch((error) => {
+					console.warn(JSON.stringify(error));
+				});
   }
   
 
@@ -273,6 +291,7 @@ class ManagerWorkflows extends React.Component {
                       <th scope="col">Description</th>
                       <th scope="col">Progress</th>
                       <th scope="col"></th>
+                      <th scope="col"></th>
                       
                     </tr>
                   </thead>
@@ -297,13 +316,27 @@ class ManagerWorkflows extends React.Component {
                             {workflow.progress}%
                           </td>
                           <td>
+                            <Link to={{
+                                  pathname: '/manager/view/workflow/' + workflow.id,
+                                  state: {
+                                    name: "Food Quality 1.3"
+                                  }
+                                }}>
+                                  <Button color="primary" size="sm">
+                                    View
+                                  </Button>
+                            </Link>
+                          </td>
+                          <td>
                             {workflow.user_id == null ? 
                             
                             <Button color="success" onClick={() => this.openAssignModal(workflow.id)} size="sm">
 																Assign
                             </Button>
                             :
-                            <p></p>}
+                            <Button color="danger" onClick={() => this.removeAssign(workflow.id, workflow.user.id)} size="sm">
+                            Remove
+                            </Button>}
                             
                           </td>
                         </tr>

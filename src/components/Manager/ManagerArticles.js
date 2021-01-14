@@ -84,6 +84,7 @@ class ManagerArticles extends React.Component {
 				console.warn(JSON.stringify(data));
 				if (data.message == 'done') {
 					this.closeModal();
+					window.location.reload(false);
 				}
 			})
 			.catch((error) => {
@@ -175,6 +176,26 @@ class ManagerArticles extends React.Component {
 		});
 	}
 
+	removeAssign = (articleId, userId) => {
+		let clientId = reactLocalStorage.get('clientId', true);
+		const data = {
+			"clientId": clientId,
+			"articleId": articleId,
+			"userId": userId
+		}
+		
+		axios.post(constants["apiUrl"] + '/articles/removeAssignment', data)
+				.then((res) => {
+					let data = res.data;
+					console.warn(JSON.stringify(data));
+					window.location.reload(false);
+				})
+				.catch((error) => {
+					console.warn(JSON.stringify(error));
+				});
+
+	}
+
 
 
 	render() {
@@ -249,7 +270,11 @@ class ManagerArticles extends React.Component {
 														<Button color="success" onClick={() => this.openModal("assignModel", article.id)} size="sm">
 																Assign
                           								</Button>
-														: <p></p>}
+														: 
+														<Button color="danger" onClick={() => this.removeAssign(article.id, article.assignedTo.id)}  size="sm">
+														Remove
+												  		</Button>
+														}
 														</td>
 													</tr>
 												

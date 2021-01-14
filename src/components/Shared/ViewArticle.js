@@ -197,6 +197,7 @@ class ViewArticle extends React.Component {
 											<th scope="col"></th>
 											<th scope="col">Name</th>
 											<th scope="col">Description</th>
+											<th scope="col">Details</th>
 											<th scope="col"></th>
 										</tr>
 									</thead>
@@ -220,6 +221,9 @@ class ViewArticle extends React.Component {
 															<text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
 																{c.details}
 															</text>
+														</td>
+														<td>
+															
 														</td>
 														<td>
 															{c.progress == null ? null
