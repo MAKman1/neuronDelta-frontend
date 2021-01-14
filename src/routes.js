@@ -12,7 +12,7 @@ import ManagerArticles from "components/Manager/ManagerArticles.js";
 
 import ViewStandard from "components/Shared/ViewStandard";
 import ViewArticle from "components/Shared/ViewArticle";
-
+import ViewWorkflow from "components/Shared/ViewWorkflow";
 
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
@@ -105,6 +105,15 @@ var routes = [
     component: ViewDocument,
     layout: "/manager/view"
   },
+
+  {
+    path: "/workflow/:workflowId",
+    name: "workflowView",
+      component: ViewWorkflow,
+      layout: "/manager/view"
+  },
+
+  
 
   //View docs user
   {
