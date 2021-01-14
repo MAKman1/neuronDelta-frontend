@@ -25,11 +25,13 @@ class ManagerUsers extends React.Component {
     super(props);
     this.state = {
       userModel: false,
+      userViewModel: false,
       users: [],
       userPassword: '',
       userName: '',
       userMail: '',
-      loading: true
+      loading: true,
+      userIndex: null,
     };
   }
 
@@ -91,8 +93,16 @@ class ManagerUsers extends React.Component {
 
   handleUserEmail = (event) => {
     this.setState({ userMail: event.target.value });
-
   }
+
+  toggleUserModal = (state, index = null) => {
+    this.setState({
+      [state]: !this.state[state],
+      userIndex: index,
+    });
+    console.log(this.state.userViewModel);
+  };
+
 
   handleAddUser = () => {
     //console.warn('new');
@@ -125,7 +135,6 @@ class ManagerUsers extends React.Component {
           console.warn(JSON.stringify(error));
         });
     }
-    return;
   }
 
 
@@ -235,22 +244,19 @@ class ManagerUsers extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.users.map(user => {
+                      {this.state.users.map( (user, index) => {
                         return (
-                          <tr>
+                          <tr key={index}>
                             <th scope="row">{user.name}</th>
                             <td>
                               <h4><span className="badge badge-primary">Engineer</span></h4>
                             </td>
                             <td>{user.assignedWorkflows}</td>
                             <td>{user.assignedArticles}</td>
-                            <td>
-                              <Button
-                                color="primary"
-                                size="sm"
-                              >
+                            <td> 
+                              <Button color="primary" size="sm" onClick={() => this.toggleUserModal('userViewModel', index)}>
                                 View
-                                </Button>
+                              </Button>
                             </td>
                           </tr>
                         )
@@ -259,6 +265,62 @@ class ManagerUsers extends React.Component {
                   </Table>
                 }
               </Card>
+              <Modal
+                  className="modal-dialog-centered"
+                  isOpen={this.state.userViewModel}
+                  toggle={() => this.toggleUserModal("userViewModel")}
+                >
+                  <div className="modal-header-centered">
+                    <div className="card-profile-image">
+                      <a href="#pablo" onClick={e => e.preventDefault()}>
+                        {/* {this.state.user.profile_image === null ? */}
+                          <img
+                            alt="..."
+                            className="rounded-circle"
+                            src={require("assets/img/default/defaultProfile.png")}
+                          />
+                          {/* :
+                          <img
+                            alt="..."
+                            className="rounded-circle"
+                            src={require("assets/img/default/defaultProfile.jpg")}
+                          />
+                        } */}
+                      </a>
+                    </div>
+                    <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => this.toggleUserModal("userViewModel")}>
+                      <span aria-hidden={true}>×</span>
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                    <div className="text-center" style={{ paddingTop: 100 }}>
+                      <h1>
+                        {this.state.userIndex != null ? this.state.users[this.state.userIndex].name : null}
+                      </h1>
+                      <div className="h5 font-weight-300">
+                        <i className="ni location_pin mr-2" />
+                        {this.state.userIndex != null ? this.state.users[this.state.userIndex].email : null}
+                      </div>
+                      <div className="h5 mt-5">
+                        <i className="ni business_briefcase-24 mr-2"></i>
+                        {this.state.userIndex != null ? this.state.users[this.state.userIndex].about : null}
+                      </div>
+                      <div className="">
+                        <i className="ni business_briefcase-24 mr-2" />
+                        <span class="badge badge-primary">Manager</span>
+
+                        <span class="badge badge-primary">Doctor</span>
+
+                        <span class="badge badge-primary">HealthExpert</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="modal-footer">
+                    <Button color="warning" data-dismiss="modal" type="button" onClick={() => this.toggleUserModal("userViewModel")}>
+                      Close
+                    </Button>
+                  </div>
+                </Modal>
             </Col>
           </Row>
         </Container>
