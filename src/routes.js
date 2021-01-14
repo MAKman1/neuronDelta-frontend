@@ -38,7 +38,7 @@ var routes = [
   {
     path: "/profile",
     name: "Profile",
-    icon: "ni ni-single-02 text-yellow",
+    icon: "fas fa-user text-blue",
     component: ManagerProfile,
     layout: "/manager"
   },
@@ -74,7 +74,7 @@ var routes = [
   {
     path: "/users",
     name: "Users",
-    icon: "ni ni-single-02 text-yellow",
+    icon: "fas fa-users text-yellow",
     component: ManagerUsers,
     layout: "/manager"
   },
