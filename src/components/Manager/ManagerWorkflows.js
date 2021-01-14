@@ -284,7 +284,7 @@ class ManagerWorkflows extends React.Component {
                           {workflow.name}
                           </th>
                           <td>
-                          {workflow.user_id == null ? "-" : workflow.user_id.name}
+                          {workflow.user_id == null ? "-" : workflow.user.name}
                           </td>
                           <td>
                             -
