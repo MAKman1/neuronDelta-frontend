@@ -25,7 +25,8 @@ class UserNavbar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			userName: ""
+			userName: "",
+			profileImage: null
 		};
 	}
 
@@ -34,7 +35,8 @@ class UserNavbar extends React.Component {
 		let user = reactLocalStorage.getObject('currentUser', true);
 		if (user != null) {
 			this.setState({
-				userName: "" + user.name
+				userName: "" + user.name,
+				profileImage: user.profile_image
 			});
 		}
 	}
@@ -72,10 +74,19 @@ class UserNavbar extends React.Component {
 								<DropdownToggle className="pr-0" nav>
 									<Media className="align-items-center">
 										<span className="avatar avatar-sm rounded-circle">
-											<img
-												alt="..."
-												src={require("assets/img/theme/team-4-800x800.jpg")}
-											/>
+											{this.state.profileImage === null ?
+												<img
+													alt="..."
+													className="rounded-circle"
+													src={require("assets/img/default/defaultProfile.png")}
+												/>
+												:
+												<img
+													alt="..."
+													className="rounded-circle"
+													src={require("assets/img/default/defaultProfile.jpg")}
+												/>
+											}
 										</span>
 										<Media className="ml-2 d-none d-lg-block">
 											<span className="mb-0 text-sm font-weight-bold">
@@ -88,7 +99,7 @@ class UserNavbar extends React.Component {
 									<DropdownItem className="noti-title" header tag="div">
 										<h6 className="text-overflow m-0">Welcome!</h6>
 									</DropdownItem>
-									<DropdownItem to="/admin/user-profile" tag={Link}>
+									<DropdownItem to="/user/user-profile" tag={Link}>
 										<i className="ni ni-single-02" />
 										<span>My profile</span>
 									</DropdownItem>

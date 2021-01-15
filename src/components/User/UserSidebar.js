@@ -41,51 +41,66 @@ var ps;
 
 class UserSidebar extends React.Component {
   state = {
-    collapseOpen: false
+    collapseOpen: false,
+    profileImage: null
   };
   constructor(props) {
     super(props);
     this.activeRoute.bind(this);
   }
+
+  componentDidMount() {
+		let user = reactLocalStorage.getObject('currentUser', true);
+		if (user != null) {
+			this.setState({
+				profileImage: user.profile_image
+			});
+		}
+  }
+  
   // verifies if routeName is the one active (in browser input)
   activeRoute(routeName) {
     return this.props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
   }
+
   // toggles collapse between opened and closed (true/false)
   toggleCollapse = () => {
     this.setState({
       collapseOpen: !this.state.collapseOpen
     });
   };
+
   // closes the collapse
   closeCollapse = () => {
     this.setState({
       collapseOpen: false
     });
   };
+
   logout = () => {
     reactLocalStorage.clear();
     this.props.history.push("/login");
   }
+  
   // creates the links that appear in the left menu / Sidebar
   createLinks = routes => {
-        return routes.map((prop, key) => {
-            if (prop.layout == "/user") {    
-                return (
-                    <NavItem key={key}>
-                    <NavLink
-                        to={prop.layout + prop.path}
-                        tag={NavLinkRRD}
-                        onClick={this.closeCollapse}
-                        activeClassName="active"
-                    >
-                        <i className={prop.icon} />
-                        {prop.name}
-                    </NavLink>
-                    </NavItem>
-                );
-            }
-        });
+    return routes.map((prop, key) => {
+      if (prop.layout == "/user") {
+        return (
+          <NavItem key={key}>
+            <NavLink
+              to={prop.layout + prop.path}
+              tag={NavLinkRRD}
+              onClick={this.closeCollapse}
+              activeClassName="active"
+            >
+              <i className={prop.icon} />
+              {prop.name}
+            </NavLink>
+          </NavItem>
+        );
+      }
+    });
   };
   render() {
     const { bgColor, routes, logo } = this.props;
@@ -129,7 +144,7 @@ class UserSidebar extends React.Component {
           ) : null} */}
           {/* User */}
           <Nav className="align-items-center d-md-none">
-            <UncontrolledDropdown nav>
+            {/* <UncontrolledDropdown nav>
               <DropdownToggle nav className="nav-link-icon">
                 <i className="ni ni-bell-55" />
               </DropdownToggle>
@@ -143,15 +158,24 @@ class UserSidebar extends React.Component {
                 <DropdownItem divider />
                 <DropdownItem>Something else here</DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown>
+            </UncontrolledDropdown> */}
             <UncontrolledDropdown nav>
               <DropdownToggle nav>
                 <Media className="align-items-center">
                   <span className="avatar avatar-sm rounded-circle">
-                    <img
-                      alt="..."
-                      src={require("assets/img/theme/team-1-800x800.jpg")}
-                    />
+                    {this.state.profileImage === null ?
+                      <img
+                        alt="..."
+                        className="rounded-circle"
+                        src={require("assets/img/default/defaultProfile.png")}
+                      />
+                      :
+                      <img
+                        alt="..."
+                        className="rounded-circle"
+                        src={require("assets/img/default/defaultProfile.jpg")}
+                      />
+                    }
                   </span>
                 </Media>
               </DropdownToggle>
@@ -159,7 +183,7 @@ class UserSidebar extends React.Component {
                 <DropdownItem className="noti-title" header tag="div">
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem to="/user/user-profile" tag={Link}>
                   <i className="ni ni-single-02" />
                   <span>My profile</span>
                 </DropdownItem>
@@ -203,7 +227,7 @@ class UserSidebar extends React.Component {
                 ) : null} */}
                 <Col className="collapse-brand" xs="6">
                   <h1>Assent360</h1>
-                  </Col>
+                </Col>
                 <Col className="collapse-close" xs="6">
                   <button
                     className="navbar-toggler"
