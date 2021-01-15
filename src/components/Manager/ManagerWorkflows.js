@@ -133,7 +133,8 @@ class ManagerWorkflows extends React.Component {
 				let data = res.data;
 				console.warn(JSON.stringify(data));
 				if (data.done == '1') {
-					this.closeAssignModal();
+          this.closeAssignModal();
+          window.location.reload()
 				}
 			})
 			.catch((error) => {
@@ -187,11 +188,8 @@ class ManagerWorkflows extends React.Component {
 					let data = res.data;
           console.warn(JSON.stringify(data));
           
-					if (data.done == 1) {
-            
-            this.closeAddModal()
-            
-          }
+					this.closeAddModal()
+          window.location.reload()
           
           
 				})

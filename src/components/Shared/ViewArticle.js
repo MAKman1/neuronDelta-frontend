@@ -165,26 +165,31 @@ class ViewArticle extends React.Component {
 		this.setState({
 			details: event.target.value
 		})
+		
 	}
 
 	handleAddDetail = () => {
-		// const data = {
+		let userId = reactLocalStorage.get('userId', true);
+		let clientId = reactLocalStorage.get('clientId', true);
+		const data = {
+			"userId": userId,
+			"clientId": clientId,
 				
-		// 	"workflowItemId": this.state.index,
-		// 	"description": this.state.details
+			"checklistId": this.state.index,
+			"description": this.state.details
 			
-		// }
-		// axios.post(constants["apiUrl"] + '/checklists/addDesciption', data)
-		// 		.then((res) => {
-		// 			let data = res.data;
-		// 			console.warn(JSON.stringify(data));
-		// 			this.closeDetModal()
-		// 			window.location.reload(false)
+		}
+		axios.post(constants["apiUrl"] + '/checklists/addDesciption', data)
+				.then((res) => {
+					let data = res.data;
+					console.warn(JSON.stringify(data));
+					this.closeDetModal()
 					
-		// 		})
-		// 		.catch((error) => {
-		// 			console.warn(JSON.stringify(error));
-		// 		});
+					
+				})
+				.catch((error) => {
+					console.warn(JSON.stringify(error));
+				});
 	}
 
 	render() {
