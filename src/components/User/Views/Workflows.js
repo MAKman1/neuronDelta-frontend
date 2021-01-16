@@ -1,6 +1,8 @@
 /*! Developed by Alinon */
 import React from "react";
-
+import { reactLocalStorage } from 'reactjs-localstorage';
+import axios from 'axios';
+import { constants } from '../../../constants';
 // reactstrap components
 import {
     Button,
@@ -20,10 +22,34 @@ class Workflows extends React.Component {
         this.state = {
             //States
         };
-
     }
 
+    componentDidMount() {
+        //Check if auth token in valid
+        let clientId = reactLocalStorage.get('clientId', true);
     
+        if (clientId != null) {
+          const data = {
+            "clientId": clientId
+          }
+          axios.post(constants["apiUrl"] + '/workflows/getAll', data)
+            .then((res) => {
+              let data = res.data;
+              console.warn(JSON.stringify(data));
+            //   this.setState({
+            //     documents: data.documents,
+            //     loading: false
+            //   })
+            })
+            .catch((error) => {
+              console.warn(JSON.stringify(error));
+            });
+        } else {
+          //TODO: go back to login
+        }
+      }
+
+
     render() {
         return (
             <>
@@ -59,17 +85,12 @@ class Workflows extends React.Component {
                                             <td>Human Resource Law</td>
                                             <td>
                                                 <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                            46,53%
-                        </td>
+                                                    46,53%
+                                                </td>
                                             <td className="text-center">
-                                                <Button
-                                                    color="primary"
-                                                    href="#pablo"
-                                                    onClick={e => e.preventDefault()}
-                                                    size="sm"
-                                                >
+                                                <Button color="primary" href="#pablo" onClick={e => e.preventDefault()} size="sm" >
                                                     View
-                            </Button>
+                                                </Button>
                                             </td>
                                         </tr>
                                         <tr>
