@@ -279,7 +279,7 @@ class ManagerIndex extends React.Component {
 													size="sm"
 												>
 													See All
-                        </Button>
+                        						</Button>
 											</Link>
 										</div>
 									</Row>
@@ -314,7 +314,7 @@ class ManagerIndex extends React.Component {
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
 															{e.progress}%
-                          </td>
+                         								</td>
 													</tr>
 												)
 											})}
@@ -336,11 +336,11 @@ class ManagerIndex extends React.Component {
 											}} style={{ paddingRight: 5 }}>
 												<Button color="success" size="sm">
 													See All
-                        </Button>
+                        						</Button>
 											</Link>
 											<Button color="success" onClick={() => this.toggleModal("documentModel")} size="sm">
 												Add Document
-                      </Button>
+                      						</Button>
 										</div>
 									</Row>
 								</CardHeader>
@@ -391,7 +391,7 @@ class ManagerIndex extends React.Component {
 																size="sm"
 															>
 																Edit
-                              </Button>
+                              								</Button>
 														</td>
 														<td>
 															<Link to={{
@@ -399,7 +399,7 @@ class ManagerIndex extends React.Component {
 															}}>
 																<Button color="primary" size="sm">
 																	View
-                                </Button>
+                                								</Button>
 															</Link>
 														</td>
 													</tr>
@@ -415,7 +415,7 @@ class ManagerIndex extends React.Component {
 											<div className="modal-header">
 												<h2 className="modal-title" id="roleModelLabel">
 													Add/Remove Role
-                          </h2>
+                          						</h2>
 												<button
 													aria-label="Close"
 													className="close"
@@ -490,7 +490,7 @@ class ManagerIndex extends React.Component {
 									<div className="modal-header">
 										<h2 className="modal-title" id="documentModelLabel">
 											Add Document
-                          </h2>
+                          				</h2>
 										<button
 											aria-label="Close"
 											className="close"
@@ -591,7 +591,7 @@ class ManagerIndex extends React.Component {
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
 															{a.progress} %
-                          </td>
+                          								</td>
 													</tr>
 												)
 											})}
@@ -616,12 +616,9 @@ class ManagerIndex extends React.Component {
 													name: "Food Quality 1.3"
 												}
 											}}>
-												<Button
-													color="success"
-													size="sm"
-												>
+												<Button color="success" size="sm">
 													See All
-                        </Button>
+                        						</Button>
 											</Link>
 										</div>
 									</Row>
@@ -650,8 +647,8 @@ class ManagerIndex extends React.Component {
 														<th scope="row">{w.name}</th>
 														<td>
 															{/* {w.assignedBy} */}
-                            John Smith
-                          </td>
+                            								John Smith
+                          								</td>
 														<td>-</td>
 														<td>
 															{w.standard.name}
@@ -659,7 +656,7 @@ class ManagerIndex extends React.Component {
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
 															{w.progress} %
-                      </td>
+                      									</td>
 													</tr>
 												)
 											})}
@@ -686,7 +683,7 @@ class ManagerIndex extends React.Component {
 											}}>
 												<Button color="success" size="sm">
 													See All
-                        </Button>
+                        						</Button>
 											</Link>
 										</div>
 									</Row>

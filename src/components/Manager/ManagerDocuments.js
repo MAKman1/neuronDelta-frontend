@@ -37,6 +37,8 @@ class ManagerDocuments extends React.Component {
 			loading: true,
 			documentIndex: null,
 			currentRole: null,
+			tempRoles: [],
+			removedRoles: [],
 		};
 	}
 
@@ -108,16 +110,106 @@ class ManagerDocuments extends React.Component {
 	};
 
 	selectRole = (role) => {
+		let temp = [...this.state.tempRoles];
+		temp.push(role);
 		this.setState({
-			currentRole: role
+			tempRoles: temp
 		})
 	}
+
+	toggleRoleModal = (state, index = null) => {
+		this.setState({
+			[state]: !this.state[state],
+			documentIndex: index,
+			tempRoles: [...this.state.documents[index].userRoles]
+		});
+	};
 
 	closeRoleModal = () => {
 		this.setState({
 			currentRole: null,
 			roleModel: false,
-			documentIndex: null
+			documentIndex: null,
+			tempRoles: [],
+			removedRoles: []
+		})
+	}
+
+
+	removeRole = (role, index) => {
+		let removedRoles;
+		let updatedRoles = [...this.state.tempRoles];
+		updatedRoles.splice(index, 1);
+
+		removedRoles = [...this.state.removedRoles];
+		removedRoles.push(role);
+
+		this.setState({
+			removedRoles: removedRoles,
+			tempRoles: updatedRoles
+		})
+	}
+
+	updateRoles = () => {
+		if (this.state.tempRoles.length != 0) {
+			this.state.tempRoles.forEach(role => {
+				if (!this.state.documents[this.state.documentIndex].userRoles.includes(role)) {
+					console.warn(role.name);
+					console.warn("added role")
+					const data = new FormData();
+					data.append("documentId", this.state.documents[this.state.documentIndex].id);
+					data.append("roleId", role.id);
+
+					axios.post(constants["apiUrl"] + '/documents/addRole', data)
+						.then((res) => {
+							let data = res.data;
+							console.warn(JSON.stringify(data));
+						})
+						.catch((error) => {
+							console.warn(JSON.stringify(error));
+						});
+				}
+			});
+		}
+		if (this.state.removedRoles.length != 0) {
+			this.state.removedRoles.forEach(role => {
+				const data = new FormData();
+				data.append("documentId", this.state.documents[this.state.documentIndex].id);
+				data.append("roleId", role.id);
+
+				axios.post(constants["apiUrl"] + '/documents/removeRole', data)
+					.then((res) => {
+						let data = res.data;
+						console.warn(JSON.stringify(data));
+					})
+					.catch((error) => {
+						console.warn(JSON.stringify(error));
+					});
+				this.setState({
+					documentIndex: null
+				})
+			})
+		}
+		this.setState({
+			currentRole: null,
+			roleModel: false,
+			documentIndex: null,
+			tempRoles: [],
+			removedRoles: []
+		})
+	}
+
+	removeRole = (role, index) => {
+		let removedRoles;
+		let updatedRoles = [...this.state.tempRoles];
+		updatedRoles.splice(index, 1);
+
+		removedRoles = [...this.state.removedRoles];
+		removedRoles.push(role);
+
+		this.setState({
+			removedRoles: removedRoles,
+			tempRoles: updatedRoles
 		})
 	}
 
@@ -162,19 +254,22 @@ class ManagerDocuments extends React.Component {
 											<h3 className="mb-0">Uploaded Documents</h3>
 										</div>
 										<div className="col text-right">
-											<Button
-												color="success"
-												onClick={() => this.toggleModal("documentModel")}
-												size="sm"
-											>
+											<Link to={{
+												pathname: '/manager/docs',
+											}} style={{ paddingRight: 5 }}>
+												<Button color="success" size="sm">
+													See All
+                        						</Button>
+											</Link>
+											<Button color="success" onClick={() => this.toggleModal("documentModel")} size="sm">
 												Add Document
-                      </Button>
+                      						</Button>
 										</div>
 									</Row>
 								</CardHeader>
 								{this.state.loading ?
 									<CardBody>
-										<div style={{ borderColor: 'black' }} className="text-center">
+										<div className="text-center">
 											<Spinner st color="primary" />
 										</div>
 									</CardBody>
@@ -192,11 +287,11 @@ class ManagerDocuments extends React.Component {
 											</tr>
 										</thead>
 										<tbody>
-											{this.state.documents.map(doc => {
+											{this.state.documents.map((doc, index) => {
 												// const date = moment(doc.updated_at).format('DD MMM, YYYY');
 												const date = new Date(doc.updated_at).toLocaleString();
 												return (
-													<tr>
+													<tr key={index}>
 														<th scope="row">{doc.name}</th>
 														<td>{doc.size} KB</td>
 														<td>
@@ -205,7 +300,7 @@ class ManagerDocuments extends React.Component {
 															</div>
 														</td>
 														<td>{doc.acceptedCount}/{doc.acceptedTotal}</td>
-														<td >
+														<td>
 															{doc.userRoles.map(role => {
 																return (
 																	<h4><span className="badge badge-primary">{role.name}</span></h4>
@@ -213,26 +308,101 @@ class ManagerDocuments extends React.Component {
 															})}
 														</td>
 														<td>
-															<Button color="primary" onClick={() => this.toggleModal("roleModel")} size="sm">
+															<Button
+																color="primary"
+																onClick={() => this.toggleRoleModal("roleModel", index)}
+																size="sm"
+															>
 																Edit
-                              </Button>
+                              								</Button>
 														</td>
 														<td>
 															<Link to={{
 																pathname: '/manager/view/document/' + doc.id
 															}}>
-																<Button
-																	color="primary"
-																	size="sm"
-																>
+																<Button color="primary" size="sm">
 																	View
-                              </Button>
+                                								</Button>
 															</Link>
 														</td>
 													</tr>
 												)
 											})}
 										</tbody>
+										<Modal
+											size="sm"
+											className="modal-dialog-centered"
+											isOpen={this.state.roleModel}
+											toggle={() => this.closeRoleModal("roleModel")}
+										>
+											<div className="modal-header">
+												<h2 className="modal-title" id="roleModelLabel">
+													Add/Remove Role
+                          						</h2>
+												<button
+													aria-label="Close"
+													className="close"
+													data-dismiss="modal"
+													type="button"
+													onClick={() => this.closeRoleModal("roleModel")}
+												>
+													<span aria-hidden={true}>×</span>
+												</button>
+											</div>
+											<div className="modal-body">
+												<Row>
+													{this.state.documentIndex != null ? this.state.tempRoles.map((role, index) => {
+														return (
+															<Col key={index} sm="auto">
+																<h4><span class="badge badge-primary">{role.name}</span>
+																	<button aria-label="Close" className="close" data-dismiss="modal" type="button">
+																		<span class="badge badge-warning" onClick={() => this.removeRole(role, index)} aria-hidden={true}>×</span>
+																	</button>
+																</h4>
+															</Col>
+														)
+													})
+														: null}
+												</Row>
+												<br></br>
+												<Row className="justify-content-md-center">
+													<Col xl="auto">
+														<Dropdown isOpen={this.state.toggleDropdown} toggle={() => this.toggleDropdown("toggleDropdown")}>
+															<DropdownToggle caret>
+																{this.state.currentRole == null ? <>Select Role</> : this.state.currentRole.name}
+															</DropdownToggle>
+															<DropdownMenu>
+																{this.state.roles.map((role, index) => {
+																	if (this.state.tempRoles.some(r => r.id === role.id)) {
+																		return (
+																			<DropdownItem disabled key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
+																		)
+																	}
+																	else {
+																		return (
+																			<DropdownItem key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
+																		)
+																	}
+																})}
+															</DropdownMenu>
+														</Dropdown>
+													</Col>
+												</Row>
+											</div>
+											<div className="modal-footer">
+												<Button
+													color="secondary"
+													data-dismiss="modal"
+													type="button"
+													onClick={() => this.closeRoleModal()}
+												>
+													Cancel
+                          </Button>
+												<Button onClick={() => this.updateRoles()} color="success" type="button">
+													Save
+                          </Button>
+											</div>
+										</Modal>
 									</Table>
 								}
 								<Modal
@@ -243,7 +413,7 @@ class ManagerDocuments extends React.Component {
 									<div className="modal-header">
 										<h2 className="modal-title" id="documentModelLabel">
 											Add Document
-                          </h2>
+                          				</h2>
 										<button
 											aria-label="Close"
 											className="close"
@@ -265,9 +435,6 @@ class ManagerDocuments extends React.Component {
 												<textarea class="form-control" id="message-text"></textarea>
 											</div>
 											<div className="align-items-center">
-												{/* <Button color="primary" type="button">
-                                Choose File
-                            </Button> */}
 												<input type="file" name="file" onChange={e => this.chooseFile(e)} />
 											</div>
 										</form>
@@ -283,85 +450,6 @@ class ManagerDocuments extends React.Component {
                           </Button>
 										<Button color="success" type="button" onClick={this.handleUpload}>
 											Upload
-                          </Button>
-									</div>
-								</Modal>
-								<Modal
-									size="sm"
-									className="modal-dialog-centered"
-									isOpen={this.state.roleModel}
-									toggle={() => this.toggleModal("roleModel")}
-								>
-									<div className="modal-header">
-										<h2 className="modal-title" id="roleModelLabel">
-											Add/Remove Role
-                          </h2>
-										<button
-											aria-label="Close"
-											className="close"
-											data-dismiss="modal"
-											type="button"
-											onClick={() => this.toggleModal("roleModel")}
-										>
-											<span aria-hidden={true}>×</span>
-										</button>
-									</div>
-									<div className="modal-body">
-										<Row>
-											{this.state.documentIndex != null ? this.state.documents[this.state.documentIndex].userRoles.map((role, index) => {
-												return (
-													<Col key={index} sm="auto">
-														<h4><span class="badge badge-primary">{role.name}</span>
-															<button
-																aria-label="Close"
-																className="close"
-																data-dismiss="modal"
-																type="button"
-															>
-																<span class="badge badge-warning" onClick={() => this.removeRole(role.id)} aria-hidden={true}>×</span>
-															</button>
-														</h4>
-													</Col>
-												)
-											})
-												: null}
-										</Row>
-										<br></br>
-										<Row className="justify-content-md-center">
-											<Col xl="auto">
-												<Dropdown isOpen={this.state.toggleDropdown} toggle={() => this.toggleDropdown("toggleDropdown")}>
-													<DropdownToggle caret>
-														{this.state.currentRole == null ? <>Select Role</> : this.state.currentRole.name}
-													</DropdownToggle>
-													<DropdownMenu>
-														{this.state.roles.map((role, index) => {
-															if (this.state.documents[this.state.documentIndex] != null && this.state.documents[this.state.documentIndex].userRoles.some(r => r.id === role.id)) {
-																return (
-																	<DropdownItem disabled key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
-																)
-															}
-															else {
-																return (
-																	<DropdownItem key={index} onClick={() => this.selectRole(role)}>{role.name}</DropdownItem>
-																)
-															}
-														})}
-													</DropdownMenu>
-												</Dropdown>
-											</Col>
-										</Row>
-									</div>
-									<div className="modal-footer">
-										<Button
-											color="secondary"
-											data-dismiss="modal"
-											type="button"
-											onClick={() => this.closeRoleModal()}
-										>
-											Cancel
-                          </Button>
-										<Button onClick={() => this.addRole()} color="success" type="button">
-											Add Role
                           </Button>
 									</div>
 								</Modal>
