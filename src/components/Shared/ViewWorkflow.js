@@ -14,7 +14,9 @@ import {
 	Container,
 	Row,
 	Col,
-	Modal
+	Modal,
+	CardBody,
+	Spinner
 } from "reactstrap";
 
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
@@ -35,11 +37,10 @@ class ViewWorkflow extends React.Component {
 			detModal: false,
 			details: null,
 			index: null,
-			
 			addItemModal: false,
 			documentModal: false,
 			uploadDocument: null,
-			
+			loading: true
 		};
 	}
 
@@ -52,9 +53,9 @@ class ViewWorkflow extends React.Component {
 
 		if (clientId !== null && userId !== null) {
 			const data = {
-				
+
 				"workflowId": this.workflowId,
-				
+
 			}
 			axios.post(constants["apiUrl"] + '/workflows/get', data)
 				.then((res) => {
@@ -63,7 +64,8 @@ class ViewWorkflow extends React.Component {
 					this.setState({
 						name: data.workflow.name,
 						desc: data.workflow.description,
-						items: data.workflow.items
+						items: data.workflow.items,
+						loading: false
 					})
 				})
 				.catch((error) => {
@@ -76,11 +78,11 @@ class ViewWorkflow extends React.Component {
 
 	handleItemName = (event) => {
 
-		this.setState({itemName: event.target.value})
-		
+		this.setState({ itemName: event.target.value })
+
 	}
 
-	handleItemDesc = (event)=> {
+	handleItemDesc = (event) => {
 		console.warn(this.state.itemDesc)
 		this.setState({
 			itemDesc: event.target.value
@@ -88,15 +90,15 @@ class ViewWorkflow extends React.Component {
 	}
 
 	handleAddNewItem = () => {
-		
+
 		let clientId = reactLocalStorage.get('clientId', true);
 		if (clientId !== null) {
 			const data = {
-				
+
 				"workflowId": this.workflowId,
 				"name": this.state.itemName,
 				"description": this.state.itemDesc
-				
+
 			}
 			axios.post(constants["apiUrl"] + '/workflows/addWorkflowItem', data)
 				.then((res) => {
@@ -133,46 +135,46 @@ class ViewWorkflow extends React.Component {
 	handleCheck = (itemId) => {
 		let userId = reactLocalStorage.get('userId', true);
 		const data = {
-				
+
 			"workflowItemId": itemId,
 			"userId": userId
-			
+
 		}
 		axios.post(constants["apiUrl"] + '/workflows/check', data)
-				.then((res) => {
-					let data = res.data;
-					console.warn(JSON.stringify(data));
-					if (data.done == 1) {
-						window.location.reload(false)
-					}
-					
-				})
-				.catch((error) => {
-					console.warn(JSON.stringify(error));
-				});
+			.then((res) => {
+				let data = res.data;
+				console.warn(JSON.stringify(data));
+				if (data.done == 1) {
+					window.location.reload(false)
+				}
+
+			})
+			.catch((error) => {
+				console.warn(JSON.stringify(error));
+			});
 
 	}
 
 	handleUncheck = (itemId) => {
 		let userId = reactLocalStorage.get('userId', true);
 		const data = {
-				
+
 			"workflowItemId": itemId,
 			"userId": userId
-			
+
 		}
 		axios.post(constants["apiUrl"] + '/workflows/uncheck', data)
-				.then((res) => {
-					let data = res.data;
-					console.warn(JSON.stringify(data));
-					if (data.done == 1) {
-						window.location.reload(false)
-					}
-					
-				})
-				.catch((error) => {
-					console.warn(JSON.stringify(error));
-				});
+			.then((res) => {
+				let data = res.data;
+				console.warn(JSON.stringify(data));
+				if (data.done == 1) {
+					window.location.reload(false)
+				}
+
+			})
+			.catch((error) => {
+				console.warn(JSON.stringify(error));
+			});
 	}
 
 	openDocumentModal = (index) => {
@@ -213,7 +215,7 @@ class ViewWorkflow extends React.Component {
 			axios.post(constants["apiUrl"] + '/workflows/attachDocument', data)
 				.then((res) => {
 					let data = res.data;
-					this.state.checklists[ this.state.currentChecklistIndex].progress.document_id = res.data.uploaded.id;
+					this.state.checklists[this.state.currentChecklistIndex].progress.document_id = res.data.uploaded.id;
 					this.forceUpdate();
 					console.warn(JSON.stringify(data));
 				})
@@ -250,31 +252,25 @@ class ViewWorkflow extends React.Component {
 
 	handleAddDetail = () => {
 		const data = {
-				
+
 			"workflowItemId": this.state.index,
 			"description": this.state.details
-			
+
 		}
 		axios.post(constants["apiUrl"] + '/workflows/addDesciption', data)
-				.then((res) => {
-					let data = res.data;
-					console.warn(JSON.stringify(data));
-					this.closeDetModal()
-					window.location.reload(false)
-					
-				})
-				.catch((error) => {
-					console.warn(JSON.stringify(error));
-				});
+			.then((res) => {
+				let data = res.data;
+				console.warn(JSON.stringify(data));
+				this.closeDetModal()
+				window.location.reload(false)
+
+			})
+			.catch((error) => {
+				console.warn(JSON.stringify(error));
+			});
 	}
 
-	
-	
-
-	
-
 	render() {
-
 		return (
 			<>
 				<EmptyHeader />
@@ -283,24 +279,29 @@ class ViewWorkflow extends React.Component {
 					<Row className="mt-5 justify-content-center">
 						<Col className="mb-5 mb-xl-0" xl="12">
 							<Card className="shadow">
-								<CardHeader className="border-0">
-									
-									<Row className="align-items-center" style={{ marginBottom: 10 }}>
-										<div className="col">
-											<h1 className="mb-0">{this.state.name == null ? "" : this.state.name}</h1>
+								{this.state.loading ?
+									<CardBody>
+										<div style={{ borderColor: 'black' }} className="text-center">
+											<Spinner st color="primary" />
 										</div>
-									</Row>
-									<Row className="align-items-center">
-										<div className="col">
-											<h4 className="mb-0">{this.state.desc == null ? "" : this.state.desc}</h4>
-										</div>
-									</Row>
-								</CardHeader>
-
+									</CardBody>
+									:
+									<CardHeader className="border-0">
+										<Row className="align-items-center" style={{ marginBottom: 10 }}>
+											<div className="col">
+												<h1 className="mb-0">{this.state.name == null ? "" : this.state.name}</h1>
+											</div>
+										</Row>
+										<Row className="align-items-center">
+											<div className="col">
+												<h4 className="mb-0">{this.state.desc == null ? "" : this.state.desc}</h4>
+											</div>
+										</Row>
+									</CardHeader>
+								}
 							</Card>
 						</Col>
 					</Row>
-
 					<Row className="mt-5 justify-content-center">
 						<Col className="mb-5 mb-xl-0" xl="12">
 							<Card className="shadow">
@@ -310,52 +311,52 @@ class ViewWorkflow extends React.Component {
 											<h3 className="mb-0">Workflow Items</h3>
 										</div>
 										<div className="col text-right">
-											<Button color="success" onClick = {() => this.openAddItemModal()} size="sm"> 
+											<Button color="success" onClick={() => this.openAddItemModal()} size="sm">
 												Add New Item
-											</Button> 
+											</Button>
 											<Modal
 												className="modal-dialog-centered"
 												isOpen={this.state.addItemModal}
 												toggle={() => this.closeAddItemModal()}
 											>
 												<div className="modal-header">
-												<h2 className="modal-title" id="userModelLabel">
-													Add New Item
+													<h2 className="modal-title" id="userModelLabel">
+														Add New Item
 												</h2>
-												<button
-													aria-label="Close"
-													className="close"
-													data-dismiss="modal"
-													type="button"
-													onClick={() => this.closeAddItemModal()}
-												>
-													<span aria-hidden={true}>×</span>
-												</button>
+													<button
+														aria-label="Close"
+														className="close"
+														data-dismiss="modal"
+														type="button"
+														onClick={() => this.closeAddItemModal()}
+													>
+														<span aria-hidden={true}>×</span>
+													</button>
 												</div>
 												<div className="modal-body">
-												<form>
-													<div class="form-group">
-													<label for="recipient-name" defaultValue={this.state.itemName} class="col-form-label" >Name:</label>
-													<input type="text" class="form-control" id="recipient-name" onChange={this.handleItemName}></input>
-													</div>
-													
-													<div class="form-group">
-													<label for="message-text" class="col-form-label" defaultValue={this.state.itemDesc}>Description:</label>
-													<textarea type="text" class="form-control" id="message-text" onChange={this.handleItemDesc}></textarea>
-													</div>
-												</form>
+													<form>
+														<div class="form-group">
+															<label for="recipient-name" defaultValue={this.state.itemName} class="col-form-label" >Name:</label>
+															<input type="text" class="form-control" id="recipient-name" onChange={this.handleItemName}></input>
+														</div>
+
+														<div class="form-group">
+															<label for="message-text" class="col-form-label" defaultValue={this.state.itemDesc}>Description:</label>
+															<textarea type="text" class="form-control" id="message-text" onChange={this.handleItemDesc}></textarea>
+														</div>
+													</form>
 												</div>
 												<div className="modal-footer">
-												<Button
-													color="secondary"
-													data-dismiss="modal"
-													type="button"
-													onClick={() => this.closeAddItemModal()}
-												>
-													Cancel
+													<Button
+														color="secondary"
+														data-dismiss="modal"
+														type="button"
+														onClick={() => this.closeAddItemModal()}
+													>
+														Cancel
 												</Button>
-												<Button color="success" type="button" onClick={() => this.handleAddNewItem()}>
-													Add
+													<Button color="success" type="button" onClick={() => this.handleAddNewItem()}>
+														Add
 												</Button>
 												</div>
 											</Modal>
@@ -363,130 +364,133 @@ class ViewWorkflow extends React.Component {
 
 									</Row>
 								</CardHeader>
-								<Table className="align-items-center table-flush">
-									<thead className="thead-light">
-										<tr>
-											<th scope="col"></th>
-											<th scope="col">Name</th>
-											<th scope="col">Description</th>
-											<th scope="col">Details</th>
-											<th scope="col"></th>
-										</tr>
-									</thead>
-									<tbody>
-										{
-											this.state.items.map(item => {
-												return (
-													<tr>
-														<th scope = "row">
-															<div class="form-check">
-																{item.done == 0 ?
-																	<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox" onClick={() => this.handleCheck(item.id)}  id={"Check" + item.id} />
-																	:
-																	<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox" onClick={() => this.handleUncheck(item.id)} defaultChecked id={"Check" + item.id} />
-																}
-																<label class="form-check-label " for="defaultCheck1"></label>
-															</div>
-
-														</th>
-														<td>
-															{item.name}
-														</td>
-														<td>
-															{item.details}
-														</td>
-														<td>
-															{ item.done !== 0 ?
-															item.description == null ?
-																<Button color="success" size="sm" onClick={() => this.openDetModal(item.id)}> 
-																	Add Description
-																</Button>
-																:
-																<div>
-																	{item.description}
+								{this.state.loading ?
+									<CardBody>
+										<div style={{ borderColor: 'black' }} className="text-center">
+											<Spinner st color="primary" />
+										</div>
+									</CardBody>
+									:
+									<Table className="align-items-center table-flush">
+										<thead className="thead-light">
+											<tr>
+												<th scope="col"></th>
+												<th scope="col">Name</th>
+												<th scope="col">Description</th>
+												<th scope="col">Details</th>
+												<th scope="col"></th>
+											</tr>
+										</thead>
+										<tbody>
+											{
+												this.state.items.map(item => {
+													return (
+														<tr>
+															<th scope="row">
+																<div class="form-check">
+																	{item.done == 0 ?
+																		<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox" onClick={() => this.handleCheck(item.id)} id={"Check" + item.id} />
+																		:
+																		<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox" onClick={() => this.handleUncheck(item.id)} defaultChecked id={"Check" + item.id} />
+																	}
+																	<label class="form-check-label " for="defaultCheck1"></label>
 																</div>
-															:
-															<div>
 
-															</div>
-															}
-														</td>
+															</th>
+															<td>
+																{item.name}
+															</td>
+															<td>
+																{item.details}
+															</td>
+															<td>
+																{item.done !== 0 ?
+																	item.description == null ?
+																		<Button color="success" size="sm" onClick={() => this.openDetModal(item.id)}>
+																			Add Description
+																</Button>
+																		:
+																		<div>
+																			{item.description}
+																		</div>
+																	:
+																	<div>
 
-														<td>
-														{item.done == 0 ?
-															<p></p>
-															:
-															item.document_id == null ?
-															<Button color="success" size="sm" onClick={() => this.openDocumentModal(item.id)}> 
-															Add Document 
-															</Button>
-															:
-															<Link to={{
-																pathname: '/manager/view/document/' + item.document_id
-															  }}>
-																<Button
-																  color="primary"
-																  size="sm"
-																>
-																  View Document
-															  </Button>
-															  </Link>
-														}
+																	</div>
+																}
+															</td>
 
-														
-														</td>
-													</tr>
-												)
-											})
-										}
+															<td>
+																{item.done == 0 ?
+																	<p></p>
+																	:
+																	item.document_id == null ?
+																		<Button color="success" size="sm" onClick={() => this.openDocumentModal(item.id)}>
+																			Add Document
+																		</Button>
+																		:
+																		<Link to={{
+																			pathname: '/manager/view/document/' + item.document_id
+																		}}>
+																			<Button color="primary" size="sm">
+																				View Document
+																			</Button>
+																		</Link>
+																}
 
-									</tbody>
-									<Modal
-										className="modal-dialog-centered"
-										isOpen={this.state.documentModal}
-										toggle={() => this.closeDocumentModal()}
-									>
-										<div className="modal-header">
-											<h2 className="modal-title" id="documentModelLabel">
-												Add Document
+															</td>
+														</tr>
+													)
+												})
+											}
+
+										</tbody>
+										<Modal
+											className="modal-dialog-centered"
+											isOpen={this.state.documentModal}
+											toggle={() => this.closeDocumentModal()}
+										>
+											<div className="modal-header">
+												<h2 className="modal-title" id="documentModelLabel">
+													Add Document
                           					</h2>
-											<button
-												aria-label="Close"
-												className="close"
-												data-dismiss="modal"
-												type="button"
-												onClick={() => this.closeDocumentModal()}
-											>
-												<span aria-hidden={true}>×</span>
-											</button>
-										</div>
-										<div className="modal-body">
-											<form>
-												<div className="align-items-center">
-													<input type="file" name="file" onChange={e => this.chooseFile(e)} />
-												</div>
-											</form>
-										</div>
-										<div className="modal-footer">
-											<Button
-												color="secondary"
-												data-dismiss="modal"
-												type="button"
-												onClick={() => this.closeDocumentModal()}
-											>
-												Cancel
+												<button
+													aria-label="Close"
+													className="close"
+													data-dismiss="modal"
+													type="button"
+													onClick={() => this.closeDocumentModal()}
+												>
+													<span aria-hidden={true}>×</span>
+												</button>
+											</div>
+											<div className="modal-body">
+												<form>
+													<div className="align-items-center">
+														<input type="file" name="file" onChange={e => this.chooseFile(e)} />
+													</div>
+												</form>
+											</div>
+											<div className="modal-footer">
+												<Button
+													color="secondary"
+													data-dismiss="modal"
+													type="button"
+													onClick={() => this.closeDocumentModal()}
+												>
+													Cancel
                           					</Button>
-											<Button color="success" type="button" onClick={() => this.handleUpload()}>
-												Upload
+												<Button color="success" type="button" onClick={() => this.handleUpload()}>
+													Upload
                           					</Button>
-										</div>
-									</Modal>
-									<Modal
-												className="modal-dialog-centered"
-												isOpen={this.state.detModal}
-												toggle={() => this.closeDetModal()}
-											>
-												<div className="modal-header">
+											</div>
+										</Modal>
+										<Modal
+											className="modal-dialog-centered"
+											isOpen={this.state.detModal}
+											toggle={() => this.closeDetModal()}
+										>
+											<div className="modal-header">
 												<h2 className="modal-title" id="userModelLabel">
 													Add Details
 												</h2>
@@ -499,17 +503,17 @@ class ViewWorkflow extends React.Component {
 												>
 													<span aria-hidden={true}>×</span>
 												</button>
-												</div>
-												<div className="modal-body">
+											</div>
+											<div className="modal-body">
 												<form>
-													
+
 													<div class="form-group">
-													<label for="message-text" class="col-form-label" defaultValue={this.state.itemDesc}>Details:</label>
-													<textarea type="text" class="form-control" id="message-text" onChange={this.handleItemDet}></textarea>
+														<label for="message-text" class="col-form-label" defaultValue={this.state.itemDesc}>Details:</label>
+														<textarea type="text" class="form-control" id="message-text" onChange={this.handleItemDet}></textarea>
 													</div>
 												</form>
-												</div>
-												<div className="modal-footer">
+											</div>
+											<div className="modal-footer">
 												<Button
 													color="secondary"
 													data-dismiss="modal"
@@ -521,10 +525,10 @@ class ViewWorkflow extends React.Component {
 												<Button color="success" type="button" onClick={() => this.handleAddDetail()}>
 													Add
 												</Button>
-												</div>
-											</Modal>
-									
-								</Table>
+											</div>
+										</Modal>
+									</Table>
+								}
 							</Card>
 						</Col>
 					</Row>

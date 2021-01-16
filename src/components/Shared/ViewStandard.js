@@ -13,7 +13,9 @@ import {
 	Table,
 	Container,
 	Row,
-	Col
+	Col,
+	Spinner,
+	CardBody
 } from "reactstrap";
 
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
@@ -29,7 +31,8 @@ class ViewStandard extends React.Component {
 
 		this.state = {
 			standard: null,
-			articles: []
+			articles: [],
+			loading: true
 		};
 	}
 
@@ -62,7 +65,8 @@ class ViewStandard extends React.Component {
 					//console.warn(JSON.stringify(data));
 					this.setState({
 						articles: data.articles,
-						standard: data.standard
+						standard: data.standard,
+						loading: false
 					})
 				})
 				.catch((error) => {
@@ -82,19 +86,26 @@ class ViewStandard extends React.Component {
 					<Row className="mt-5 justify-content-center">
 						<Col className="mb-5 mb-xl-0" xl="12">
 							<Card className="shadow">
-								<CardHeader className="border-0">
-									<Row className="align-items-center" style={{ marginBottom: 10 }}>
-										<div className="col">
-											<h1 className="mb-0">{this.state.standard == null ? "" : this.state.standard.name}</h1>
+								{this.state.loading ?
+									<CardBody>
+										<div style={{ borderColor: 'black' }} className="text-center">
+											<Spinner st color="primary" />
 										</div>
-									</Row>
-									<Row className="align-items-center">
-										<div className="col">
-											<h4 className="mb-0">{this.state.standard == null ? "" : this.state.standard.description}</h4>
-										</div>
-									</Row>
-								</CardHeader>
-
+									</CardBody>
+									:
+									<CardHeader className="border-0">
+										<Row className="align-items-center" style={{ marginBottom: 10 }}>
+											<div className="col">
+												<h1 className="mb-0">{this.state.standard == null ? "" : this.state.standard.name}</h1>
+											</div>
+										</Row>
+										<Row className="align-items-center">
+											<div className="col">
+												<h4 className="mb-0">{this.state.standard == null ? "" : this.state.standard.description}</h4>
+											</div>
+										</Row>
+									</CardHeader>
+								}
 							</Card>
 						</Col>
 					</Row>
@@ -108,40 +119,47 @@ class ViewStandard extends React.Component {
 											<h3 className="mb-0">{"Standard " + this.standardId}</h3>
 
 										</div>
-
 									</Row>
 								</CardHeader>
-								<Table className="align-items-center table-flush">
-									<thead className="thead-light">
-										<tr>
-											<th scope="col">Name</th>
-											<th scope="col">CheckList Count</th>
-											<th scope="col">Assigned To</th>
-											<th scope="col">Due Date</th>
+								{this.state.loading ?
+									<CardBody>
+										<div style={{ borderColor: 'black' }} className="text-center">
+											<Spinner st color="primary" />
+										</div>
+									</CardBody>
+									:
+									<Table className="align-items-center table-flush">
+										<thead className="thead-light">
+											<tr>
+												<th scope="col">Name</th>
+												<th scope="col">CheckList Count</th>
+												<th scope="col">Assigned To</th>
+												<th scope="col">Due Date</th>
 
-											<th scope="col">Standards</th>
-											<th scope="col">Progress</th>
-											<th scope="col"></th>
-										</tr>
-									</thead>
-									<tbody>
-										{this.state.articles.map(article => {
-											return (
-												<tr>
-													<th scope="row">{article.name}</th>
-													<td>{article.checklistCount}</td>
-													<td>{article.assignedTo == null ? "-": article.assignedTo.name}</td>
-													<td>-</td>
-													<td>{article.standard.id}</td>
-													<td>
-														<i className="fas fa-arrow-up text-success mr-3" />{" "}
-														{article.progress}%
+												<th scope="col">Standards</th>
+												<th scope="col">Progress</th>
+												<th scope="col"></th>
+											</tr>
+										</thead>
+										<tbody>
+											{this.state.articles.map(article => {
+												return (
+													<tr>
+														<th scope="row">{article.name}</th>
+														<td>{article.checklistCount}</td>
+														<td>{article.assignedTo == null ? "-" : article.assignedTo.name}</td>
+														<td>-</td>
+														<td>{article.standard.id}</td>
+														<td>
+															<i className="fas fa-arrow-up text-success mr-3" />{" "}
+															{article.progress}%
 													</td>
-												</tr>
-											)
-										})}
-									</tbody>
-								</Table>
+													</tr>
+												)
+											})}
+										</tbody>
+									</Table>
+								}
 							</Card>
 						</Col>
 					</Row>

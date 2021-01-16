@@ -14,7 +14,9 @@ import {
 	Container,
 	Row,
 	Col,
-	Modal
+	Modal,
+	CardBody,
+	Spinner
 } from "reactstrap";
 
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
@@ -34,7 +36,8 @@ class ViewArticle extends React.Component {
 			detModal: false,
 			documentModel: false,
 			uploadDocument: null,
-			currentChecklistIndex: null
+			currentChecklistIndex: null,
+			loading: true
 		};
 	}
 
@@ -58,7 +61,8 @@ class ViewArticle extends React.Component {
 					this.setState({
 						checklists: data.checklists,
 						article: data.article,
-						standard: data.standard
+						standard: data.standard,
+						loading: false
 					})
 				})
 				.catch((error) => {
@@ -124,7 +128,7 @@ class ViewArticle extends React.Component {
 
 			data.append("clientId", clientId);
 			data.append("userId", userId);
-			data.append('checklistId', this.state.checklists[ this.state.currentChecklistIndex].id);
+			data.append('checklistId', this.state.checklists[this.state.currentChecklistIndex].id);
 			data.append("file", this.state.uploadDocument);
 
 			// console.warn(...data);
@@ -132,7 +136,7 @@ class ViewArticle extends React.Component {
 			axios.post(constants["apiUrl"] + '/checklists/attachDocument', data)
 				.then((res) => {
 					let data = res.data;
-					this.state.checklists[ this.state.currentChecklistIndex].progress.document_id = res.data.uploaded.id;
+					this.state.checklists[this.state.currentChecklistIndex].progress.document_id = res.data.uploaded.id;
 					this.forceUpdate();
 					console.warn(JSON.stringify(data));
 				})
@@ -165,7 +169,7 @@ class ViewArticle extends React.Component {
 		this.setState({
 			details: event.target.value
 		})
-		
+
 	}
 
 	handleAddDetail = () => {
@@ -174,22 +178,22 @@ class ViewArticle extends React.Component {
 		const data = {
 			"userId": userId,
 			"clientId": clientId,
-				
+
 			"checklistId": this.state.index,
 			"description": this.state.details
-			
+
 		}
 		axios.post(constants["apiUrl"] + '/checklists/addDesciption', data)
-				.then((res) => {
-					let data = res.data;
-					console.warn(JSON.stringify(data));
-					this.closeDetModal()
-					
-					
-				})
-				.catch((error) => {
-					console.warn(JSON.stringify(error));
-				});
+			.then((res) => {
+				let data = res.data;
+				console.warn(JSON.stringify(data));
+				this.closeDetModal()
+
+
+			})
+			.catch((error) => {
+				console.warn(JSON.stringify(error));
+			});
 	}
 
 	render() {
@@ -202,24 +206,31 @@ class ViewArticle extends React.Component {
 					<Row className="mt-5 justify-content-center">
 						<Col className="mb-5 mb-xl-0" xl="12">
 							<Card className="shadow">
-								<CardHeader className="border-0">
-									<Row className="align-items-center">
-										<div className="col">
-											<span className="mb-0 badge badge-primary">{this.state.standard == null ? "" : this.state.standard.name}</span>
+								{this.state.loading ?
+									<CardBody>
+										<div style={{ borderColor: 'black' }} className="text-center">
+											<Spinner st color="primary" />
 										</div>
-									</Row>
-									<Row className="align-items-center" style={{ marginBottom: 10 }}>
-										<div className="col">
-											<h1 className="mb-0">{this.state.article == null ? "" : this.state.article.name}</h1>
-										</div>
-									</Row>
-									<Row className="align-items-center">
-										<div className="col">
-											<h4 className="mb-0">{this.state.article == null ? "" : this.state.article.description}</h4>
-										</div>
-									</Row>
-								</CardHeader>
-
+									</CardBody>
+									:
+									<CardHeader className="border-0">
+										<Row className="align-items-center">
+											<div className="col">
+												<span className="mb-0 badge badge-primary">{this.state.standard == null ? "" : this.state.standard.name}</span>
+											</div>
+										</Row>
+										<Row className="align-items-center" style={{ marginBottom: 10 }}>
+											<div className="col">
+												<h1 className="mb-0">{this.state.article == null ? "" : this.state.article.name}</h1>
+											</div>
+										</Row>
+										<Row className="align-items-center">
+											<div className="col">
+												<h4 className="mb-0">{this.state.article == null ? "" : this.state.article.description}</h4>
+											</div>
+										</Row>
+									</CardHeader>
+								}
 							</Card>
 						</Col>
 					</Row>
@@ -235,150 +246,157 @@ class ViewArticle extends React.Component {
 										<div className="col text-right">
 
 										</div>
-
 									</Row>
 								</CardHeader>
-								<Table className="align-items-center table-flush">
-									<thead className="thead-light">
-										<tr>
-											<th scope="col"></th>
-											<th scope="col">Name</th>
-											<th scope="col">Description</th>
-											<th scope="col">Details</th>
-											<th scope="col"></th>
-										</tr>
-									</thead>
-									<tbody>
-										{
-											this.state.checklists.map((c, index) => {
-												return (
-													<tr>
-														<th scope="row">
-															<div class="form-check">
-																{c.progress == null ?
-																	<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox" onChange={() => this.handleCheckClick(c, false)} id={"Check" + c.id} />
-																	:
-																	<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox" onChange={() => this.handleCheckClick(c, true)} defaultChecked id={"Check" + c.id} />
-																}
-																<label class="form-check-label " for="defaultCheck1"></label>
-															</div>
-														</th>
-														<td>{c.name}</td>
-														<td>
-															<text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
-																{c.details}
-															</text>
-														</td>
-														<td>
-															{c.progress !== null ? 
-															 c.progress.description == "" ?
-															 <Button color="success" size="sm" onClick={() => this.openDetModal(c.id)}> 
-																	Add Description
+								{this.state.loading ?
+									<CardBody>
+										<div style={{ borderColor: 'black' }} className="text-center">
+											<Spinner st color="primary" />
+										</div>
+									</CardBody>
+									:
+									<Table className="align-items-center table-flush">
+										<thead className="thead-light">
+											<tr>
+												<th scope="col"></th>
+												<th scope="col">Name</th>
+												<th scope="col">Description</th>
+												<th scope="col">Details</th>
+												<th scope="col"></th>
+											</tr>
+										</thead>
+										<tbody>
+											{
+												this.state.checklists.map((c, index) => {
+													return (
+														<tr>
+															<th scope="row">
+																<div class="form-check">
+																	{c.progress == null ?
+																		<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox" onChange={() => this.handleCheckClick(c, false)} id={"Check" + c.id} />
+																		:
+																		<input class="form-check-input" style={{ width: 17, height: 17 }} type="checkbox" onChange={() => this.handleCheckClick(c, true)} defaultChecked id={"Check" + c.id} />
+																	}
+																	<label class="form-check-label " for="defaultCheck1"></label>
+																</div>
+															</th>
+															<td>{c.name}</td>
+															<td>
+																<text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
+																	{c.details}
+																</text>
+															</td>
+															<td>
+																{c.progress !== null ?
+																	c.progress.description == "" ?
+																		<Button color="success" size="sm" onClick={() => this.openDetModal(c.id)}>
+																			Add Description
 															</Button>
-															 :
-															 <div>
-															 	{c.progress.description}
-														 	</div>
-															 :
-															 <div>
+																		:
+																		<div>
+																			{c.progress.description}
+																		</div>
+																	:
+																	<div>
 
-															 </div>
-															}
-														</td>
-														<td>
-															{c.progress == null ? null
-																: (c.progress.document_id == null ? <Button color="success" onClick={() => this.toggleModal("documentModel", index)} size="sm"> Add Document </Button> : <Button color="primary" size="sm"> View Document </Button>)
-															}
-														</td>
-													</tr>
-												)
-											})
-										}
+																	</div>
+																}
+															</td>
+															<td>
+																{c.progress == null ? null
+																	: (c.progress.document_id == null ? <Button color="success" onClick={() => this.toggleModal("documentModel", index)} size="sm"> Add Document </Button> : <Button color="primary" size="sm"> View Document </Button>)
+																}
+															</td>
+														</tr>
+													)
+												})
+											}
 
-									</tbody>
-									<Modal
-										className="modal-dialog-centered"
-										isOpen={this.state.documentModel}
-										toggle={() => this.toggleModal("documentModel")}
-									>
-										<div className="modal-header">
-											<h2 className="modal-title" id="documentModelLabel">
-												Add Document
+										</tbody>
+										<Modal
+											className="modal-dialog-centered"
+											isOpen={this.state.documentModel}
+											toggle={() => this.toggleModal("documentModel")}
+										>
+											<div className="modal-header">
+												<h2 className="modal-title" id="documentModelLabel">
+													Add Document
                           					</h2>
-											<button
-												aria-label="Close"
-												className="close"
-												data-dismiss="modal"
-												type="button"
-												onClick={() => this.toggleModal("documentModel")}
-											>
-												<span aria-hidden={true}>×</span>
-											</button>
-										</div>
-										<div className="modal-body">
-											<form>
-												<div className="align-items-center">
-													<input type="file" name="file" onChange={e => this.chooseFile(e)} />
-												</div>
-											</form>
-										</div>
-										<div className="modal-footer">
-											<Button
-												color="secondary"
-												data-dismiss="modal"
-												type="button"
-												onClick={() => this.toggleModal("documentModel")}
-											>
-												Cancel
-                          					</Button>
-											<Button color="success" type="button" onClick={this.handleUpload}>
-												Upload
-                          					</Button>
-										</div>
-									</Modal>
-									<Modal
-										className="modal-dialog-centered"
-										isOpen={this.state.detModal}
-										toggle={() => this.closeDetModal()}
-									>
-										<div className="modal-header">
-										<h2 className="modal-title" id="userModelLabel">
-											Add Details
-										</h2>
-										<button
-											aria-label="Close"
-											className="close"
-											data-dismiss="modal"
-											type="button"
-											onClick={() => this.closeDetModal()}
-										>
-											<span aria-hidden={true}>×</span>
-										</button>
-										</div>
-										<div className="modal-body">
-										<form>
-											
-											<div class="form-group">
-											<label for="message-text" class="col-form-label" defaultValue={this.state.itemDesc}>Details:</label>
-											<textarea type="text" class="form-control" id="message-text" onChange={this.handleItemDet}></textarea>
+												<button
+													aria-label="Close"
+													className="close"
+													data-dismiss="modal"
+													type="button"
+													onClick={() => this.toggleModal("documentModel")}
+												>
+													<span aria-hidden={true}>×</span>
+												</button>
 											</div>
-										</form>
-										</div>
-										<div className="modal-footer">
-										<Button
-											color="secondary"
-											data-dismiss="modal"
-											type="button"
-											onClick={() => this.closeDetModal()}
+											<div className="modal-body">
+												<form>
+													<div className="align-items-center">
+														<input type="file" name="file" onChange={e => this.chooseFile(e)} />
+													</div>
+												</form>
+											</div>
+											<div className="modal-footer">
+												<Button
+													color="secondary"
+													data-dismiss="modal"
+													type="button"
+													onClick={() => this.toggleModal("documentModel")}
+												>
+													Cancel
+                          					</Button>
+												<Button color="success" type="button" onClick={this.handleUpload}>
+													Upload
+                          					</Button>
+											</div>
+										</Modal>
+										<Modal
+											className="modal-dialog-centered"
+											isOpen={this.state.detModal}
+											toggle={() => this.closeDetModal()}
 										>
-											Cancel
+											<div className="modal-header">
+												<h2 className="modal-title" id="userModelLabel">
+													Add Details
+										</h2>
+												<button
+													aria-label="Close"
+													className="close"
+													data-dismiss="modal"
+													type="button"
+													onClick={() => this.closeDetModal()}
+												>
+													<span aria-hidden={true}>×</span>
+												</button>
+											</div>
+											<div className="modal-body">
+												<form>
+
+													<div class="form-group">
+														<label for="message-text" class="col-form-label" defaultValue={this.state.itemDesc}>Details:</label>
+														<textarea type="text" class="form-control" id="message-text" onChange={this.handleItemDet}></textarea>
+													</div>
+												</form>
+											</div>
+											<div className="modal-footer">
+												<Button
+													color="secondary"
+													data-dismiss="modal"
+													type="button"
+													onClick={() => this.closeDetModal()}
+												>
+													Cancel
 										</Button>
-										<Button color="success" type="button" onClick={() => this.handleAddDetail()}>
-											Add
+												<Button color="success" type="button" onClick={() => this.handleAddDetail()}>
+													Add
 										</Button>
-										</div>
-									</Modal>
-								</Table>
+											</div>
+										</Modal>
+									</Table>
+								}
 							</Card>
 						</Col>
 					</Row>

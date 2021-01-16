@@ -228,7 +228,7 @@ class Profile extends React.Component {
                         </div>
                         <div class="form-group">
                           <label for="recipient-name" class="col-form-label" >Password:</label>
-                          <input type="text" class="form-control" id="recipient-name" defaultValue={this.state.user.password} onChange={this.handlePassword}></input>
+                          <input type="password" placeholder="Enter New Password" class="form-control" id="recipient-name" onChange={this.handlePassword}></input>
                         </div>
                       </form>
                     </div>

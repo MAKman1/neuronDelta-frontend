@@ -147,11 +147,11 @@ class UserIndex extends React.Component {
 													<tr>
 														<th scope="row">{a.name}</th>
 														<td>{a.assignedBy.name}</td>
-														<td>12-2-2020</td>
+														<td>-</td>
 														<td>{a.standard.name}</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
-															{a.progress} %
+															{a.progress.toFixed(2)} %
                       									</td>
 														<td className="text-center">
 															<Link to={{
