@@ -1,5 +1,5 @@
 /*! Developed by Alinon */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { reactLocalStorage } from 'reactjs-localstorage';
 import axios from 'axios';
 import { constants } from '../../constants.js';
@@ -15,57 +15,45 @@ import {
 	Col
 } from "reactstrap";
 
+import { Worker, Viewer } from '@react-pdf-viewer/core';
+
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
-import SearchPlugin from "./plugins/SearchPlugin.js";
 
-import { Viewer } from '@react-pdf-viewer/core';
-import ToolbarPlugin from "./plugins/ToolbarPlugin.js";
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
+const ViewDocument = (props) => {
+	const documentId = props.match.params.documentId;
+	const [document, setDocument] = useState( null);
 
-class ViewDocument extends React.Component {
+	const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
-	documentId = this.props.match.params.documentId;
+	useEffect(() => {
 
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			document: null
-		};
-	}
-
-	componentDidMount() {
-		//Check if auth token in valid
-		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
 
-		//console.warn('user ' + userId + 'client ' + clientId);
-
-		if (clientId != null && userId != null) {
+		if (clientId != null) {
 			const data = {
-				"standardId": this.standardId,
+				"documentId": documentId,
 				"clientId": clientId,
 
 			}
-			// axios.post(constants["apiUrl"] + '/standards/get', data)
-			// 	.then((res) => {
-			// 		let data = res.data;
-			// 		//console.warn(JSON.stringify(data));
-			// 		this.setState({
-			// 			articles: data.articles,
-			// 			standard: data.standard
-			// 		})
-			// 	})
-			// 	.catch((error) => {
-			// 		console.warn(JSON.stringify(error));
-			// 	});
+			axios.post(constants["apiUrl"] + '/documents/get', data)
+				.then((res) => {
+					let data = res.data;
+					setDocument( data.document)
+				})
+				.catch((error) => {
+					console.warn(JSON.stringify(error));
+				});
 		} else {
 			//TODO: go back to login
 		}
-	}
 
-	render() {
-		return (
+	}, [])
+
+	return (
+		<Worker workerUrl="https://unpkg.com/pdfjs-dist@2.5.207/build/pdf.worker.js">
 			<>
 				<EmptyHeader />
 				{/* Page content */}
@@ -76,12 +64,12 @@ class ViewDocument extends React.Component {
 								<CardHeader className="border-0">
 									<Row className="align-items-center" style={{ marginBottom: 10 }}>
 										<div className="col">
-											<h1 className="mb-0">{"Name"}</h1>
+											<h1 className="mb-0">{document != null ? document.name : ""}</h1>
 										</div>
 									</Row>
 									<Row className="align-items-center">
 										<div className="col">
-											<h4 className="mb-0">{"Description"}</h4>
+											<h4 className="mb-0">{document != null ? document.description : ""}</h4>
 										</div>
 									</Row>
 								</CardHeader>
@@ -95,14 +83,17 @@ class ViewDocument extends React.Component {
 								<CardHeader className="border-0">
 									<Row className="align-items-center" style={{ marginBottom: 10 }}>
 										<div className="col" style={{
-											height: '100%',
+											height: '100%', width: '100%',
 										}}>
-											<Viewer
-												plugins={[
-													SearchPlugin,
-													ToolbarPlugin
-												]}
-												fileUrl="https://cors-anywhere.herokuapp.com/https://alinon.online/public/storage/documents/j4NcmN2sE8UpgNMV5Vfh_1609553350.pdf" />
+											{document != null ?
+												<Viewer
+													plugins={[
+														defaultLayoutPluginInstance
+													]}
+													fileUrl={"https://cors-anywhere.herokuapp.com/" + constants.appUrl + document.path} />
+												:
+												null
+											}
 										</div>
 									</Row>
 								</CardHeader>
@@ -112,9 +103,9 @@ class ViewDocument extends React.Component {
 					</Row>
 				</Container>
 			</>
-		);
-	}
-}
+		</Worker>
+	);
 
+}
 export default ViewDocument;
 
