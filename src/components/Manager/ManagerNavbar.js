@@ -103,7 +103,7 @@ class ManagerNavbar extends React.Component {
 										<i className="ni ni-single-02" />
 										<span>My profile</span>
 									</DropdownItem>
-									<DropdownItem to="/admin/user-profile" tag={Link}>
+									<DropdownItem to="/manager/index" tag={Link}>
 										<i className="ni ni-settings-gear-65" />
 										<span>Settings</span>
 									</DropdownItem>

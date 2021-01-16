@@ -65,7 +65,7 @@ class ManagerStandards extends React.Component {
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row className="mt-5">
-            <Col className="mb-5 mb-xl-0" xl="12">
+            <Col xl>
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
@@ -81,7 +81,7 @@ class ManagerStandards extends React.Component {
                     </div>
                   </CardBody>
                   :
-                  <Table className="align-items-center table-flush">
+                  <Table className="align-items-center table-flush" responsive>
                     <thead className="thead-light">
                       <tr>
                         <th scope="col">Name</th>
@@ -134,10 +134,7 @@ class ManagerStandards extends React.Component {
                 }
               </Card>
             </Col>
-
           </Row>
-
-
         </Container>
       </>
     );
