@@ -100,13 +100,13 @@ class Audits extends React.Component {
                         return (
                           <tr>
                             <th scope="row">{article.name}</th>
-                            <td>Checklist Count</td>
+                            <td>{article.checklistCount}</td>
                             <td>{article.assignedBy.name}</td>
-                            <td>31/12/2020</td>
+                            <td>-</td>
                             <td>{article.standard.name}</td>
                             <td>
                               <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                            90%
+                              {Number.isInteger(article.progress) ? article.progress : article.progress.toFixed(2)}%
                           </td>
                             <td>
                               <Link to={{

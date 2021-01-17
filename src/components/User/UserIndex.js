@@ -151,7 +151,7 @@ class UserIndex extends React.Component {
 														<td>{a.standard.name}</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
-															{a.progress.toFixed(2)} %
+															{Number.isInteger(a.progress) ? a.progress : a.progress.toFixed(2)}%
                       									</td>
 														<td className="text-center">
 															<Link to={{
@@ -285,7 +285,7 @@ class UserIndex extends React.Component {
 														<td>{w.standard.name}</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
-															{w.progress} %
+															{Number.isInteger(w.progress) ? w.progress : w.progress.toFixed(2)}%
                       								</td>
 														<td className="text-center">
 															<Link to={{

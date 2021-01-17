@@ -109,7 +109,7 @@ class ManagerStandards extends React.Component {
                             </td>
                             <td>
                               <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                              {standard.articleCount}%
+                              {Number.isInteger(standard.progress) ? standard.progress : standard.progress.toFixed(2)}%
                           </td>
                             <td>
                               <Link to={{

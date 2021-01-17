@@ -323,7 +323,7 @@ class ManagerWorkflows extends React.Component {
                             </td>
                             <td>
                               <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                              {workflow.progress}%
+                              {Number.isInteger(workflow.progress) ? workflow.progress : workflow.progress.toFixed(2)}%
                           </td>
                             <td>
                               <Link to={{

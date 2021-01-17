@@ -313,7 +313,7 @@ class ManagerIndex extends React.Component {
 														</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
-															{e.progress}%
+															{Number.isInteger(e.progress) ? e.progress : e.progress.toFixed(2)}%
                          								</td>
 													</tr>
 												)
@@ -590,7 +590,7 @@ class ManagerIndex extends React.Component {
 														</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
-															{a.progress} %
+															{Number.isInteger(a.progress) ? a.progress : a.progress.toFixed(2)}%
                           								</td>
 													</tr>
 												)
@@ -655,7 +655,7 @@ class ManagerIndex extends React.Component {
 														</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
-															{w.progress} %
+															{Number.isInteger(w.progress) ? w.progress : w.progress.toFixed(2)}%
                       									</td>
 													</tr>
 												)
