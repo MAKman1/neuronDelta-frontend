@@ -32,6 +32,8 @@ class ManagerUsers extends React.Component {
       userMail: '',
       loading: true,
       userIndex: null,
+      email: '',
+      about
     };
   }
 
@@ -71,9 +73,42 @@ class ManagerUsers extends React.Component {
     });
   };
 
+  toggleEditModal = state => {
+		this.setState({
+			[state]: !this.state[state],
+			userName: this.state.user.name,
+			email: this.state.user.email,
+			about: this.state.user.about,
+		});
+		console.log(this.state.user)
+  };
+  
+  handlePassword = (event) => {
+		this.setState({
+			password: event.target.value
+		})
+	}
+
+	handleUserEmail = (event) => {
+		this.setState({
+			email: event.target.value
+		});
+	}
+
+	handleUserName = (event) => {
+		this.setState({
+			userName: event.target.value
+		});
+	}
+
+	handleAbout = (event) => {
+		this.setState({
+			about: event.target.value
+		});
+	
+
   handleUserName = (event) => {
     this.setState({ userName: event.target.value });
-    //console.warn(this.state.userName);
   }
 
   makeid = (length) => {
@@ -244,7 +279,7 @@ class ManagerUsers extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.users.map( (user, index) => {
+                      {this.state.users.map((user, index) => {
                         return (
                           <tr key={index}>
                             <th scope="row">{user.name}</th>
@@ -253,7 +288,7 @@ class ManagerUsers extends React.Component {
                             </td>
                             <td>{user.assignedWorkflows}</td>
                             <td>{user.assignedArticles}</td>
-                            <td> 
+                            <td>
                               <Button color="primary" size="sm" onClick={() => this.toggleUserModal('userViewModel', index)}>
                                 View
                               </Button>
@@ -266,61 +301,106 @@ class ManagerUsers extends React.Component {
                 }
               </Card>
               <Modal
-                  className="modal-dialog-centered"
-                  isOpen={this.state.userViewModel}
-                  toggle={() => this.toggleUserModal("userViewModel")}
-                >
-                  <div className="modal-header-centered">
-                    <div className="card-profile-image">
-                      <a href="#pablo" onClick={e => e.preventDefault()}>
-                        {/* {this.state.user.profile_image === null ? */}
-                          <img
-                            alt="..."
-                            className="rounded-circle"
-                            src={require("assets/img/default/defaultProfile.png")}
-                          />
-                          {/* :
+                className="modal-dialog-centered"
+                isOpen={this.state.userViewModel}
+                toggle={() => this.toggleUserModal("userViewModel")}
+              >
+                <div className="modal-header-centered">
+                  <div className="card-profile-image">
+                    <a href="#pablo" onClick={e => e.preventDefault()}>
+                      {/* {this.state.user.profile_image === null ? */}
+                      <img
+                        alt="..."
+                        className="rounded-circle"
+                        src={require("assets/img/default/defaultProfile.png")}
+                      />
+                      {/* :
                           <img
                             alt="..."
                             className="rounded-circle"
                             src={require("assets/img/default/defaultProfile.jpg")}
                           />
                         } */}
-                      </a>
-                    </div>
-                    <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => this.toggleUserModal("userViewModel")}>
-                      <span aria-hidden={true}>×</span>
-                    </button>
+                    </a>
                   </div>
-                  <div className="modal-body">
-                    <div className="text-center" style={{ paddingTop: 100 }}>
-                      <h1>
-                        {this.state.userIndex != null ? this.state.users[this.state.userIndex].name : null}
-                      </h1>
-                      <div className="h5 font-weight-300">
-                        <i className="ni location_pin mr-2" />
-                        {this.state.userIndex != null ? this.state.users[this.state.userIndex].email : null}
-                      </div>
-                      <div className="h5 mt-5">
-                        <i className="ni business_briefcase-24 mr-2"></i>
-                        {this.state.userIndex != null ? this.state.users[this.state.userIndex].about : null}
-                      </div>
-                      <div className="">
-                        <i className="ni business_briefcase-24 mr-2" />
-                        <span class="badge badge-primary">Manager</span>
+                  <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => this.toggleUserModal("userViewModel")}>
+                    <span aria-hidden={true}>×</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <div className="text-center" style={{ paddingTop: 100 }}>
+                    <h1>
+                      {this.state.userIndex != null ? this.state.users[this.state.userIndex].name : null}
+                    </h1>
+                    <div className="h5 font-weight-300">
+                      <i className="ni location_pin mr-2" />
+                      {this.state.userIndex != null ? this.state.users[this.state.userIndex].email : null}
+                    </div>
+                    <div className="h5 mt-5">
+                      <i className="ni business_briefcase-24 mr-2"></i>
+                      {this.state.userIndex != null ? this.state.users[this.state.userIndex].about : null}
+                    </div>
+                    <div className="">
+                      <i className="ni business_briefcase-24 mr-2" />
+                      <span class="badge badge-primary">Manager</span>
 
-                        <span class="badge badge-primary">Doctor</span>
+                      <span class="badge badge-primary">Doctor</span>
 
-                        <span class="badge badge-primary">HealthExpert</span>
-                      </div>
+                      <span class="badge badge-primary">HealthExpert</span>
                     </div>
                   </div>
-                  <div className="modal-footer">
-                    <Button color="warning" data-dismiss="modal" type="button" onClick={() => this.toggleUserModal("userViewModel")}>
-                      Close
+                </div>
+                <div className="modal-footer">
+                  <Button color="warning" data-dismiss="modal" type="button" onClick={() => this.toggleUserModal("userViewModel")}>
+                    Close
                     </Button>
-                  </div>
-                </Modal>
+                </div>
+              </Modal>
+              <Modal
+                className="modal-dialog-centered"
+                isOpen={this.state.userEditModal}
+                toggle={() => this.toggleEditModal("userEditModal")}
+              >
+                <div className="modal-header">
+                  <h2 className="modal-title" id="userModalLabel">
+                    Edit Profile
+                         				</h2>
+                  <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => this.toggleEditModal("userEditModal")} >
+                    <span aria-hidden={true}>×</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  {this.state.user != null ?
+                    <form>
+                      <div class="form-group">
+                        <label for="recipient-name" class="col-form-label" >Name:</label>
+                        <input type="text" class="form-control" id="recipient-name" defaultValue={this.state.user.name} onChange={this.handleUserName}></input>
+                      </div>
+                      <div class="form-group">
+                        <label for="recipient-name" class="col-form-label" >Email:</label>
+                        <input type="text" class="form-control" id="recipient-name" defaultValue={this.state.user.email} onChange={this.handleUserEmail}></input>
+                      </div>
+                      <div class="form-group">
+                        <label for="message-text" class="col-form-label">About:</label>
+                        <textarea class="form-control" id="message-text" defaultValue={this.state.user.about} onChange={this.handleAbout}></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="recipient-name" class="col-form-label" >Password:</label>
+                        <input type="text" class="form-control" id="recipient-name" defaultValue={this.state.user.password} onChange={this.handlePassword}></input>
+                      </div>
+                    </form>
+                    : null
+                  }
+                </div>
+                <div className="modal-footer">
+                  <Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.toggleEditModal("userEditModal")}>
+                    Cancel
+                      					</Button>
+                  <Button color="success" type="button" onClick={this.handleEditProfile}>
+                    Save
+                      					</Button>
+                </div>
+              </Modal>
             </Col>
           </Row>
         </Container>
