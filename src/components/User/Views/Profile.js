@@ -89,16 +89,6 @@ class Profile extends React.Component {
     });
   }
 
-  async updateUser() {
-    let user = await reactLocalStorage.getObject('currentUser', true);
-    console.log(user);
-    if (user != null) {
-      this.setState({
-        user: user,
-      });
-    }
-  }
-
   handleEditProfile = () => {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
@@ -129,9 +119,9 @@ class Profile extends React.Component {
             password: '',
             email: '',
             about: '',
+            user: data.user
           })
           this.toggleModal("userModal");
-          this.updateUser();
         })
         .catch((error) => {
           console.warn(JSON.stringify(error));
