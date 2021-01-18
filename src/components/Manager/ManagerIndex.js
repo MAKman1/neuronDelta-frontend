@@ -683,8 +683,7 @@ class ManagerIndex extends React.Component {
 													<tr>
 														<th scope="row">{a.name}</th>
 														<td>
-															{/* {a.assignedBy} */}
-
+															{a.assignedTo ? a.assignedTo.name : "-"}
 														</td>
 														<td>-</td>
 														<td>
@@ -748,12 +747,11 @@ class ManagerIndex extends React.Component {
 													<tr>
 														<th scope="row">{w.name}</th>
 														<td>
-															{/* {w.assignedBy} */}
-                            								John Smith
-                          								</td>
+															{w.user ? w.user.name : "-"}
+														</td>
 														<td>-</td>
 														<td>
-															{w.standard.name}
+															{"Hi"}
 														</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}

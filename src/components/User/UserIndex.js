@@ -270,7 +270,6 @@ class UserIndex extends React.Component {
 												<th scope="col">Name</th>
 												<th scope="col">Assigned By</th>
 												<th scope="col">Due By</th>
-												<th scope="col">Standard</th>
 												<th scope="col">Progress</th>
 												<th scope="col"></th>
 											</tr>
@@ -280,9 +279,8 @@ class UserIndex extends React.Component {
 												return (
 													<tr>
 														<th scope="row">{w.name}</th>
-														<td>{w.assignedBy.name}</td>
-														<td>13-6-2021</td>
-														<td>{w.standard.name}</td>
+														<td>{w.user.name}</td>
+														<td>-</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
 															{Number.isInteger(w.progress) ? w.progress : w.progress.toFixed(2)}%
