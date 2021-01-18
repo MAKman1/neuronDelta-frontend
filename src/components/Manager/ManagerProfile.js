@@ -24,6 +24,7 @@ class ManagerProfile extends React.Component {
     this.state = {
       user: '',
       userModal: false,
+      loading: true,
       username: '',
       password: '',
       email: '',
