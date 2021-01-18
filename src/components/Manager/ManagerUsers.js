@@ -141,44 +141,48 @@ class ManagerUsers extends React.Component {
   }
 
   handleEditProfile = () => {
-    let userId = this.state.user.id;
+		let userId = this.state.user.id;
 
-    if (userId != null) {
-      let data;
-      if (this.state.password === '') {
-        data = {
-          "about": "" + this.state.about,
-          "name": "" + this.state.userName,
-          "userId": "" + userId
-        }
-      }
-      else {
-        data = {
-          "about": "" + this.state.about,
-          "name": "" + this.state.userName,
-          "password": "" + this.state.password,
-          "userId": "" + userId
-        }
-      }
+		if (userId != null) {
+			let data;
+			if (this.state.password === '') {
+				data = {
+					"about": "" + this.state.about,
+					"name": "" + this.state.userName,
+					"userId": "" + userId
+				}
+			}
+			else {
+				data = {
+					"about": "" + this.state.about,
+					"name": "" + this.state.userName,
+					"password": "" + this.state.password,
+					"userId": "" + userId
+				}
+			}
 
-      axios.post(constants["apiUrl"] + '/user/update', data)
-        .then((res) => {
-          let data = res.data;
-          //console.warn(JSON.stringify(data));
-          this.setState({
-            userName: '',
-            password: '',
-            email: '',
-            about: '',
-          })
-          this.forceUpdate();
-          this.toggleEditModal("userEditModal");
-        })
-        .catch((error) => {
-          console.warn(JSON.stringify(error));
-        });
-    }
-  }
+			axios.post(constants["apiUrl"] + '/user/update', data)
+				.then((res) => {
+					let data = res.data;
+					console.warn(JSON.stringify(data));
+					let users = [...this.state.users];
+					users[this.state.userIndex] = data.user;
+					this.setState({
+						userName: '',
+						password: '',
+						email: '',
+						about: '',
+						users: users,
+						user: data.user
+					})
+					// this.forceUpdate();
+					this.toggleEditModal("userEditModal");
+				})
+				.catch((error) => {
+					console.warn(JSON.stringify(error));
+				});
+		}
+	}
 
   handleAddUser = () => {
     //console.warn('new');

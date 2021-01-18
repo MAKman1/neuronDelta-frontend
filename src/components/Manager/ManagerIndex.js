@@ -68,8 +68,6 @@ class ManagerIndex extends React.Component {
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
 
-		console.log('user ' + userId + 'client ' + clientId);
-
 		if (clientId != null && userId != null) {
 			const data = {
 				"clientId": clientId,
@@ -78,7 +76,6 @@ class ManagerIndex extends React.Component {
 			axios.post(constants["apiUrl"] + '/dashboard/get', data)
 				.then((res) => {
 					let data = res.data;
-					console.warn(JSON.stringify(data));
 					this.setState({
 						totalUsers: data.totalUsers,
 						pendAudits: data.pendingArticles,
@@ -114,7 +111,6 @@ class ManagerIndex extends React.Component {
 			email: this.state.user.email,
 			about: this.state.user.about,
 		});
-		console.log(this.state.user)
 	};
 
 	toggleRoleModal = (state, index = null) => {
@@ -131,7 +127,6 @@ class ManagerIndex extends React.Component {
 			userIndex: index,
 			user: this.state.users[index]
 		});
-		console.log(this.state.users[index]);
 	};
 
 
@@ -221,14 +216,18 @@ class ManagerIndex extends React.Component {
 			axios.post(constants["apiUrl"] + '/user/update', data)
 				.then((res) => {
 					let data = res.data;
-					//console.warn(JSON.stringify(data));
+					console.warn(JSON.stringify(data));
+					let users = [...this.state.users];
+					users[this.state.userIndex] = data.user;
 					this.setState({
 						name: '',
 						password: '',
 						email: '',
 						about: '',
+						users: users,
+						user: data.user
 					})
-					this.forceUpdate();
+					// this.forceUpdate();
 					this.toggleEditModal("userEditModal");
 				})
 				.catch((error) => {
@@ -261,8 +260,6 @@ class ManagerIndex extends React.Component {
 		if (this.state.tempRoles.length != 0) {
 			this.state.tempRoles.forEach(role => {
 				if (!this.state.documents[this.state.documentIndex].userRoles.includes(role)) {
-					console.warn(role.name);
-					console.warn("added role")
 					const data = new FormData();
 					data.append("documentId", this.state.documents[this.state.documentIndex].id);
 					data.append("roleId", role.id);
@@ -569,17 +566,12 @@ class ManagerIndex extends React.Component {
 												</Row>
 											</div>
 											<div className="modal-footer">
-												<Button
-													color="secondary"
-													data-dismiss="modal"
-													type="button"
-													onClick={() => this.closeRoleModal()}
-												>
+												<Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.closeRoleModal()}>
 													Cancel
-                          </Button>
+                          						</Button>
 												<Button onClick={() => this.updateRoles()} color="success" type="button">
 													Save
-                          </Button>
+                          						</Button>
 											</div>
 										</Modal>
 									</Table>
