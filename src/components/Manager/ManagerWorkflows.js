@@ -122,6 +122,7 @@ class ManagerWorkflows extends React.Component {
 
   handleAssign = () => {
 
+    console.warn("This is response")
     console.warn(this.state.assignId)
     if (this.state.assignId != null) {
       const data = {
@@ -135,7 +136,16 @@ class ManagerWorkflows extends React.Component {
           console.warn(JSON.stringify(data));
           if (data.done == '1') {
             this.closeAssignModal();
-            window.location.reload()
+            let index = this.state.workflows.findIndex( element => element.id == this.state.index);
+            if( index >= 0){
+              let w = this.state.workflows;
+              w[index] = data.workflow;
+              this.setState({
+                workflows: w
+              })
+            }
+            
+            this.forceUpdate()
           }
         })
         .catch((error) => {
@@ -201,7 +211,7 @@ class ManagerWorkflows extends React.Component {
 
   }
 
-  removeAssign = (workflowId, userId) => {
+  removeAssign = (workflowId, userId, id) => {
     let clientId = reactLocalStorage.get('clientId', true);
     const data = {
       "workflowId": workflowId,
@@ -211,7 +221,18 @@ class ManagerWorkflows extends React.Component {
       .then((res) => {
         let data = res.data;
         console.warn(JSON.stringify(data));
-        window.location.reload(false);
+        let index = this.state.workflows.findIndex( element => element.id == workflowId);
+            if( index >= 0){
+              let w = this.state.workflows;
+              w[index].user = null
+              w[index].user_id = null
+              this.setState({
+                workflows: w
+              })
+              console.warn(w)
+            }
+            
+            this.forceUpdate()
       })
       .catch((error) => {
         console.warn(JSON.stringify(error));
@@ -322,7 +343,7 @@ class ManagerWorkflows extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.workflows.map(workflow => {
+                      {this.state.workflows.map((workflow, index) => {
                         return (
                           <tr>
                             <th scope="row">
@@ -360,7 +381,7 @@ class ManagerWorkflows extends React.Component {
                                   Assign
                             </Button>
                                 :
-                                <Button color="danger" onClick={() => this.removeAssign(workflow.id, workflow.user.id)} size="sm">
+                                <Button color="danger" onClick={() => this.removeAssign(workflow.id, workflow.user.id, index)} size="sm">
                                   Unassign
                             </Button>}
 

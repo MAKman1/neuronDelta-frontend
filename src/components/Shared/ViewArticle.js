@@ -16,7 +16,11 @@ import {
 	Col,
 	Modal,
 	CardBody,
-	Spinner
+	Spinner,
+	UncontrolledDropdown,
+	DropdownItem,
+	DropdownMenu,
+	DropdownToggle
 } from "reactstrap";
 
 
@@ -40,6 +44,7 @@ class ViewArticle extends React.Component {
 			currentChecklistIndex: null,
 			loading: true,
 			userType: null,
+			username: "Select User"
 		};
 	}
 
@@ -53,6 +58,8 @@ class ViewArticle extends React.Component {
 		this.setState({
 			userType: type
 		})
+
+		
 		
 
 		//console.warn('user ' + userId + 'client ' + clientId + this.articleId);
@@ -66,12 +73,12 @@ class ViewArticle extends React.Component {
 			axios.post(constants["apiUrl"] + '/checklists/get', data)
 				.then((res) => {
 					let data = res.data;
-					console.warn(JSON.stringify(data));
+					console.warn(data);
 					this.setState({
 						checklists: data.checklists,
 						article: data.article,
 						standard: data.standard,
-						user: data.assignedTo,
+						user: data.article.assignedTo,
 						loading: false
 					})
 				})
@@ -205,6 +212,105 @@ class ViewArticle extends React.Component {
 			});
 	}
 
+	removeAssign = () => {
+		let clientId = reactLocalStorage.get('clientId', true);
+		const data = {
+			"clientId": clientId,
+			"articleId": this.articleId,
+			"userId": this.state.user.id
+		}
+		axios.post(constants["apiUrl"] + '/articles/removeAssignment', data)
+		.then((res) => {
+			let data = res.data;
+			console.warn(JSON.stringify(data));
+			this.setState({
+				user: null,
+			})
+		})
+		.catch((error) => {
+			console.warn(JSON.stringify(error));
+		});
+	}
+
+	openAssignModal = () => {
+		this.setState({
+		  assignModal: true,
+		});
+	
+		let clientId = reactLocalStorage.get('clientId', true);
+	
+		//console.warn('user ' + userId + 'client ' + clientId);
+	
+		if (clientId != null) {
+		  const data = {
+			"clientId": clientId,
+		  }
+		  axios.post(constants["apiUrl"] + '/user/get', data)
+			.then((res) => {
+			  let data = res.data;
+			  
+			  console.warn(JSON.stringify(data));
+			  this.setState({
+				users: data.users,
+			  })
+			})
+			.catch((error) => {
+			  console.warn(JSON.stringify(error));
+			});
+	
+		}
+
+
+	  }
+
+	  handleSelect = (username, userId) => {
+		this.setState({
+			username: username,
+			assignId: userId
+		})
+	
+		}
+
+		closeAssignModal = () => {
+			this.setState({
+			  assignModal: false
+			})
+		}
+	
+		handleAssign = () => {
+	
+			console.warn("This is response")
+			console.warn(this.state.assignId)
+			
+			let managerId = reactLocalStorage.get('userId', true);
+			let clientId = reactLocalStorage.get('clientId', true);
+			if (this.state.assignId != null) {
+			  const data = {
+				"articleId": this.articleId,
+				"userId": this.state.assignId,
+				"clientId": clientId,
+				"managerId":managerId
+
+			  }
+		
+			  axios.post(constants["apiUrl"] + '/articles/assign', data)
+				.then((res) => {
+				  let data = res.data;
+				  console.warn(data);
+				  
+					this.closeAssignModal();
+					this.setState({
+						user:data.article.assignedTo
+					})
+					this.forceUpdate()
+				  
+				})
+				.catch((error) => {
+				  console.warn(JSON.stringify(error));
+				});
+			}
+		  }
+
 	render() {
 
 		return (
@@ -263,8 +369,63 @@ class ViewArticle extends React.Component {
 
 										</div>
 										}
+										<Modal
+											className="modal-dialog-centered"
+											isOpen={this.state.assignModal}
+											defaultValue={this.state.index}
+											toggle={() => this.closeAssignModal()}
+											>
+											<div className="modal-header">
+												<h2 className="modal-title" id="assignModelLabel">
+												Workflow {this.state.index}
+												</h2>
+												<button
+												aria-label="Close"
+												className="close"
+												data-dismiss="modal"
+												type="button"
+												onClick={() => this.closeAssignModal()}
+												>
+												<span aria-hidden={true}>×</span>
+												</button>
+											</div>
+											<div className="modal-body">
+												<Row className="justify-content-md-center">
+												<Col xl="auto">
+													{this.state.users != null ?
+													<UncontrolledDropdown>
+														<DropdownToggle caret>
+														{this.state.username}
+														</DropdownToggle>
+														<DropdownMenu container="body">
+														{this.state.users.map((user, index) => {
+															return (
+															<DropdownItem onClick={() => this.handleSelect(user.name, user.id)} key={index}>
+																{user.name}
+															</DropdownItem>
+															)
+														})}
+														</DropdownMenu>
+													</UncontrolledDropdown>
+
+													:
+													<div>Loading...</div>
+													}
+												</Col>
+												</Row>
+											</div>
+											<div className="modal-footer">
+												<Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.closeAssignModal()}>
+												Cancel
+															</Button>
+												<Button color="success" type="button" onClick={() => this.handleAssign()}>
+												Assign
+															</Button>
+											</div>
+											</Modal>
 										
 									</CardHeader>
+									
 								}
 							</Card>
 						</Col>
