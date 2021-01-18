@@ -23,19 +23,21 @@ class Workflows extends React.Component {
         super(props);
         this.state = {
             workflows: [],
-            loading: true
+            loading: false
         };
     }
 
     componentDidMount() {
         //Check if auth token in valid
+        let userId = reactLocalStorage.get('userId', true);
         let clientId = reactLocalStorage.get('clientId', true);
 
         if (clientId != null) {
             const data = {
-                "clientId": clientId
+                "clientId": clientId,
+                "userId": userId
             }
-            axios.post(constants["apiUrl"] + '/workflows/getAll', data)
+            axios.post(constants["apiUrl"] + '/workflows/getAssigned', data)
                 .then((res) => {
                     let data = res.data;
                     console.warn(JSON.stringify(data));
@@ -88,7 +90,7 @@ class Workflows extends React.Component {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {this.state.workflows.map((w, index) => {
+                                            {/* {this.state.workflows.map((w, index) => {
                                                 const date = new Date(w.updated_at).toLocaleString();
                                                 return (
                                                     <tr key={index}>
@@ -109,7 +111,7 @@ class Workflows extends React.Component {
                                                         </td>
                                                     </tr>
                                                 )
-                                            })}
+                                            })} */}
                                             <tr>
                                                 <th scope="row">Car Repair</th>
                                                 <td>Denver Louis</td>
