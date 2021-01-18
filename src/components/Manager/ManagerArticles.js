@@ -47,52 +47,12 @@ class ManagerArticles extends React.Component {
 			selected: 'Select User',
 			users: null,
 			index: 0,
+			articleIndex: null,
 			loading: true
 		};
 
 
 		// this.handleSelect = this.handleSelect.bind(this);
-
-	}
-
-
-
-	handleSelect = (username, userId) => {
-		console.warn('fuck');
-		this.setState({
-			selected: username,
-			assignUserId: userId,
-	
-		});
-	}
-
-	handleAssign = () => {
-		console.warn('meow');
-		let managerId = reactLocalStorage.get('userId', true);
-		let clientId = reactLocalStorage.get('clientId', true);
-		console.warn(this.state.assignArticleId)
-		if (this.state.assignArticleId != 0) {
-			const data = {
-				"clientId": clientId,
-				"articleId": this.state.assignArticleId,
-				"userId": this.state.assignUserId,
-				"managerId": managerId
-			}
-			axios.post(constants["apiUrl"] + '/articles/assign', data)
-			.then((res) => {
-				let data = res.data;
-				console.warn(JSON.stringify(data));
-				if (data.message == 'done') {
-					this.closeModal();
-					window.location.reload(false);
-				}
-			})
-			.catch((error) => {
-				console.warn(JSON.stringify(error));
-			});
-			
-		}
-
 
 	}
 
@@ -110,7 +70,7 @@ class ManagerArticles extends React.Component {
 			axios.post(constants["apiUrl"] + '/articles/getAllManager', data)
 				.then((res) => {
 					let data = res.data;
-					console.warn(JSON.stringify(data));
+					// console.warn(JSON.stringify(data));
 					this.setState({
 						articles: data.articles,
 						loading: false
@@ -125,11 +85,45 @@ class ManagerArticles extends React.Component {
 		}
 	}
 
+	handleSelect = (username, userId) => {
+		this.setState({
+			selected: username,
+			assignUserId: userId,
+		});
+	}
 
-	openModal = (state, index) => {
+	handleAssign = () => {
+		let managerId = reactLocalStorage.get('userId', true);
+		let clientId = reactLocalStorage.get('clientId', true);
+		if (this.state.assignArticleId != 0) {
+			const data = {
+				"clientId": clientId,
+				"articleId": this.state.assignArticleId,
+				"userId": this.state.assignUserId,
+				"managerId": managerId
+			}
+			axios.post(constants["apiUrl"] + '/articles/assign', data)
+			.then((res) => {
+				let data = res.data;
+				console.warn(JSON.stringify(data));
+				let updatedArticles = [...this.state.articles];
+				updatedArticles[this.state.articleIndex] = data.article;
+				this.setState({
+					articles: updatedArticles
+				});
+				this.closeModal();
+			})
+			.catch((error) => {
+				console.warn(JSON.stringify(error));
+			});	
+		}
+	}
+
+	openModal = (state, id, index) => {
 		this.setState({
 			[state]: !this.state[state],
-			assignArticleId: index
+			assignArticleId: id,
+			articleIndex: index
 		});
 
 
@@ -146,7 +140,7 @@ class ManagerArticles extends React.Component {
 				axios.post(constants["apiUrl"] + '/user/get', data)
 					.then((res) => {
 						let data = res.data;
-						console.warn(JSON.stringify(data));
+						// console.warn(JSON.stringify(data));
 						this.setState({
 							users: data.users,
 						})
@@ -156,7 +150,7 @@ class ManagerArticles extends React.Component {
 					});
 
 			} else {
-				//Meow
+				// To do
 			}
 		} else {
 			this.setState({
@@ -167,37 +161,38 @@ class ManagerArticles extends React.Component {
 	};
 
 	closeModal = () => {
-
 		this.setState({
 			assignModel: false,
 			assignUserId: 0,
 			username: 'Select User',
-			assignArticleId: 0
+			assignArticleId: 0,
+			articleIndex: null,
+			selected: 'Select User'	
 		});
 	}
 
-	removeAssign = (articleId, userId) => {
+	removeAssign = (articleId, userId, index) => {
 		let clientId = reactLocalStorage.get('clientId', true);
 		const data = {
 			"clientId": clientId,
 			"articleId": articleId,
 			"userId": userId
 		}
-		
 		axios.post(constants["apiUrl"] + '/articles/removeAssignment', data)
-				.then((res) => {
-					let data = res.data;
-					console.warn(JSON.stringify(data));
-					window.location.reload(false);
-				})
-				.catch((error) => {
-					console.warn(JSON.stringify(error));
+			.then((res) => {
+				let data = res.data;
+				console.warn(JSON.stringify(data));
+				let updatedArticles = [...this.state.articles];
+				updatedArticles[index].assignedTo = null;
+				this.setState({
+					articles: updatedArticles
 				});
-
+				// window.location.reload(false);
+			})
+			.catch((error) => {
+				console.warn(JSON.stringify(error));
+			});
 	}
-
-
-
 
 	render() {
 		return (
@@ -238,9 +233,9 @@ class ManagerArticles extends React.Component {
 										</thead>
 										<tbody>
 
-											{this.state.articles.map(article => {
+											{this.state.articles.map( (article, index) => {
 												return (
-													<tr>
+													<tr key={index}>
 														<th scope="row">{article.name}</th>
 														<td>{article.checklistCount}</td>
 														<td>{article.assignedTo == null ? "-" : article.assignedTo.name}</td>
@@ -253,7 +248,7 @@ class ManagerArticles extends React.Component {
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
 															{Number.isInteger(article.progress) ? article.progress : article.progress.toFixed(2)}%
-                          							</td>
+                          								</td>
 														<td>
 
 															<Link to={{
@@ -269,12 +264,12 @@ class ManagerArticles extends React.Component {
 														</td>
 														<td>
 														{article.assignedTo == null ?
-														<Button color="success" onClick={() => this.openModal("assignModel", article.id)} size="sm">
+														<Button color="success" onClick={() => this.openModal("assignModel", article.id, index)} size="sm">
 																Assign
                           								</Button>
 														: 
-														<Button color="danger" onClick={() => this.removeAssign(article.id, article.assignedTo.id)}  size="sm">
-														Unassign
+														<Button color="danger" onClick={() => this.removeAssign(article.id, article.assignedTo.id, index)}  size="sm">
+															Unassign
 												  		</Button>
 														}
 														</td>

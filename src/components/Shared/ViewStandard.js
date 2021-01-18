@@ -152,7 +152,7 @@ class ViewStandard extends React.Component {
 														<td>{article.standard.id}</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
-															{article.progress}%
+															{article.progress ? Number.isInteger(article.progress) ? article.progress + '%' : article.progress.toFixed(2) + '%' : '-' }
 													</td>
 													</tr>
 												)

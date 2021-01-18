@@ -199,7 +199,6 @@ class ViewArticle extends React.Component {
 				console.warn(JSON.stringify(data));
 				this.closeDetModal()
 
-
 			})
 			.catch((error) => {
 				console.warn(JSON.stringify(error));
