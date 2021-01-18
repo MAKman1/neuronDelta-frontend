@@ -272,7 +272,7 @@ class ManagerArticles extends React.Component {
                           								</Button>
 														: 
 														<Button color="danger" onClick={() => this.removeAssign(article.id, article.assignedTo.id)}  size="sm">
-														Remove
+														Unassign
 												  		</Button>
 														}
 														</td>
