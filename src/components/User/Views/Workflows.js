@@ -1,6 +1,7 @@
 /*! Developed by Alinon */
 import React from "react";
 import { reactLocalStorage } from 'reactjs-localstorage';
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import { constants } from '../../../constants';
 // reactstrap components
@@ -103,9 +104,16 @@ class Workflows extends React.Component {
                                                              {w.progress != null ? w.progress + "%" : "-" }
                                                             </td>
                                                         <td className="text-center">
-                                                            <Button color="primary" href="#pablo" onClick={e => e.preventDefault()} size="sm" >
-                                                                View
+                                                        <Link to={{
+                                                            pathname: '/user/view/workflow/' + w.id,
+                                                            state: {
+                                                            
+                                                            }
+                                                        }}>
+                                                            <Button color="primary" size="sm">
+                                                            View
                                                             </Button>
+                                                        </Link>
                                                         </td>
                                                     </tr>
                                                 )

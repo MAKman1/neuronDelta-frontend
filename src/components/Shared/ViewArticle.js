@@ -19,6 +19,7 @@ import {
 	Spinner
 } from "reactstrap";
 
+
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
 // import Roles from "./Popups/Roles.js"
 
@@ -37,7 +38,8 @@ class ViewArticle extends React.Component {
 			documentModel: false,
 			uploadDocument: null,
 			currentChecklistIndex: null,
-			loading: true
+			loading: true,
+			userType: null,
 		};
 	}
 
@@ -45,6 +47,13 @@ class ViewArticle extends React.Component {
 	componentDidMount() {
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
+		let type = reactLocalStorage.get('userType', true);
+
+		
+		this.setState({
+			userType: type
+		})
+		
 
 		//console.warn('user ' + userId + 'client ' + clientId + this.articleId);
 
@@ -62,6 +71,7 @@ class ViewArticle extends React.Component {
 						checklists: data.checklists,
 						article: data.article,
 						standard: data.standard,
+						user: data.assignedTo,
 						loading: false
 					})
 				})
@@ -229,6 +239,32 @@ class ViewArticle extends React.Component {
 												<h4 className="mb-0">{this.state.article == null ? "" : this.state.article.description}</h4>
 											</div>
 										</Row>
+										{this.state.userType == 2 ?
+										<div>
+											{this.state.user != null ?
+											<div>
+											<Row style={{marginTop: 10}} className="align-items-center">
+												<div className="col">
+													<h3 className="mb-0"><span className="badge badge-primary">Assigned To: {this.state.user.name} </span></h3>
+												</div>
+											</Row>
+											<Button style={{marginTop: 10}} onClick={()=> this.removeAssign()} color="danger"  size="sm">
+												Unassign
+											</Button>
+											</div>
+											:
+											<div>
+											<Button style={{marginTop: 10}} color="success" onClick={() => this.openAssignModal()}  size="sm">
+												Assign
+											</Button>
+											</div>
+											}
+										</div>:
+										<div>
+
+										</div>
+										}
+										
 									</CardHeader>
 								}
 							</Card>

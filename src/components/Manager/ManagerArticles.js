@@ -198,6 +198,7 @@ class ManagerArticles extends React.Component {
 
 
 
+
 	render() {
 		return (
 			<>
@@ -232,6 +233,7 @@ class ManagerArticles extends React.Component {
 												<th scope="col">Progress</th>
 												<th scope="col"></th>
 												<th scope="col"></th>
+												
 											</tr>
 										</thead>
 										<tbody>
@@ -276,6 +278,7 @@ class ManagerArticles extends React.Component {
 												  		</Button>
 														}
 														</td>
+														
 													</tr>
 												
 												)

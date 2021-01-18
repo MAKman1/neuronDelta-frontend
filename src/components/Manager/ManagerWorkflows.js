@@ -41,6 +41,7 @@ class ManagerWorkflows extends React.Component {
       users: [],
       index: null,
       username: 'Select User',
+      removeConfirm: false,
       assignId: null,
       loading: true
     };
@@ -217,6 +218,21 @@ class ManagerWorkflows extends React.Component {
       });
   }
 
+  removeWorkflow = (workflowId) => {
+    const data = {
+      "workflowId": workflowId,
+    }
+    axios.post(constants["apiUrl"] + '/workflows/removeWorkflow', data)
+      .then((res) => {
+        let data = res.data;
+        console.warn(JSON.stringify(data));
+        window.location.reload(false);
+      })
+      .catch((error) => {
+        console.warn(JSON.stringify(error));
+      });
+  }
+
 
   render() {
     return (
@@ -302,6 +318,7 @@ class ManagerWorkflows extends React.Component {
                         <th scope="col">Progress</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
+                        <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -347,6 +364,20 @@ class ManagerWorkflows extends React.Component {
                                   Unassign
                             </Button>}
 
+                            </td>
+                            <td>
+                            <td>
+																	<Button
+																		aria-label="Close"
+																		className="close"
+																		data-dismiss="modal"
+																		type="button"
+																		color="danger"
+																		onClick={() => this.removeWorkflow(workflow.id)}
+																	>
+																		<span color="danger" aria-hidden={true}>×</span>
+																	</Button>
+														</td>
                             </td>
                           </tr>
                         )
