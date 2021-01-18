@@ -51,7 +51,7 @@ class ManagerWorkflows extends React.Component {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
 
-    //console.warn('user ' + userId + 'client ' + clientId);
+    console.log('user ' + userId + ' client ' + clientId);
 
     if (clientId != null && userId != null) {
       const data = {
@@ -302,7 +302,6 @@ class ManagerWorkflows extends React.Component {
                         <th scope="col">Progress</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
-
                       </tr>
                     </thead>
                     <tbody>
@@ -323,7 +322,7 @@ class ManagerWorkflows extends React.Component {
                             </td>
                             <td>
                               <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                              {workflow.progress}%
+                              {Number.isInteger(workflow.progress) ? workflow.progress : workflow.progress.toFixed(2)}%
                           </td>
                             <td>
                               <Link to={{

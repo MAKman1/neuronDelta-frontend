@@ -151,7 +151,7 @@ class UserIndex extends React.Component {
 														<td>{a.standard.name}</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
-															{a.progress.toFixed(2)} %
+															{Number.isInteger(a.progress) ? a.progress : a.progress.toFixed(2)}%
                       									</td>
 														<td className="text-center">
 															<Link to={{
@@ -214,7 +214,7 @@ class UserIndex extends React.Component {
 													<tr>
 														<th scope="row">{doc.name}</th>
 														<td>{doc.size} KB</td>
-														<th >{doc.assignedBy.name}</th>
+														<th >{doc.assignedBy ? doc.assignedBy : '-' }</th>
 														<td className="text-center">
 															{doc.accepted ? <i class="fas fa-check"></i>
 																: <Button color="success" href="#pablo" onClick={() => this.acceptDocument(index)} size="sm"> Accept </Button>
@@ -280,13 +280,12 @@ class UserIndex extends React.Component {
 												return (
 													<tr>
 														<th scope="row">{w.name}</th>
-														<td>{w.assignedBy.name}</td>
-														<td>13-6-2021</td>
-														<td>{w.standard.name}</td>
+														<td>{w.assignedBy ? w.assignedBy.name : "-"}</td>
+														<td>-</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
-															{w.progress} %
-                      								</td>
+															{Number.isInteger(w.progress) ? w.progress : w.progress.toFixed(2)}%
+                      									</td>
 														<td className="text-center">
 															<Link to={{
 																pathname: 'user/view/document/1'

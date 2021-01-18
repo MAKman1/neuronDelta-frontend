@@ -105,6 +105,7 @@ class ManagerProfile extends React.Component {
             username: '',
             password: '',
             email: '',
+            about: '',
           })
           this.toggleModal("userModal");
         })

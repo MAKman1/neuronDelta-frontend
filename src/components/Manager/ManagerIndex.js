@@ -34,6 +34,7 @@ class ManagerIndex extends React.Component {
 			documentModel: false,
 			roleModel: false,
 			userModal: false,
+			userEditModal: false,
 			toggleDropdown: false,
 			totalUsers: 0,
 			pendAudits: 0,
@@ -47,13 +48,18 @@ class ManagerIndex extends React.Component {
 			tempRoles: [],
 			removedRoles: [],
 			users: [],
+			user: null,
 			documentName: '',
 			documentDesc: '',
 			documentIndex: null,
 			userIndex: null,
 			uploadDocument: null,
 			currentRole: null,
-			loading: true
+			loading: true,
+			about: '',
+			name: '',
+			password: '',
+			email: ''
 		};
 	}
 
@@ -62,7 +68,7 @@ class ManagerIndex extends React.Component {
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
 
-		//console.warn('user ' + userId + 'client ' + clientId);
+		console.log('user ' + userId + 'client ' + clientId);
 
 		if (clientId != null && userId != null) {
 			const data = {
@@ -93,13 +99,22 @@ class ManagerIndex extends React.Component {
 		} else {
 			//TODO: go back to login
 		}
-
 	}
 
 	toggleModal = (state) => {
 		this.setState({
 			[state]: !this.state[state],
 		});
+	};
+
+	toggleEditModal = state => {
+		this.setState({
+			[state]: !this.state[state],
+			name: this.state.user.name,
+			email: this.state.user.email,
+			about: this.state.user.about,
+		});
+		console.log(this.state.user)
 	};
 
 	toggleRoleModal = (state, index = null) => {
@@ -114,8 +129,11 @@ class ManagerIndex extends React.Component {
 		this.setState({
 			[state]: !this.state[state],
 			userIndex: index,
+			user: this.state.users[index]
 		});
+		console.log(this.state.users[index]);
 	};
+
 
 	closeRoleModal = () => {
 		this.setState({
@@ -154,6 +172,90 @@ class ManagerIndex extends React.Component {
 			tempRoles: temp
 		})
 	}
+
+	handlePassword = (event) => {
+		this.setState({
+			password: event.target.value
+		})
+	}
+
+	handleUserEmail = (event) => {
+		this.setState({
+			email: event.target.value
+		});
+	}
+
+	handleUserName = (event) => {
+		this.setState({
+			name: event.target.value
+		});
+	}
+
+	handleAbout = (event) => {
+		this.setState({
+			about: event.target.value
+		});
+	}
+
+	handleEditProfile = () => {
+		let userId = this.state.user.id;
+
+		if (userId != null) {
+			let data;
+			if (this.state.password === '') {
+				data = {
+					"about": "" + this.state.about,
+					"name": "" + this.state.name,
+					"userId": "" + userId
+				}
+			}
+			else {
+				data = {
+					"about": "" + this.state.about,
+					"name": "" + this.state.name,
+					"password": "" + this.state.password,
+					"userId": "" + userId
+				}
+			}
+
+			axios.post(constants["apiUrl"] + '/user/update', data)
+				.then((res) => {
+					let data = res.data;
+					//console.warn(JSON.stringify(data));
+					this.setState({
+						name: '',
+						password: '',
+						email: '',
+						about: '',
+					})
+					this.forceUpdate();
+					this.toggleEditModal("userEditModal");
+				})
+				.catch((error) => {
+					console.warn(JSON.stringify(error));
+				});
+		}
+	}
+
+	deleteUser = (index) => {
+		let userId = this.state.users[index].id;
+
+		if (userId != null) {
+			let data = {
+				"userId": userId
+			}
+
+			axios.post(constants["apiUrl"] + '/user/delete', data)
+				.then((res) => {
+					let data = res.data;
+					//console.warn(JSON.stringify(data));
+				})
+				.catch((error) => {
+					console.warn(JSON.stringify(error));
+				});
+		}
+	}
+
 
 	updateRoles = () => {
 		if (this.state.tempRoles.length != 0) {
@@ -313,7 +415,7 @@ class ManagerIndex extends React.Component {
 														</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
-															{e.progress}%
+															{Number.isInteger(e.progress) ? e.progress : e.progress.toFixed(2)}%
                          								</td>
 													</tr>
 												)
@@ -548,12 +650,9 @@ class ManagerIndex extends React.Component {
 													name: "Food Quality 1.3"
 												}
 											}}>
-												<Button
-													color="success"
-													size="sm"
-												>
+												<Button color="success" size="sm">
 													See All
-                        </Button>
+                        						</Button>
 											</Link>
 										</div>
 									</Row>
@@ -581,7 +680,7 @@ class ManagerIndex extends React.Component {
 													<tr>
 														<th scope="row">{a.name}</th>
 														<td>
-															{/* {a.assignedBy} */}
+															{a.assignedTo ? a.assignedTo.name : "-" }
 
 														</td>
 														<td>-</td>
@@ -590,7 +689,7 @@ class ManagerIndex extends React.Component {
 														</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
-															{a.progress} %
+															{Number.isInteger(a.progress) ? a.progress : a.progress.toFixed(2)}%
                           								</td>
 													</tr>
 												)
@@ -636,7 +735,6 @@ class ManagerIndex extends React.Component {
 												<th scope="col">Name</th>
 												<th scope="col">Assigned To</th>
 												<th scope="col">Due Date</th>
-												<th scope="col">Workflow</th>
 												<th scope="col">Progress</th>
 											</tr>
 										</thead>
@@ -646,16 +744,12 @@ class ManagerIndex extends React.Component {
 													<tr>
 														<th scope="row">{w.name}</th>
 														<td>
-															{/* {w.assignedBy} */}
-                            								John Smith
-                          								</td>
+															{w.user_id == null ? "-" : w.user.name}
+														</td>
 														<td>-</td>
 														<td>
-															{w.standard.name}
-														</td>
-														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
-															{w.progress} %
+															{Number.isInteger(w.progress) ? w.progress : w.progress.toFixed(2)}%
                       									</td>
 													</tr>
 												)
@@ -703,6 +797,7 @@ class ManagerIndex extends React.Component {
 												<th scope="col">Assigned Workflows</th>
 												<th scope="col">Assigned Articles</th>
 												<th scope="col"></th>
+												<th scope="col"></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -718,7 +813,12 @@ class ManagerIndex extends React.Component {
 														<td>
 															<Button color="primary" onClick={() => this.toggleUserModal('userModal', index)} size="sm">
 																View
-                              </Button>
+                              								</Button>
+														</td>
+														<td>
+															<Button color="warning" onClick={() => this.deleteUser(index)} size="sm">
+																Delete
+                              								</Button>
 														</td>
 													</tr>
 												)
@@ -734,19 +834,19 @@ class ManagerIndex extends React.Component {
 									<div className="modal-header-centered">
 										<div className="card-profile-image">
 											<a href="#pablo" onClick={e => e.preventDefault()}>
-												{/* {this.state.user.profile_image === null ? */}
-												<img
-													alt="..."
-													className="rounded-circle"
-													src={require("assets/img/default/defaultProfile.png")}
-												/>
-												{/* :
-                          <img
-                            alt="..."
-                            className="rounded-circle"
-                            src={require("assets/img/default/defaultProfile.jpg")}
-                          />
-                        } */}
+												{this.state.user != null ?
+													<img
+														alt="..."
+														className="rounded-circle"
+														src={require("assets/img/default/defaultProfile.png")}
+													/>
+													:
+													<img
+														alt="..."
+														className="rounded-circle"
+														src={require("assets/img/default/defaultProfile.jpg")}
+													/>
+												}
 											</a>
 										</div>
 										<button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => this.toggleUserModal("userModal")}>
@@ -777,9 +877,57 @@ class ManagerIndex extends React.Component {
 										</div>
 									</div>
 									<div className="modal-footer">
+										<Button color="primary" data-dismiss="modal" type="button" onClick={() => this.toggleEditModal("userEditModal")}>
+											Edit
+                    					</Button>
 										<Button color="warning" data-dismiss="modal" type="button" onClick={() => this.toggleUserModal("userModal")}>
 											Close
-                    </Button>
+                    					</Button>
+									</div>
+								</Modal>
+								<Modal
+									className="modal-dialog-centered"
+									isOpen={this.state.userEditModal}
+									toggle={() => this.toggleEditModal("userEditModal")}
+								>
+									<div className="modal-header">
+										<h2 className="modal-title" id="userModalLabel">
+											Edit Profile
+                         				</h2>
+										<button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => this.toggleEditModal("userEditModal")} >
+											<span aria-hidden={true}>×</span>
+										</button>
+									</div>
+									<div className="modal-body">
+										{this.state.user != null ?
+											<form>
+												<div class="form-group">
+													<label for="recipient-name" class="col-form-label" >Name:</label>
+													<input type="text" class="form-control" id="recipient-name" defaultValue={this.state.user.name} onChange={this.handleUserName}></input>
+												</div>
+												<div class="form-group">
+													<label for="recipient-name" class="col-form-label" >Email:</label>
+													<input type="text" class="form-control" id="recipient-name" defaultValue={this.state.user.email} onChange={this.handleUserEmail}></input>
+												</div>
+												<div class="form-group">
+													<label for="message-text" class="col-form-label">About:</label>
+													<textarea class="form-control" id="message-text" defaultValue={this.state.user.about} onChange={this.handleAbout}></textarea>
+												</div>
+												<div class="form-group">
+													<label for="recipient-name" class="col-form-label" >Password:</label>
+													<input type="text" class="form-control" id="recipient-name" defaultValue={this.state.user.password} onChange={this.handlePassword}></input>
+												</div>
+											</form>
+											: null
+										}
+									</div>
+									<div className="modal-footer">
+										<Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.toggleEditModal("userEditModal")}>
+											Cancel
+                      					</Button>
+										<Button color="success" type="button" onClick={this.handleEditProfile}>
+											Save
+                      					</Button>
 									</div>
 								</Modal>
 							</Card>

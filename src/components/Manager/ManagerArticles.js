@@ -221,7 +221,7 @@ class ManagerArticles extends React.Component {
 										</div>
 									</CardBody>
 									:
-									<Table className="align-items-center table-flush">
+									<Table className="align-items-center table-flush" responsive>
 										<thead className="thead-light">
 											<tr>
 												<th scope="col">Name</th>
@@ -250,7 +250,7 @@ class ManagerArticles extends React.Component {
 														</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
-															{article.progress}%
+															{Number.isInteger(article.progress) ? article.progress : article.progress.toFixed(2)}%
                           							</td>
 														<td>
 
