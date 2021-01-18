@@ -254,7 +254,6 @@ class ManagerIndex extends React.Component {
 					console.warn(JSON.stringify(error));
 				});
 		}
-
 	}
 
 

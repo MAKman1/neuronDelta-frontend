@@ -26,7 +26,9 @@ class ManagerUsers extends React.Component {
     this.state = {
       userModel: false,
       userViewModel: false,
+      userEditModal: false,
       users: [],
+      user: null,
       userPassword: '',
       userName: '',
       userMail: '',
@@ -74,37 +76,37 @@ class ManagerUsers extends React.Component {
   };
 
   toggleEditModal = state => {
-		this.setState({
-			[state]: !this.state[state],
-			userName: this.state.user.name,
-			email: this.state.user.email,
-			about: this.state.user.about,
-		});
-		console.log(this.state.user)
+    this.setState({
+      [state]: !this.state[state],
+      userName: this.state.user.name,
+      email: this.state.user.email,
+      about: this.state.user.about,
+    });
+    console.log(this.state.user)
   };
-  
+
   handlePassword = (event) => {
-		this.setState({
-			password: event.target.value
-		})
-	}
+    this.setState({
+      password: event.target.value
+    })
+  }
 
-	handleUserEmail = (event) => {
-		this.setState({
-			email: event.target.value
-		});
-	}
+  handleUserEmail = (event) => {
+    this.setState({
+      email: event.target.value
+    });
+  }
 
-	handleUserName = (event) => {
-		this.setState({
-			userName: event.target.value
-		});
-	}
+  handleUserName = (event) => {
+    this.setState({
+      userName: event.target.value
+    });
+  }
 
-	handleAbout = (event) => {
-		this.setState({
-			about: event.target.value
-		});
+  handleAbout = (event) => {
+    this.setState({
+      about: event.target.value
+    });
   }
 
   handleUserName = (event) => {
@@ -134,10 +136,49 @@ class ManagerUsers extends React.Component {
     this.setState({
       [state]: !this.state[state],
       userIndex: index,
+      user: this.state.users[index]
     });
-    console.log(this.state.userViewModel);
   }
 
+  handleEditProfile = () => {
+    let userId = this.state.user.id;
+
+    if (userId != null) {
+      let data;
+      if (this.state.password === '') {
+        data = {
+          "about": "" + this.state.about,
+          "name": "" + this.state.userName,
+          "userId": "" + userId
+        }
+      }
+      else {
+        data = {
+          "about": "" + this.state.about,
+          "name": "" + this.state.userName,
+          "password": "" + this.state.password,
+          "userId": "" + userId
+        }
+      }
+
+      axios.post(constants["apiUrl"] + '/user/update', data)
+        .then((res) => {
+          let data = res.data;
+          //console.warn(JSON.stringify(data));
+          this.setState({
+            userName: '',
+            password: '',
+            email: '',
+            about: '',
+          })
+          this.forceUpdate();
+          this.toggleEditModal("userEditModal");
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    }
+  }
 
   handleAddUser = () => {
     //console.warn('new');
@@ -171,7 +212,26 @@ class ManagerUsers extends React.Component {
         });
     }
   }
-  
+
+  deleteUser = (index) => {
+		let userId = this.state.users[index].id;
+
+		if (userId != null) {
+			let data = {
+				"userId": userId
+			}
+
+			axios.post(constants["apiUrl"] + '/user/delete', data)
+				.then((res) => {
+					let data = res.data;
+					//console.warn(JSON.stringify(data));
+				})
+				.catch((error) => {
+					console.warn(JSON.stringify(error));
+				});
+		}
+	}
+
   render() {
     return (
       <>
@@ -275,6 +335,7 @@ class ManagerUsers extends React.Component {
                         <th scope="col">Assigned Workflow</th>
                         <th scope="col">Assigned Article</th>
                         <th scope="col"></th>
+                        <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -290,6 +351,11 @@ class ManagerUsers extends React.Component {
                             <td>
                               <Button color="primary" size="sm" onClick={() => this.toggleUserModal('userViewModel', index)}>
                                 View
+                              </Button>
+                            </td>
+                            <td>
+                              <Button color="warning" onClick={() => this.deleteUser(index)} size="sm">
+                                Delete
                               </Button>
                             </td>
                           </tr>
@@ -350,9 +416,12 @@ class ManagerUsers extends React.Component {
                   </div>
                 </div>
                 <div className="modal-footer">
+                  <Button color="primary" data-dismiss="modal" type="button" onClick={() => this.toggleEditModal("userEditModal")}>
+                    Edit
+                  </Button>
                   <Button color="warning" data-dismiss="modal" type="button" onClick={() => this.toggleUserModal("userViewModel")}>
                     Close
-                    </Button>
+                  </Button>
                 </div>
               </Modal>
               <Modal
@@ -394,10 +463,10 @@ class ManagerUsers extends React.Component {
                 <div className="modal-footer">
                   <Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.toggleEditModal("userEditModal")}>
                     Cancel
-                      					</Button>
+                  </Button>
                   <Button color="success" type="button" onClick={this.handleEditProfile}>
                     Save
-                      					</Button>
+                  </Button>
                 </div>
               </Modal>
             </Col>
