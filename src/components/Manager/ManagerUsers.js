@@ -33,7 +33,7 @@ class ManagerUsers extends React.Component {
       loading: true,
       userIndex: null,
       email: '',
-      about
+      about: ''
     };
   }
 
@@ -105,7 +105,7 @@ class ManagerUsers extends React.Component {
 		this.setState({
 			about: event.target.value
 		});
-	
+  }
 
   handleUserName = (event) => {
     this.setState({ userName: event.target.value });
@@ -136,7 +136,7 @@ class ManagerUsers extends React.Component {
       userIndex: index,
     });
     console.log(this.state.userViewModel);
-  };
+  }
 
 
   handleAddUser = () => {
@@ -171,8 +171,7 @@ class ManagerUsers extends React.Component {
         });
     }
   }
-
-
+  
   render() {
     return (
       <>
