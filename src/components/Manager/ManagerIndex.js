@@ -68,7 +68,7 @@ class ManagerIndex extends React.Component {
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
 
-		//console.warn('user ' + userId + 'client ' + clientId);
+		console.log('user ' + userId + 'client ' + clientId);
 
 		if (clientId != null && userId != null) {
 			const data = {
@@ -753,7 +753,7 @@ class ManagerIndex extends React.Component {
                           								</td>
 														<td>-</td>
 														<td>
-															{w.standard.name}
+															 {w.user_id == null ? "-" : w.user.name}
 														</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}

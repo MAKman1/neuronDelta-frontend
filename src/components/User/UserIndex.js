@@ -282,7 +282,7 @@ class UserIndex extends React.Component {
 														<th scope="row">{w.name}</th>
 														<td>{w.assignedBy.name}</td>
 														<td>13-6-2021</td>
-														<td>{w.standard.name}</td>
+														{/* <td>{w.standard.name}</td> */}
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
 															{Number.isInteger(w.progress) ? w.progress : w.progress.toFixed(2)}%
