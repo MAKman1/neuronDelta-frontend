@@ -149,7 +149,7 @@ class Workflows extends React.Component {
                                                         size="sm"
                                                     >
                                                         View
-                            </Button>
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         </tbody>

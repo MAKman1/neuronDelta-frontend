@@ -129,6 +129,13 @@ var routes = [
     layout: "/user/view"
   },
 
+  {
+    path: "/workflow/:workflowId",
+    name: "workflowView",
+      component: ViewWorkflow,
+      layout: "/user/view"
+  },
+
 
 
   // User
