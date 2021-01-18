@@ -113,7 +113,7 @@ class ManagerIndex extends React.Component {
 		});
 	};
 
-	toggleRoleModal = (state, index = null) => {
+	toggleRoleModal = (state, index) => {
 		this.setState({
 			[state]: !this.state[state],
 			documentIndex: index,
@@ -255,7 +255,6 @@ class ManagerIndex extends React.Component {
 		}
 	}
 
-
 	updateRoles = () => {
 		if (this.state.tempRoles.length != 0) {
 			this.state.tempRoles.forEach(role => {
@@ -268,39 +267,51 @@ class ManagerIndex extends React.Component {
 						.then((res) => {
 							let data = res.data;
 							console.warn(JSON.stringify(data));
+							let updatedDocs = [...this.state.documents];
+							updatedDocs[this.state.documentIndex] = data.document;
+							this.setState({
+								currentRole: null,
+								roleModel: false,
+								documentIndex: null,
+								documents: updatedDocs,
+								tempRoles: [],
+								removedRoles: []
+							})
+							this.forceUpdate();
 						})
 						.catch((error) => {
 							console.warn(JSON.stringify(error));
-						});
+						})
 				}
 			});
 		}
+		let updatedDocs;
 		if (this.state.removedRoles.length != 0) {
 			this.state.removedRoles.forEach(role => {
 				const data = new FormData();
 				data.append("documentId", this.state.documents[this.state.documentIndex].id);
 				data.append("roleId", role.id);
-
+				updatedDocs = [...this.state.documents];
+				updatedDocs[this.state.documentIndex].userRoles = updatedDocs[this.state.documentIndex].userRoles.filter(function (r) { return r.id !== role.id; });
+				
 				axios.post(constants["apiUrl"] + '/documents/removeRole', data)
 					.then((res) => {
 						let data = res.data;
 						console.warn(JSON.stringify(data));
+						this.setState({
+							currentRole: null,
+							roleModel: false,
+							documentIndex: null,
+							documents: updatedDocs,
+							tempRoles: [],
+							removedRoles: []
+						})
 					})
 					.catch((error) => {
 						console.warn(JSON.stringify(error));
 					});
-				this.setState({
-					documentIndex: null
-				})
-			})
+			});
 		}
-		this.setState({
-			currentRole: null,
-			roleModel: false,
-			documentIndex: null,
-			tempRoles: [],
-			removedRoles: []
-		})
 	}
 
 	removeRole = (role, index) => {
@@ -484,11 +495,7 @@ class ManagerIndex extends React.Component {
 															})}
 														</td>
 														<td>
-															<Button
-																color="primary"
-																onClick={() => this.toggleRoleModal("roleModel", index)}
-																size="sm"
-															>
+															<Button color="primary" onClick={() => this.toggleRoleModal("roleModel", index)} size="sm">
 																Edit
                               								</Button>
 														</td>
@@ -672,7 +679,7 @@ class ManagerIndex extends React.Component {
 													<tr>
 														<th scope="row">{a.name}</th>
 														<td>
-															{a.assignedTo ? a.assignedTo.name : "-" }
+															{a.assignedTo ? a.assignedTo.name : "-"}
 
 														</td>
 														<td>-</td>
