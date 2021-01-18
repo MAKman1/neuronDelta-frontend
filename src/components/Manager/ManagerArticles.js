@@ -82,10 +82,21 @@ class ManagerArticles extends React.Component {
 			.then((res) => {
 				let data = res.data;
 				console.warn(JSON.stringify(data));
-				if (data.message == 'done') {
-					this.closeModal();
-					window.location.reload(false);
-				}
+				
+				let index = this.state.articles.findIndex( element => element.id == this.state.assignArticleId);
+				
+            	if( index >= 0){
+              	let w = this.state.articles;
+              	w[index] = data.article;
+              	this.setState({
+                	articles: w
+				  })
+				  console.warn(data)
+				  this.forceUpdate()
+				  this.closeModal();
+            }
+            
+            
 			})
 			.catch((error) => {
 				console.warn(JSON.stringify(error));
@@ -187,8 +198,17 @@ class ManagerArticles extends React.Component {
 		axios.post(constants["apiUrl"] + '/articles/removeAssignment', data)
 				.then((res) => {
 					let data = res.data;
-					console.warn(JSON.stringify(data));
-					window.location.reload(false);
+					
+					let index = this.state.articles.findIndex( element => element.id == articleId);
+					console.warn(data);
+					if( index >= 0){
+					let w = this.state.articles;
+					w[index].assignedTo = null
+					this.setState({
+						articles: w
+					})
+				  	
+				  	this.forceUpdate()}
 				})
 				.catch((error) => {
 					console.warn(JSON.stringify(error));

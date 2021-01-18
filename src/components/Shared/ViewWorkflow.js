@@ -293,7 +293,9 @@ class ViewWorkflow extends React.Component {
 		.then((res) => {
 			let data = res.data;
 			console.warn(JSON.stringify(data));
-			window.location.reload(false);
+			this.setState({
+				user: null,
+			})
 		})
 		.catch((error) => {
 			console.warn(JSON.stringify(error));
@@ -316,6 +318,7 @@ class ViewWorkflow extends React.Component {
 
 	handleAssign = () => {
 
+		console.warn("This is response")
 		console.warn(this.state.assignId)
 		if (this.state.assignId != null) {
 		  const data = {
@@ -329,7 +332,10 @@ class ViewWorkflow extends React.Component {
 			  console.warn(JSON.stringify(data));
 			  if (data.done == '1') {
 				this.closeAssignModal();
-				window.location.reload()
+				this.setState({
+					user:data.workflow.user
+				})
+				this.forceUpdate()
 			  }
 			})
 			.catch((error) => {
@@ -355,6 +361,7 @@ class ViewWorkflow extends React.Component {
 		  axios.post(constants["apiUrl"] + '/user/get', data)
 			.then((res) => {
 			  let data = res.data;
+			  
 			  console.warn(JSON.stringify(data));
 			  this.setState({
 				users: data.users,
