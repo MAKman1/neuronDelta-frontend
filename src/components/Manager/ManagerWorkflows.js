@@ -344,7 +344,7 @@ class ManagerWorkflows extends React.Component {
                             </Button>
                                 :
                                 <Button color="danger" onClick={() => this.removeAssign(workflow.id, workflow.user.id)} size="sm">
-                                  Remove
+                                  Unassign
                             </Button>}
 
                             </td>
