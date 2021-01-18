@@ -16,7 +16,11 @@ import {
 	Col,
 	Modal,
 	CardBody,
-	Spinner
+	Spinner,
+	UncontrolledDropdown,
+	DropdownMenu, 
+	DropdownItem,
+	DropdownToggle,
 } from "reactstrap";
 
 import EmptyHeader from "components/Manager/Headers/EmptyHeader.js";
@@ -40,7 +44,8 @@ class ViewWorkflow extends React.Component {
 			addItemModal: false,
 			documentModal: false,
 			uploadDocument: null,
-			loading: true
+			loading: true,
+			username: "Select User"
 		};
 	}
 
@@ -64,7 +69,9 @@ class ViewWorkflow extends React.Component {
 					this.setState({
 						name: data.workflow.name,
 						desc: data.workflow.description,
+						user: data.workflow.user,
 						items: data.workflow.items,
+						workflowId: data.workflow.id,
 						loading: false
 					})
 				})
@@ -270,6 +277,91 @@ class ViewWorkflow extends React.Component {
 			});
 	}
 
+	removeAssign = () => {
+		let clientId = reactLocalStorage.get('clientId', true);
+		const data = {
+		"workflowId": this.state.workflowId,
+		"userId": this.state.user.id
+		}
+		axios.post(constants["apiUrl"] + '/workflows/removeAssignment', data)
+		.then((res) => {
+			let data = res.data;
+			console.warn(JSON.stringify(data));
+			window.location.reload(false);
+		})
+		.catch((error) => {
+			console.warn(JSON.stringify(error));
+		});
+	}
+
+	closeAssignModal = () => {
+		this.setState({
+		  assignModal: false
+		})
+	}
+
+	handleSelect = (username, userId) => {
+	this.setState({
+		username: username,
+		assignId: userId
+	})
+
+	}
+
+	handleAssign = () => {
+
+		console.warn(this.state.assignId)
+		if (this.state.assignId != null) {
+		  const data = {
+			"workflowId": this.state.workflowId,
+			"userId": this.state.assignId,
+		  }
+	
+		  axios.post(constants["apiUrl"] + '/workflows/assign', data)
+			.then((res) => {
+			  let data = res.data;
+			  console.warn(JSON.stringify(data));
+			  if (data.done == '1') {
+				this.closeAssignModal();
+				window.location.reload()
+			  }
+			})
+			.catch((error) => {
+			  console.warn(JSON.stringify(error));
+			});
+		}
+	  }
+
+	openAssignModal = () => {
+		this.setState({
+		  assignModal: true,
+		  index: this.state.workflowId
+		});
+	
+		let clientId = reactLocalStorage.get('clientId', true);
+	
+		//console.warn('user ' + userId + 'client ' + clientId);
+	
+		if (clientId != null) {
+		  const data = {
+			"clientId": clientId,
+		  }
+		  axios.post(constants["apiUrl"] + '/user/get', data)
+			.then((res) => {
+			  let data = res.data;
+			  console.warn(JSON.stringify(data));
+			  this.setState({
+				users: data.users,
+			  })
+			})
+			.catch((error) => {
+			  console.warn(JSON.stringify(error));
+			});
+	
+	
+		}
+	  }
+
 	render() {
 		return (
 			<>
@@ -297,8 +389,80 @@ class ViewWorkflow extends React.Component {
 												<h4 className="mb-0">{this.state.desc == null ? "" : this.state.desc}</h4>
 											</div>
 										</Row>
+										{this.state.user != null ?
+										<div>
+										<Row style={{marginTop: 10}} className="align-items-center">
+											<div className="col">
+												<h3 className="mb-0"><span className="badge badge-primary">Assigned To: {this.state.user.name} </span></h3>
+											</div>
+										</Row>
+										<Button style={{marginTop: 10}} onClick={()=> this.removeAssign()} color="danger"  size="sm">
+                                 			 Unassign
+                            			</Button>
+										</div>
+										:
+										<div>
+                               			<Button style={{marginTop: 10}} color="success" onClick={() => this.openAssignModal()}  size="sm">
+                                  			Assign
+                           				</Button>
+										</div>
+										}
 									</CardHeader>
 								}
+								<Modal
+									className="modal-dialog-centered"
+									isOpen={this.state.assignModal}
+									defaultValue={this.state.index}
+									toggle={() => this.closeAssignModal()}
+									>
+									<div className="modal-header">
+										<h2 className="modal-title" id="assignModelLabel">
+										Workflow {this.state.index}
+										</h2>
+										<button
+										aria-label="Close"
+										className="close"
+										data-dismiss="modal"
+										type="button"
+										onClick={() => this.closeAssignModal()}
+										>
+										<span aria-hidden={true}>×</span>
+										</button>
+									</div>
+									<div className="modal-body">
+										<Row className="justify-content-md-center">
+										<Col xl="auto">
+											{this.state.users != null ?
+											<UncontrolledDropdown>
+												<DropdownToggle caret>
+												{this.state.username}
+												</DropdownToggle>
+												<DropdownMenu container="body">
+												{this.state.users.map((user, index) => {
+													return (
+													<DropdownItem onClick={() => this.handleSelect(user.name, user.id)} key={index}>
+														{user.name}
+													</DropdownItem>
+													)
+												})}
+												</DropdownMenu>
+											</UncontrolledDropdown>
+
+											:
+											<div>Loading...</div>
+											}
+										</Col>
+										</Row>
+									</div>
+									<div className="modal-footer">
+										<Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.closeAssignModal()}>
+										Cancel
+													</Button>
+										<Button color="success" type="button" onClick={() => this.handleAssign()}>
+										Assign
+													</Button>
+									</div>
+									</Modal>
 							</Card>
 						</Col>
 					</Row>
@@ -314,6 +478,7 @@ class ViewWorkflow extends React.Component {
 											<Button color="success" onClick={() => this.openAddItemModal()} size="sm">
 												Add New Item
 											</Button>
+											
 											<Modal
 												className="modal-dialog-centered"
 												isOpen={this.state.addItemModal}
