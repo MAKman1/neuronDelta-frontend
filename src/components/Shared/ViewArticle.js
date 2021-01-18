@@ -38,7 +38,8 @@ class ViewArticle extends React.Component {
 			documentModel: false,
 			uploadDocument: null,
 			currentChecklistIndex: null,
-			loading: true
+			loading: true,
+			userType: null,
 		};
 	}
 
@@ -46,10 +47,12 @@ class ViewArticle extends React.Component {
 	componentDidMount() {
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
-		let type = reactLocalStorage.get('user_type', true);
+		let type = reactLocalStorage.get('userType', true);
 
-		console.warn("type", type)
-
+		
+		this.setState({
+			userType: type
+		})
 		
 
 		//console.warn('user ' + userId + 'client ' + clientId + this.articleId);
@@ -236,24 +239,32 @@ class ViewArticle extends React.Component {
 												<h4 className="mb-0">{this.state.article == null ? "" : this.state.article.description}</h4>
 											</div>
 										</Row>
-										{this.state.user != null ?
+										{this.state.userType == 2 ?
 										<div>
-										<Row style={{marginTop: 10}} className="align-items-center">
-											<div className="col">
-												<h3 className="mb-0"><span className="badge badge-primary">Assigned To: {this.state.user.name} </span></h3>
+											{this.state.user != null ?
+											<div>
+											<Row style={{marginTop: 10}} className="align-items-center">
+												<div className="col">
+													<h3 className="mb-0"><span className="badge badge-primary">Assigned To: {this.state.user.name} </span></h3>
+												</div>
+											</Row>
+											<Button style={{marginTop: 10}} onClick={()=> this.removeAssign()} color="danger"  size="sm">
+												Unassign
+											</Button>
 											</div>
-										</Row>
-										<Button style={{marginTop: 10}} onClick={()=> this.removeAssign()} color="danger"  size="sm">
-                                 			 Unassign
-                            			</Button>
-										</div>
-										:
+											:
+											<div>
+											<Button style={{marginTop: 10}} color="success" onClick={() => this.openAssignModal()}  size="sm">
+												Assign
+											</Button>
+											</div>
+											}
+										</div>:
 										<div>
-                               			<Button style={{marginTop: 10}} color="success" onClick={() => this.openAssignModal()}  size="sm">
-                                  			Assign
-                           				</Button>
+
 										</div>
 										}
+										
 									</CardHeader>
 								}
 							</Card>

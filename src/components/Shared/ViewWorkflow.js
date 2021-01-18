@@ -53,6 +53,12 @@ class ViewWorkflow extends React.Component {
 	componentDidMount() {
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
+		let type = reactLocalStorage.get('userType', true);
+
+		
+		this.setState({
+			userType: type
+		})
 
 		//console.warn('user ' + userId + 'client ' + clientId + this.articleId);
 
@@ -389,22 +395,29 @@ class ViewWorkflow extends React.Component {
 												<h4 className="mb-0">{this.state.desc == null ? "" : this.state.desc}</h4>
 											</div>
 										</Row>
-										{this.state.user != null ?
+										{this.state.userType == 2 ?
 										<div>
-										<Row style={{marginTop: 10}} className="align-items-center">
-											<div className="col">
-												<h3 className="mb-0"><span className="badge badge-primary">Assigned To: {this.state.user.name} </span></h3>
+											{this.state.user != null ?
+											<div>
+											<Row style={{marginTop: 10}} className="align-items-center">
+												<div className="col">
+													<h3 className="mb-0"><span className="badge badge-primary">Assigned To: {this.state.user.name} </span></h3>
+												</div>
+											</Row>
+											<Button style={{marginTop: 10}} onClick={()=> this.removeAssign()} color="danger"  size="sm">
+												Unassign
+											</Button>
 											</div>
-										</Row>
-										<Button style={{marginTop: 10}} onClick={()=> this.removeAssign()} color="danger"  size="sm">
-                                 			 Unassign
-                            			</Button>
-										</div>
-										:
+											:
+											<div>
+											<Button style={{marginTop: 10}} color="success" onClick={() => this.openAssignModal()}  size="sm">
+												Assign
+											</Button>
+											</div>
+											}
+										</div>:
 										<div>
-                               			<Button style={{marginTop: 10}} color="success" onClick={() => this.openAssignModal()}  size="sm">
-                                  			Assign
-                           				</Button>
+
 										</div>
 										}
 									</CardHeader>
@@ -475,9 +488,15 @@ class ViewWorkflow extends React.Component {
 											<h3 className="mb-0">Workflow Items</h3>
 										</div>
 										<div className="col text-right">
-											<Button color="success" onClick={() => this.openAddItemModal()} size="sm">
-												Add New Item
-											</Button>
+											{this.state.userType == 2? 
+											<div>
+												<Button color="success" onClick={() => this.openAddItemModal()} size="sm">
+													Add New Item
+												</Button>
+											</div>:
+											<div></div>
+											}
+											
 											
 											<Modal
 												className="modal-dialog-centered"
