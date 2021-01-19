@@ -111,7 +111,7 @@ class ManagerNavbar extends React.Component {
 
 									<DropdownItem divider />
 									<DropdownItem href="" onClick={this.logout}>
-										<i className="ni ni-user-run" />
+										<i className="fas fa-power-off" />
 										<span>Logout</span>
 									</DropdownItem>
 								</DropdownMenu>

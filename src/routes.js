@@ -81,7 +81,7 @@ var routes = [
   {
     path: "/subscriptions",
     name: "Subscriptions",
-    icon: "ni ni-single-copy-04 text-red",
+    icon: "ni ni-tag text-red",
     component: ManagerSubscriptions,
     layout: "/manager"
   },

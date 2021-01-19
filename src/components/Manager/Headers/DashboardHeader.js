@@ -57,8 +57,8 @@ class DashboardHeader extends React.Component {
                           </span>
                         </div>
                         <Col className="col-auto">
-                          <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
-                            <i className="fas fa-chart-pie" />
+                          <div className="icon icon-shape bg-blue text-white rounded-circle shadow">
+                            <i className="ni ni-collection text-white" />
                           </div>
                         </Col>
                       </Row>
@@ -82,8 +82,8 @@ class DashboardHeader extends React.Component {
                           </span>
                         </div>
                         <Col className="col-auto">
-                          <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
-                            <i className="fas fa-users" />
+                          <div className="icon icon-shape bg-green text-white rounded-circle shadow">
+                            <i className="ni ni-collection text-white" />
                           </div>
                         </Col>
                       </Row>
@@ -108,7 +108,7 @@ class DashboardHeader extends React.Component {
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
-                            <i className="fas fa-chart-pie" />
+                            <i className="ni ni-tag" />
                           </div>
                         </Col>
                       </Row>

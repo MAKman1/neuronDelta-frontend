@@ -184,7 +184,7 @@ class ManagerSidebar extends React.Component {
 								</DropdownItem>
 								<DropdownItem divider />
 								<DropdownItem onClick={this.logout}>
-									<i className="ni ni-user-run" />
+									<i className="fas fa-power-off" />
 									<span>Logout</span>
 								</DropdownItem>
 							</DropdownMenu>

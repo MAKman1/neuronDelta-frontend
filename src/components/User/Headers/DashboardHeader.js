@@ -29,8 +29,8 @@ class DashboardHeader extends React.Component {
                           </span>
                         </div>
                         <Col className="col-auto">
-                          <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
-                            <i class="fas fa-clipboard"></i>
+                        <div className="icon icon-shape bg-blue text-white rounded-circle shadow">
+                            <i className="ni ni-collection text-white" />
                           </div>
                         </Col>
                       </Row>
@@ -52,15 +52,15 @@ class DashboardHeader extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Completed Audits
+                            Completed Articles
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
                             {this.props.compArticles}
                           </span>
                         </div>
                         <Col className="col-auto">
-                          <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
-                            <i class="fas fa-clipboard-check"></i>
+                        <div className="icon icon-shape bg-green text-white rounded-circle shadow">
+                            <i className="ni ni-collection text-white" />
                           </div>
                         </Col>
                       </Row>
@@ -83,8 +83,8 @@ class DashboardHeader extends React.Component {
                           </span>
                         </div>
                         <Col className="col-auto">
-                          <div className="icon icon-shape bg-blue text-white rounded-circle shadow">
-                            <i class="fas fa-file-alt"></i>
+                          <div className="icon icon-shape bg-red text-white rounded-circle shadow">
+                            <i class="ni ni-single-copy-04"></i>
                           </div>
                         </Col>
                       </Row>
