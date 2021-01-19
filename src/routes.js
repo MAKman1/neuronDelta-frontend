@@ -10,6 +10,7 @@ import ManagerDocuments from "components/Manager/ManagerDocuments.js";
 import ManagerProfile from "components/Manager/ManagerProfile.js";
 import ManagerArticles from "components/Manager/ManagerArticles.js";
 
+
 import ViewStandard from "components/Shared/ViewStandard";
 import ViewArticle from "components/Shared/ViewArticle";
 import ViewWorkflow from "components/Shared/ViewWorkflow";
@@ -23,6 +24,13 @@ import Document from "components/User/Views/Document.js"
 import Workflows from "components/User/Views/Workflows.js"
 import Profile from "components/User/Views/Profile.js";
 import ViewDocument from "components/Shared/ViewDocument";
+
+//SuperAdmin imports
+import SuperAdminIndex from "components/SuperAdmin/SuperAdminIndex.js";
+import SuperAdminStandards from "components/SuperAdmin/SuperAdminStandards.js";
+import SuperAdminClients from "components/SuperAdmin/SuperAdminClients.js";
+import SuperAdminViewClient from "components/SuperAdmin/Views/SuperAdminViewClient.js"
+
 
 
 
@@ -136,6 +144,35 @@ var routes = [
       layout: "/user/view"
   },
 
+// Superadmin
+  {
+    path: "/index",
+      name: "Dashboard",
+      icon: "ni ni-tv-2 text-primary",
+      component: SuperAdminIndex,
+      layout: "/superadmin"
+  },
+  {
+    path: "/standards",
+      name: "Standards",
+      icon: "ni ni-book-bookmark text-green",
+      component: SuperAdminStandards,
+      layout: "/superadmin"
+  },
+  {
+    path: "/clients",
+      name: "Clients",
+      icon: "fas fa-users text-yellow",
+      component: SuperAdminClients,
+      layout: "/superadmin"
+  },
+  {
+    path: "/client/:clientId",
+    name: "Client View",
+      component: SuperAdminViewClient,
+      layout: "/superadmin/view"
+    },
+  
 
 
   // User
