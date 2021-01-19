@@ -160,14 +160,6 @@ class ManagerIndex extends React.Component {
 		});
 	}
 
-	selectRole = (role) => {
-		let temp = [...this.state.tempRoles];
-		temp.push(role);
-		this.setState({
-			tempRoles: temp
-		})
-	}
-
 	handlePassword = (event) => {
 		this.setState({
 			password: event.target.value
@@ -256,19 +248,20 @@ class ManagerIndex extends React.Component {
 	}
 
 	updateRoles = () => {
+		let updatedDocs = [];
 		if (this.state.tempRoles.length != 0) {
 			this.state.tempRoles.forEach(role => {
-				if (!this.state.documents[this.state.documentIndex].userRoles.includes(role)) {
+				if (!this.state.documents[this.state.documentIndex].userRoles.some( r => r.id === role.id )) {
 					const data = new FormData();
 					data.append("documentId", this.state.documents[this.state.documentIndex].id);
 					data.append("roleId", role.id);
+					updatedDocs = [...this.state.documents];
+					updatedDocs[this.state.documentIndex].userRoles.push(role);
 
 					axios.post(constants["apiUrl"] + '/documents/addRole', data)
 						.then((res) => {
 							let data = res.data;
-							console.warn(JSON.stringify(data));
-							let updatedDocs = [...this.state.documents];
-							updatedDocs[this.state.documentIndex] = data.document;
+
 							this.setState({
 								currentRole: null,
 								roleModel: false,
@@ -281,11 +274,11 @@ class ManagerIndex extends React.Component {
 						})
 						.catch((error) => {
 							console.warn(JSON.stringify(error));
-						})
+						});
 				}
 			});
 		}
-		let updatedDocs;
+		// updatedDocs = [];
 		if (this.state.removedRoles.length != 0) {
 			this.state.removedRoles.forEach(role => {
 				const data = new FormData();
@@ -293,7 +286,7 @@ class ManagerIndex extends React.Component {
 				data.append("roleId", role.id);
 				updatedDocs = [...this.state.documents];
 				updatedDocs[this.state.documentIndex].userRoles = updatedDocs[this.state.documentIndex].userRoles.filter(function (r) { return r.id !== role.id; });
-				
+
 				axios.post(constants["apiUrl"] + '/documents/removeRole', data)
 					.then((res) => {
 						let data = res.data;
@@ -311,7 +304,27 @@ class ManagerIndex extends React.Component {
 						console.warn(JSON.stringify(error));
 					});
 			});
+		} else {
+			this.setState({
+				currentRole: null,
+				roleModel: false,
+				documentIndex: null,
+				tempRoles: [],
+				removedRoles: []
+			})
 		}
+	}
+	
+	selectRole = (role) => {
+		let updatedRemovedRoles = this.state.removedRoles.filter(function (r) { return r.id !== role.id; });
+		let temp = [...this.state.tempRoles];
+
+		temp.push(role);
+		console.log('inside the if');
+		this.setState({
+			tempRoles: temp,
+			removedRoles: updatedRemovedRoles
+		})
 	}
 
 	removeRole = (role, index) => {
