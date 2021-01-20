@@ -35,7 +35,17 @@ class SuperAdminStandards extends React.Component {
   }
 
   componentDidMount() {
-    //Check if auth token in valid
+    axios.post(constants["apiUrl"] + '/admin/getStandards')
+      .then((res) => {
+        let data = res.data;
+        this.setState({
+          standards: data.standards,
+          loading: false
+        })
+      })
+      .catch((error) => {
+        console.warn(JSON.stringify(error));
+      });
   }
 
   openAddModal = () => {
@@ -99,12 +109,32 @@ class SuperAdminStandards extends React.Component {
                       <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Article Count</th>
-                        <th scope="col">Details</th>
-                        <th scope="col">Progress</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Version</th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
+                      {this.state.standards.map((standard, index) => {
+                        return (
+                          <tr key={index}>
+                            <th scope="row">
+                              {standard.name}
+                            </th>
+                            <td>
+                              {standard.articleCount}
+                            </td>
+                            <td style={{ maxWidth: 150 }}>
+                              <text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
+                                {standard.description}
+                              </text>
+                            </td>
+                            <td>
+                              {standard.version}
+                            </td>
+                          </tr>
+                        )
+                      })}
 
                     </tbody>
                   </Table>

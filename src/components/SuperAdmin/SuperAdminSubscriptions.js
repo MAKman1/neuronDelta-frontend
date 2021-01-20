@@ -36,8 +36,6 @@ class SuperAdminSubscriptions extends React.Component {
             subscriptions: [],
             clients: [],
             standards: [],
-            name: "",
-            website: "",
             description: "-",
             currentStandard: null,
             currentClient: null,
@@ -104,16 +102,8 @@ class SuperAdminSubscriptions extends React.Component {
         })
     }
 
-    handleName = () => {
-
-    }
-
     handleDesc = (event) => {
         this.setState({ description: event.target.value });
-    }
-
-    handleWebsite = () => {
-
     }
 
     selectStandard = (standard) => {
