@@ -122,11 +122,11 @@ class SuperAdminStandards extends React.Component {
                               {standard.name}
                             </th>
                             <td>
-                              {standard.articleCount}
+                              {standard.articleCount ? standard.articleCount : "-"}
                             </td>
                             <td style={{ maxWidth: 150 }}>
                               <text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
-                                {standard.description}
+                                {standard.description ? standard.description : '-'}
                               </text>
                             </td>
                             <td>

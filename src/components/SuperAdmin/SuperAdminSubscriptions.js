@@ -226,7 +226,7 @@ class SuperAdminSubscriptions extends React.Component {
                                                         </td>
                                                         <td style={{ maxWidth: 150 }}>
                                                             <text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
-                                                                {sub.notes}
+                                                                {sub.notes ? sub.notes : '-'}
                                                             </text>
                                                         </td>
                                                         {/* <td>

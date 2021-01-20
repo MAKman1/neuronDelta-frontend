@@ -25,9 +25,9 @@ class SuperAdminClients extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      
-      loading: false,
+      loading: true,
       addModal: false,
+      clients: [],
       name: "",
       website: "",
       description: "",
@@ -35,20 +35,29 @@ class SuperAdminClients extends React.Component {
   }
 
   componentDidMount() {
-    //Check if auth token in valid
-   
+    axios.post(constants["apiUrl"] + '/admin/getClients')
+      .then((res) => {
+        let data = res.data;
+        this.setState({
+          clients: data.clients,
+          loading: false
+        })
+      })
+      .catch((error) => {
+        console.warn(JSON.stringify(error));
+      });
   }
 
   openAddModal = () => {
-      this.setState({
-          addModal: true,
-      })
+    this.setState({
+      addModal: true,
+    })
   }
 
   closeAddModal = () => {
-      this.setState({
-          addModal: false,
-      })
+    this.setState({
+      addModal: false,
+    })
   }
 
   handleName = () => {
@@ -56,16 +65,16 @@ class SuperAdminClients extends React.Component {
   }
 
   handleDesc = () => {
-      
+
   }
 
   handleWebsite = () => {
 
   }
 
-  
 
-  
+
+
 
 
   render() {
@@ -83,61 +92,11 @@ class SuperAdminClients extends React.Component {
                       <h3 className="mb-0">Clients</h3>
                     </div>
                     <div className="col text-right">
-                      <Button
-                        color="success"
-                        onClick={() => this.openAddModal()}
-                        size="md"
-                      >
+                      <Button color="success" onClick={() => this.openAddModal()} size="md">
                         Add Client
                       </Button>
-                      
                     </div>
                   </Row>
-                  <Modal
-                                className="modal-dialog-centered"
-                                isOpen={this.state.addModal}
-                                defaultValue={this.state.addModal}
-                                toggle={() => this.closeAddModal()}
-                            >
-                                <div className="modal-header">
-                                <h2 className="modal-title" id="assignModelLabel">
-                                    Add New Client
-                                </h2>
-                                <button
-                                    aria-label="Close"
-                                    className="close"
-                                    data-dismiss="modal"
-                                    type="button"
-                                    onClick={() => this.closeAddModal()}
-                                >
-                                    <span aria-hidden={true}>×</span>
-                                </button>
-                                </div>
-                                <div className="modal-body">
-                                <form>
-                                    <div className="form-group">
-                                    <label for="recipient-name" defaultValue={this.state.name} class="col-form-label" >Name:</label>
-                                    <input type="text" class="form-control" id="recipient-name" onChange={this.handleName}></input>
-                                    </div>
-                                    <div class="form-group">
-                                    <label for="message-text" class="col-form-label" defaultValue={this.state.desc}>Description:</label>
-                                    <textarea class="form-control" id="message-text" id="message-text" onChange={this.handleDesc}></textarea>
-                                    </div>
-                                    <div className="form-group">
-                                    <label for="recipient-website" defaultValue={this.state.version} class="col-form-label" >Website</label>
-                                    <input type="link" class="form-control" id="recipient-website" onChange={this.handleWebsite}></input>
-                                    </div>
-                                </form>
-                                </div>
-                                <div className="modal-footer">
-                                <Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.closeAddModal()}>
-                                    Cancel
-                                                </Button>
-                                <Button color="success" type="button" onClick={() => this.handleAdd()}>
-                                    Add
-                                                </Button>
-                                </div>
-                        </Modal>
                 </CardHeader>
                 {this.state.loading ?
                   <CardBody>
@@ -150,35 +109,91 @@ class SuperAdminClients extends React.Component {
                     <thead className="thead-light">
                       <tr>
                         <th scope="col">Name</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">Assigned Workflow</th>
-                        <th scope="col">Assigned Article</th>
-                        <th scope="col"></th>
+                        <th scope="col">User Count</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Website</th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                          <th scope="row">
-
-                          </th>
-                          <td>
-                            <Link to={{
+                      {this.state.clients.map((client, index) => {
+                        return (
+                          <tr>
+                            <th scope="row">
+                              {client.name}
+                            </th>
+                            <td>
+                              {client.user_count ? client.user_count : "-" }
+                            </td>
+                            <td style={{ maxWidth: 150 }}>
+                              <text style={{ whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>
+                                {client.description ? client.description : "-"}
+                              </text>
+                            </td>
+                            <td>
+                                {client.website}
+                            </td>
+                            <td>
+                              <Link to={{
                                 pathname: '/superadmin/view/client/' + 2,
                               }}>
                                 <Button color="primary" size="sm">
                                   View
                                 </Button>
                               </Link>
-                          </td>
-
-                      </tr>
+                            </td>
+                          </tr>
+                        )
+                      })}
                     </tbody>
                   </Table>
                 }
               </Card>
-              
-              
+              <Modal
+                className="modal-dialog-centered"
+                isOpen={this.state.addModal}
+                defaultValue={this.state.addModal}
+                toggle={() => this.closeAddModal()}
+              >
+                <div className="modal-header">
+                  <h2 className="modal-title" id="assignModelLabel">
+                    Add New Client
+                                </h2>
+                  <button
+                    aria-label="Close"
+                    className="close"
+                    data-dismiss="modal"
+                    type="button"
+                    onClick={() => this.closeAddModal()}
+                  >
+                    <span aria-hidden={true}>×</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <form>
+                    <div className="form-group">
+                      <label for="recipient-name" defaultValue={this.state.name} class="col-form-label" >Name:</label>
+                      <input type="text" class="form-control" id="recipient-name" onChange={this.handleName}></input>
+                    </div>
+                    <div class="form-group">
+                      <label for="message-text" class="col-form-label" defaultValue={this.state.desc}>Description:</label>
+                      <textarea class="form-control" id="message-text" id="message-text" onChange={this.handleDesc}></textarea>
+                    </div>
+                    <div className="form-group">
+                      <label for="recipient-website" defaultValue={this.state.version} class="col-form-label" >Website</label>
+                      <input type="link" class="form-control" id="recipient-website" onChange={this.handleWebsite}></input>
+                    </div>
+                  </form>
+                </div>
+                <div className="modal-footer">
+                  <Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.closeAddModal()}>
+                    Cancel
+                  </Button>
+                  <Button color="success" type="button" onClick={() => this.handleAdd()}>
+                    Add
+                  </Button>
+                </div>
+              </Modal>
             </Col>
           </Row>
         </Container>
