@@ -40,14 +40,14 @@ class SuperAdminStandards extends React.Component {
 
   openAddModal = () => {
     this.setState({
-        addModal: true,
+      addModal: true,
     })
   }
 
   closeAddModal = () => {
-      this.setState({
-          addModal: false,
-      })
+    this.setState({
+      addModal: false,
+    })
   }
 
   handleName = () => {
@@ -81,60 +81,9 @@ class SuperAdminStandards extends React.Component {
                       <h3 className="mb-0">Current Standards</h3>
                     </div>
                     <div className="col text-right">
-                        <Button
-                            color="primary"
-                            href=""
-                            onClick={() => this.openAddModal()}
-                            size="sm"
-                        >
-                            Add New Standard
-                        </Button>
-                        <Modal
-                                className="modal-dialog-centered"
-                                isOpen={this.state.addModal}
-                                defaultValue={this.state.addModal}
-                                toggle={() => this.closeAddModal()}
-                            >
-                                <div className="modal-header">
-                                <h2 className="modal-title" id="assignModelLabel">
-                                    Add New Standard
-                                </h2>
-                                <button
-                                    aria-label="Close"
-                                    className="close"
-                                    data-dismiss="modal"
-                                    type="button"
-                                    onClick={() => this.closeAddModal()}
-                                >
-                                    <span aria-hidden={true}>×</span>
-                                </button>
-                                </div>
-                                <div className="modal-body">
-                                <form>
-                                    <div className="form-group">
-                                    <label for="recipient-name" defaultValue={this.state.name} class="col-form-label" >Name:</label>
-                                    <input type="text" class="form-control" id="recipient-name" onChange={this.handleName}></input>
-                                    </div>
-                                    <div class="form-group">
-                                    <label for="message-text" class="col-form-label" defaultValue={this.state.desc}>Description:</label>
-                                    <textarea class="form-control" id="message-text" id="message-text" onChange={this.handleDesc}></textarea>
-                                    </div>
-                                    <div className="form-group">
-                                    <label for="recipient-version" defaultValue={this.state.version} class="col-form-label" >Version</label>
-                                    <input type="number" class="form-control" id="recipient-version" onChange={this.handleVersion}></input>
-                                    </div>
-                                </form>
-                                </div>
-                                <div className="modal-footer">
-                                <Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.closeAddModal()}>
-                                    Cancel
-                                                </Button>
-                                <Button color="success" type="button" onClick={() => this.handleAdd()}>
-                                    Add
-                                                </Button>
-                                </div>
-                        </Modal>
-
+                      <Button color="success" onClick={() => this.openAddModal()} size="md">
+                        Add Standard
+                      </Button>
                     </div>
                   </Row>
                 </CardHeader>
@@ -156,11 +105,57 @@ class SuperAdminStandards extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      
+
                     </tbody>
                   </Table>
                 }
               </Card>
+              <Modal
+                className="modal-dialog-centered"
+                isOpen={this.state.addModal}
+                defaultValue={this.state.addModal}
+                toggle={() => this.closeAddModal()}
+              >
+                <div className="modal-header">
+                  <h2 className="modal-title" id="assignModelLabel">
+                    Add New Standard
+                                </h2>
+                  <button
+                    aria-label="Close"
+                    className="close"
+                    data-dismiss="modal"
+                    type="button"
+                    onClick={() => this.closeAddModal()}
+                  >
+                    <span aria-hidden={true}>×</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <form>
+                    <div className="form-group">
+                      <label for="recipient-name" defaultValue={this.state.name} class="col-form-label" >Name:</label>
+                      <input type="text" class="form-control" id="recipient-name" onChange={this.handleName}></input>
+                    </div>
+                    <div class="form-group">
+                      <label for="message-text" class="col-form-label" defaultValue={this.state.desc}>Description:</label>
+                      <textarea class="form-control" id="message-text" id="message-text" onChange={this.handleDesc}></textarea>
+                    </div>
+                    <div className="form-group">
+                      <label for="recipient-version" defaultValue={this.state.version} class="col-form-label" >Version</label>
+                      <input type="number" class="form-control" id="recipient-version" onChange={this.handleVersion}></input>
+                    </div>
+                  </form>
+                </div>
+                <div className="modal-footer">
+                  <Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.closeAddModal()}>
+                    Cancel
+                                                </Button>
+                  <Button color="success" type="button" onClick={() => this.handleAdd()}>
+                    Add
+                                                </Button>
+                </div>
+              </Modal>
+
             </Col>
           </Row>
         </Container>
