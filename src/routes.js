@@ -30,7 +30,8 @@ import SuperAdminIndex from "components/SuperAdmin/SuperAdminIndex.js";
 import SuperAdminStandards from "components/SuperAdmin/SuperAdminStandards.js";
 import SuperAdminSubscriptions from "components/SuperAdmin/SuperAdminSubscriptions.js"
 import SuperAdminClients from "components/SuperAdmin/SuperAdminClients.js";
-import SuperAdminViewClient from "components/SuperAdmin/Views/SuperAdminViewClient.js"
+import SuperAdminViewClient from "components/SuperAdmin/Views/SuperAdminViewClient.js";
+import SuperAdminViewStandard from "components/SuperAdmin/Views/SuperAdminViewStandard.js";
 
 
 
@@ -180,6 +181,12 @@ var routes = [
       component: SuperAdminViewClient,
       layout: "/superadmin/view"
     },
+    {
+      path: "/standard/:standardId",
+      name: "Standard View",
+        component: SuperAdminViewStandard,
+        layout: "/superadmin/view"
+      },
   
 
 

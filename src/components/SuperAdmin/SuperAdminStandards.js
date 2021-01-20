@@ -1,5 +1,5 @@
 /*! Developed by Alinon */
-import React from "react";
+import React, { version } from "react";
 import { Link } from "react-router-dom";
 import { reactLocalStorage } from 'reactjs-localstorage';
 import axios from 'axios';
@@ -28,8 +28,8 @@ class SuperAdminStandards extends React.Component {
       standards: [],
       loading: false,
       addModal: false,
-      name: "",
-      desc: "",
+      name: null,
+      desc: null,
       version: null,
     };
   }
@@ -60,20 +60,48 @@ class SuperAdminStandards extends React.Component {
     })
   }
 
-  handleName = () => {
+  handleName = (event) => {
+    this.setState({
+      name: event.target.value
+    })
 
   }
 
-  handleDesc = () => {
-
+  handleDesc = (event) => {
+    this.setState({
+      desc: event.target.value
+    })
   }
 
-  handleVersion = () => {
-
+  handleVersion = (event) => {
+    this.setState({
+      version: event.target.value
+    })
+    
   }
 
   handleAdd = () => {
 
+    if (this.state.name != null && this.state.desc != null & this.state.version != null) {
+      const data = {
+        "name": this.state.name,
+        "description": this.state.desc,
+        "version": this.state.version
+      }
+      axios.post(constants["apiUrl"] + '/admin/addStandard', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(res.data)
+          this.setState({
+            
+          })
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    }
+    
+    
   }
 
   render() {
@@ -131,6 +159,15 @@ class SuperAdminStandards extends React.Component {
                             </td>
                             <td>
                               {standard.version}
+                            </td>
+                            <td>
+                              <Link to={{
+                                pathname: '/superadmin/view/standard/' + standard.id,
+                              }}>
+                                <Button color="primary" size="sm">
+                                  View
+                                </Button>
+                              </Link>
                             </td>
                           </tr>
                         )
