@@ -28,6 +28,7 @@ import ViewDocument from "components/Shared/ViewDocument";
 //SuperAdmin imports
 import SuperAdminIndex from "components/SuperAdmin/SuperAdminIndex.js";
 import SuperAdminStandards from "components/SuperAdmin/SuperAdminStandards.js";
+import SuperAdminSubscriptions from "components/SuperAdmin/SuperAdminSubscriptions.js"
 import SuperAdminClients from "components/SuperAdmin/SuperAdminClients.js";
 import SuperAdminViewClient from "components/SuperAdmin/Views/SuperAdminViewClient.js"
 
@@ -157,6 +158,13 @@ var routes = [
       name: "Standards",
       icon: "ni ni-book-bookmark text-green",
       component: SuperAdminStandards,
+      layout: "/superadmin"
+  },
+  {
+    path: "/subscription",
+      name: "Subscriptions",
+      icon: "ni ni-tag text-red",
+      component: SuperAdminSubscriptions,
       layout: "/superadmin"
   },
   {

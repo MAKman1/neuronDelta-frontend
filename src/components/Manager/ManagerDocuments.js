@@ -470,10 +470,10 @@ class ManagerDocuments extends React.Component {
 											onClick={() => this.toggleModal("documentModel")}
 										>
 											Cancel
-                          </Button>
+                          					</Button>
 										<Button color="success" type="button" onClick={this.handleUpload}>
 											Upload
-                          </Button>
+                          					</Button>
 									</div>
 								</Modal>
 							</Card>
