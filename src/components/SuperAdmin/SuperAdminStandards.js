@@ -31,6 +31,8 @@ class SuperAdminStandards extends React.Component {
       name: null,
       desc: null,
       version: null,
+      index: null,
+      editModal: false,
     };
   }
 
@@ -57,6 +59,9 @@ class SuperAdminStandards extends React.Component {
   closeAddModal = () => {
     this.setState({
       addModal: false,
+      name: null,
+      description: null,
+      version: null,
     })
   }
 
@@ -92,9 +97,12 @@ class SuperAdminStandards extends React.Component {
         .then((res) => {
           let data = res.data;
           console.warn(res.data)
+          let temp = this.state.standards
+          temp.push(data.standard)
           this.setState({
-            
+            standards: temp,
           })
+          this.closeAddModal()
         })
         .catch((error) => {
           console.warn(JSON.stringify(error));
@@ -102,6 +110,78 @@ class SuperAdminStandards extends React.Component {
     }
     
     
+  }
+
+  handleRemove = (id) => {
+    const data = {
+      "standardId" : id
+    }
+    axios.post(constants["apiUrl"] + '/admin/deleteStandard', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(res.data)
+          if (data.done == 1) {
+            let temp = this.state.standards.filter(standard => standard.id != id)
+            this.setState({
+              standards: temp
+            })
+            this.forceUpdate()
+          }
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+  }
+
+  openEditModal = (id) => {
+    let temp = this.state.standards.filter(standard => standard.id == id)
+    this.setState({
+      index: temp[0].id,
+      name: temp[0].name,
+      desc: temp[0].description,
+      version: temp[0].version,
+      editModal: true,
+    })
+
+    this.forceUpdate()
+  }
+
+  closeEditModal = () => {
+    this.setState({
+      name: null,
+      desc: null,
+      version: null,
+      editModal: false
+    })
+  }
+
+  handleEdit = () => {
+    const data = {
+      "name": this.state.name,
+      "description": this.state.desc,
+      "version": this.state.version,
+      "standardId": this.state.index,
+    }
+
+    axios.post(constants["apiUrl"] + '/admin/editStandard', data)
+        .then((res) => {
+          let data = res.data;
+          console.warn(res.data)
+          let index = this.state.standards.findIndex(standard => standard.id == data.standard.id)
+          let temp = this.state.standards
+          temp[index].name = data.standard.name
+          temp[index].description = data.standard.description
+          temp[index].version = data.standard.version
+          this.setState({
+            standards: temp
+          })
+          this.forceUpdate()
+          this.closeEditModal()
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+
   }
 
   render() {
@@ -140,16 +220,17 @@ class SuperAdminStandards extends React.Component {
                         <th scope="col">Description</th>
                         <th scope="col">Version</th>
                         <th scope="col"></th>
+                        
                       </tr>
                     </thead>
                     <tbody>
                       {this.state.standards.map((standard, index) => {
                         return (
                           <tr key={index}>
-                            <th scope="row">
+                            <th style={{width: 80}} scope="row">
                               {standard.name}
                             </th>
-                            <td>
+                            <td className="col text-center" style={{width: 30}}>
                               {standard.articleCount ? standard.articleCount : "-"}
                             </td>
                             <td style={{ maxWidth: 150 }}>
@@ -157,10 +238,10 @@ class SuperAdminStandards extends React.Component {
                                 {standard.description ? standard.description : '-'}
                               </text>
                             </td>
-                            <td>
+                            <td style={{width: 30}}>
                               {standard.version}
                             </td>
-                            <td>
+                            <td style={{width: 40}}>
                               <Link to={{
                                 pathname: '/superadmin/view/standard/' + standard.id,
                               }}>
@@ -168,7 +249,13 @@ class SuperAdminStandards extends React.Component {
                                   View
                                 </Button>
                               </Link>
-                            </td>
+                              <Button style={{marginLeft:10}} color="primary" size="sm" onClick={() => this.openEditModal(standard.id)}>
+                                  Edit
+                              </Button>
+                              <Button color="danger" size="sm" onClick={() => this.handleRemove(standard.id)}>
+                                Remove
+                              </Button>
+                              </td>
                           </tr>
                         )
                       })}
@@ -222,7 +309,51 @@ class SuperAdminStandards extends React.Component {
                                                 </Button>
                 </div>
               </Modal>
-
+              <Modal
+                className="modal-dialog-centered"
+                isOpen={this.state.editModal}
+                defaultValue={this.state.editModal}
+                toggle={() => this.EditAddModal()}
+              >
+                <div className="modal-header">
+                  <h2 className="modal-title" id="assignModelLabel">
+                    Add New Standard
+                                </h2>
+                  <button
+                    aria-label="Close"
+                    className="close"
+                    data-dismiss="modal"
+                    type="button"
+                    onClick={() => this.closeEditModal()}
+                  >
+                    <span aria-hidden={true}>×</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <form>
+                    <div className="form-group">
+                      <label for="recipient-name" defaultValue={this.state.name} class="col-form-label" >Name:</label>
+                      <input type="text" class="form-control" id="recipient-name" value={this.state.name} onChange={this.handleName}></input>
+                    </div>
+                    <div class="form-group">
+                      <label for="message-text" class="col-form-label" defaultValue={this.state.desc}>Description:</label>
+                      <textarea class="form-control" id="message-text" value={this.state.desc} id="message-text" onChange={this.handleDesc}></textarea>
+                    </div>
+                    <div className="form-group">
+                      <label for="recipient-version" defaultValue={this.state.version} class="col-form-label" >Version</label>
+                      <input type="number" class="form-control" value = {this.state.version} id="recipient-version" onChange={this.handleVersion}></input>
+                    </div>
+                  </form>
+                </div>
+                <div className="modal-footer">
+                  <Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.closeEditModal()}>
+                    Cancel
+                                                </Button>
+                  <Button color="success" type="button" onClick={() => this.handleEdit()}>
+                    Save
+                                                </Button>
+                </div>
+              </Modal>
             </Col>
           </Row>
         </Container>

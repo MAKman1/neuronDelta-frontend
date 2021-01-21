@@ -32,6 +32,7 @@ import SuperAdminSubscriptions from "components/SuperAdmin/SuperAdminSubscriptio
 import SuperAdminClients from "components/SuperAdmin/SuperAdminClients.js";
 import SuperAdminViewClient from "components/SuperAdmin/Views/SuperAdminViewClient.js";
 import SuperAdminViewStandard from "components/SuperAdmin/Views/SuperAdminViewStandard.js";
+import SuperAdminViewArticle from "components/SuperAdmin/Views/SuperAdminViewArticle";
 
 
 
@@ -187,6 +188,12 @@ var routes = [
         component: SuperAdminViewStandard,
         layout: "/superadmin/view"
       },
+      {
+        path: "/article/:articleId",
+        name: "Article View",
+          component: SuperAdminViewArticle,
+          layout: "/superadmin/view"
+        },
   
 
 
