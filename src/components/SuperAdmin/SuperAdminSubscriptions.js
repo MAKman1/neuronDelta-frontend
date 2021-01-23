@@ -239,7 +239,7 @@ class SuperAdminSubscriptions extends React.Component {
                                                             </Link>
                                                         </td> */}
                                                         <td>
-                                                            <Button color="warning" onClick={() => this.handleDeleteSub(sub, index)} size="sm">
+                                                            <Button color="danger" onClick={() => this.handleDeleteSub(sub, index)} size="sm">
                                                                 Delete
                                                             </Button>
                                                         </td>
