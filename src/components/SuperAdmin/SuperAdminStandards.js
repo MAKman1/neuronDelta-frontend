@@ -37,6 +37,8 @@ class SuperAdminStandards extends React.Component {
   }
 
   componentDidMount() {
+    
+    
     axios.post(constants["apiUrl"] + '/admin/getStandards')
       .then((res) => {
         let data = res.data;
