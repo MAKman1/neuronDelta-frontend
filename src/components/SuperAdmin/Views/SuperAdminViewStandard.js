@@ -258,7 +258,7 @@ class SuperAdminViewStandards extends React.Component {
                             <td style={{width: 40}}>
 
                                 <Link to={{
-                                    pathname: '/superadmin/view/article/' + article.id,
+                                    pathname: '/admin/view/article/' + article.id,
                                 }}>
                                     <Button color="primary" size="sm">
                                     View

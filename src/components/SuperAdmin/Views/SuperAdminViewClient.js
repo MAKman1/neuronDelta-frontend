@@ -21,6 +21,8 @@ import {
 import Header from "components/Manager/Headers/EmptyHeader.js";
 
 class SuperAdminViewClient extends React.Component {
+
+  clientId = this.props.match.params.clientId;
   constructor(props) {
     super(props);
     this.state = {

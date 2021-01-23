@@ -76,7 +76,7 @@ class Sidebar extends React.Component {
 	// creates the links that appear in the left menu / Sidebar
 	createLinks = routes => {
 		return routes.map((prop, key) => {
-			if (prop.layout == "/superadmin") {
+			if (prop.layout == "/master") {
 				return (
 					<NavItem key={key}>
 						<NavLink
@@ -174,11 +174,11 @@ class Sidebar extends React.Component {
 								<DropdownItem className="noti-title" header tag="div">
 									<h6 className="text-overflow m-0">Welcome!</h6>
 								</DropdownItem>
-								<DropdownItem to="/superadmin/profile" tag={Link}>
+								<DropdownItem to="/master/profile" tag={Link}>
 									<i className="ni ni-single-02" />
 									<span>My profile</span>
 								</DropdownItem>
-								<DropdownItem to="/superadmin/index" tag={Link}>
+								<DropdownItem to="/master/index" tag={Link}>
 									<i className="ni ni-settings-gear-65" />
 									<span>Settings</span>
 								</DropdownItem>

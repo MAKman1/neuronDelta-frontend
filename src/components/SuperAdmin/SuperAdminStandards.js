@@ -243,7 +243,7 @@ class SuperAdminStandards extends React.Component {
                             </td>
                             <td style={{width: 40}}>
                               <Link to={{
-                                pathname: '/superadmin/view/standard/' + standard.id,
+                                pathname: '/master/view/standard/' + standard.id,
                               }}>
                                 <Button color="primary" size="sm">
                                   View

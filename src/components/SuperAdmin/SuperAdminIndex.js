@@ -91,7 +91,7 @@ class SuperAdminIndex extends React.Component {
 										</div>
 										<div className="col text-right">
 											<Link to={{
-												pathname: '/superadmin/index',
+												pathname: '/master/index',
 												state: {
 													name: "Food Quality 1.3"
 												}
@@ -141,7 +141,7 @@ class SuperAdminIndex extends React.Component {
 										</div>
 										<div className="col text-right">
 											<Link to={{
-												pathname: '/superadmin/index',
+												pathname: '/master/index',
 												state: {
 													name: "Food Quality 1.3"
 												}

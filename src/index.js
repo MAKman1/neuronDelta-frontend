@@ -20,7 +20,7 @@ ReactDOM.render(
 			<Route path="/admin" render={props => <AdminLayout {...props} />} />
 			<Route path="/manager" render={props => <ManagerLayout {...props} />} />
 			<Route path="/user" render={props => <UserLayout {...props} />} />
-			<Route path="/superadmin" render={props => <SuperAdminLayout {...props} />} />
+			<Route path="/master" render={props => <SuperAdminLayout {...props} />} />
 			<Route path="/login" render={props => <AuthLayout {...props} />} />
 
 			<Redirect from="/" to="/login" />

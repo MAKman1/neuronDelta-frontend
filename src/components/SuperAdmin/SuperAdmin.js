@@ -20,7 +20,7 @@ class SuperAdmin extends React.Component {
 	}
 	getRoutes = routes => {
 		return routes.map((prop, key) => {
-			if (prop.layout === "/superadmin" || prop.layout === "/superadmin/view") {
+			if (prop.layout === "/master" || prop.layout === "/master/view") {
 				return (
 					<Route
 						path={prop.layout + prop.path}
@@ -54,7 +54,7 @@ class SuperAdmin extends React.Component {
 					{...this.props}
 					routes={routes}
 					logo={{
-						innerLink: "/superadmin/index",
+						innerLink: "/master/index",
 						imgSrc: require("assets/img/brand/argon-react.png"),
 						imgAlt: "..."
 					}}/>
@@ -66,7 +66,7 @@ class SuperAdmin extends React.Component {
 					/>
 					<Switch>
 						{this.getRoutes(routes)}
-						<Redirect from="*" to="/superadmin/index" />
+						<Redirect from="*" to="/master/index" />
 					</Switch>
 					
                     <Container fluid>

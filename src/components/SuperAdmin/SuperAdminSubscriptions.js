@@ -231,7 +231,7 @@ class SuperAdminSubscriptions extends React.Component {
                                                         </td>
                                                         {/* <td>
                                                             <Link to={{
-                                                                pathname: '/superadmin/view/client/' + 2,
+                                                                pathname: '/master/view/client/' + 2,
                                                             }}>
                                                                 <Button color="primary" size="sm">
                                                                     View

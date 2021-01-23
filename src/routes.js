@@ -153,46 +153,46 @@ var routes = [
       name: "Dashboard",
       icon: "ni ni-tv-2 text-primary",
       component: SuperAdminIndex,
-      layout: "/superadmin"
+      layout: "/master"
   },
   {
     path: "/standards",
       name: "Standards",
       icon: "ni ni-book-bookmark text-green",
       component: SuperAdminStandards,
-      layout: "/superadmin"
+      layout: "/master"
   },
   {
     path: "/subscription",
       name: "Subscriptions",
       icon: "ni ni-tag text-red",
       component: SuperAdminSubscriptions,
-      layout: "/superadmin"
+      layout: "/master"
   },
   {
     path: "/clients",
       name: "Clients",
       icon: "fas fa-users text-yellow",
       component: SuperAdminClients,
-      layout: "/superadmin"
+      layout: "/master"
   },
   {
     path: "/client/:clientId",
     name: "Client View",
       component: SuperAdminViewClient,
-      layout: "/superadmin/view"
+      layout: "/master/view"
     },
     {
       path: "/standard/:standardId",
       name: "Standard View",
         component: SuperAdminViewStandard,
-        layout: "/superadmin/view"
+        layout: "/master/view"
       },
       {
         path: "/article/:articleId",
         name: "Article View",
           component: SuperAdminViewArticle,
-          layout: "/superadmin/view"
+          layout: "/master/view"
         },
   
 
