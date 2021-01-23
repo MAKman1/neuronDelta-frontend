@@ -253,7 +253,7 @@ class SuperAdminStandards extends React.Component {
                                   Edit
                               </Button>
                               <Button color="danger" size="sm" onClick={() => this.handleRemove(standard.id)}>
-                                Remove
+                                Delete
                               </Button>
                               </td>
                           </tr>
