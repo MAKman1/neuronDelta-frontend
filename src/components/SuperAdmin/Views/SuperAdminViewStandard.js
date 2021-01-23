@@ -268,7 +268,7 @@ class SuperAdminViewStandards extends React.Component {
                             <td style={{width: 40}}>
                                 <div className="col text-center">
                                     <Button color="danger" type="button"  size="sm"onClick={() => this.handleRemove(article.id)}>
-                                        Remove Item
+                                        Delete Item
                                     </Button>
 
                                 </div>
