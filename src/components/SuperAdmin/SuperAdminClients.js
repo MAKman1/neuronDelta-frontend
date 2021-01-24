@@ -153,7 +153,6 @@ class SuperAdminClients extends React.Component {
       axios.post(constants["apiUrl"] + '/admin/deleteClient', data)
         .then((res) => {
           let data = res.data;
-          console.log(res.data)
           this.setState({
             clients: updatedClients,
           })
@@ -179,7 +178,6 @@ class SuperAdminClients extends React.Component {
       axios.post(constants["apiUrl"] + '/admin/editClient', data)
         .then((res) => {
           let data = res.data;
-          console.log(res.data)
           updatedClients[this.state.clientIndex] = data.client
           this.setState({
             clients: updatedClients,
@@ -251,13 +249,13 @@ class SuperAdminClients extends React.Component {
                             </td>
                             <td>
                               <Link to={{
-                                pathname: '/superadmin/view/client/' + 2,
+                                pathname: '/master/view/client/' + client.id,
                               }}>
                                 <Button color="primary" size="sm">
                                   View
                                 </Button>
                               </Link>
-                              <Button color="primary" size="sm" onClick={() => this.openEditModal(client, index)}>
+                              <Button style={{marginLeft:10}} color="primary" size="sm" onClick={() => this.openEditModal(client, index)}>
                                 Edit
                               </Button>
                               <Button color="danger" size="sm" onClick={() => this.handleDelete(client, index)}>
