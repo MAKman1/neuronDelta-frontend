@@ -23,51 +23,131 @@ import Header from "components/Manager/Headers/EmptyHeader.js";
 class SuperAdminViewClient extends React.Component {
 
   clientId = this.props.match.params.clientId;
+
   constructor(props) {
     super(props);
     this.state = {
-      
-      loading: false,
+      loading: true,
+      invalid: false,
       addModal: false,
+      managers: [],
       name: "",
       website: "",
-      description: "",
+      email: "",
+      password: "",
     };
   }
 
   componentDidMount() {
-    //Check if auth token in valid
-   
+    const data = {
+      "clientId": this.clientId,
+    }
+    axios.post(constants["apiUrl"] + '/admin/getManagers', data)
+      .then((res) => {
+        let data = res.data;
+        this.setState({
+          managers: data.managers,
+          loading: false
+        })
+      })
+      .catch((error) => {
+        console.warn(JSON.stringify(error));
+      });
   }
 
   openAddModal = () => {
-      this.setState({
-          addModal: true,
-      })
+    this.setState({
+      addModal: true,
+    })
   }
 
   closeAddModal = () => {
+    this.setState({
+      addModal: false,
+      name: '',
+      email: '',
+      password: '',
+      website: ''
+    })
+  }
+
+  handleName = (event) => {
+    this.setState({
+      name: event.target.value
+    })
+  }
+
+  handlePassword = (event) => {
+    this.setState({
+      password: event.target.value
+    })
+  }
+
+
+  handleEmail = (event) => {
+    this.setState({
+      email: event.target.value
+    })
+  }
+
+  handleWebsite = (event) => {
+    this.setState({
+      website: event.target.value
+    })
+  }
+
+  handleAdd = () => {
+    if (this.state.name != '' && this.state.email != '' & this.state.website != '' & this.state.password != '') {
+      const data = {
+        "name": this.state.name,
+        "email": this.state.email,
+        "website": this.state.website,
+        'password': this.state.password,
+        'clientId': this.clientId
+      }
+
+      axios.post(constants["apiUrl"] + '/admin/createManager', data)
+        .then((res) => {
+          let data = res.data;
+          console.log(data);
+          let updatedManagers = [...this.state.managers];
+          updatedManagers.push(data.manager);
+          this.setState({
+            managers: updatedManagers,
+          })
+          this.closeAddModal()
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    }
+    else {
       this.setState({
-          addModal: false,
+        invalid: true
       })
+    }
   }
 
-  handleName = () => {
-
+  handleDelete = (manager, index) => {
+    if (manager != null) {
+      const data = {
+        "managerId": manager.id
+      }
+      let updatedManagers = [...this.state.managers];
+      updatedManagers.splice(index, 1);
+      axios.post(constants["apiUrl"] + '/admin/deleteManager', data)
+        .then((res) => {
+          let data = res.data;
+          this.setState({
+            managers: updatedManagers,
+          })
+          this.closeAddModal()
+        })
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+    }
   }
-
-  handleDesc = () => {
-      
-  }
-
-  handleWebsite = () => {
-
-  }
-
-  
-
-  
-
 
   render() {
     return (
@@ -81,64 +161,14 @@ class SuperAdminViewClient extends React.Component {
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Clients</h3>
+                      <h3 className="mb-0">Managers</h3>
                     </div>
                     <div className="col text-right">
-                      <Button
-                        color="success"
-                        onClick={() => this.openAddModal()}
-                        size="md"
-                      >
-                        Add Client
+                      <Button color="success" onClick={() => this.openAddModal()} size="md">
+                        Add Manager
                       </Button>
-                      
                     </div>
                   </Row>
-                  <Modal
-                                className="modal-dialog-centered"
-                                isOpen={this.state.addModal}
-                                defaultValue={this.state.addModal}
-                                toggle={() => this.closeAddModal()}
-                            >
-                                <div className="modal-header">
-                                <h2 className="modal-title" id="assignModelLabel">
-                                    Add New Client
-                                </h2>
-                                <button
-                                    aria-label="Close"
-                                    className="close"
-                                    data-dismiss="modal"
-                                    type="button"
-                                    onClick={() => this.closeAddModal()}
-                                >
-                                    <span aria-hidden={true}>×</span>
-                                </button>
-                                </div>
-                                <div className="modal-body">
-                                <form>
-                                    <div className="form-group">
-                                    <label for="recipient-name" defaultValue={this.state.name} class="col-form-label" >Name:</label>
-                                    <input type="text" class="form-control" id="recipient-name" onChange={this.handleName}></input>
-                                    </div>
-                                    <div class="form-group">
-                                    <label for="message-text" class="col-form-label" defaultValue={this.state.desc}>Description:</label>
-                                    <textarea class="form-control" id="message-text" id="message-text" onChange={this.handleDesc}></textarea>
-                                    </div>
-                                    <div className="form-group">
-                                    <label for="recipient-website" defaultValue={this.state.version} class="col-form-label" >Website</label>
-                                    <input type="link" class="form-control" id="recipient-website" onChange={this.handleWebsite}></input>
-                                    </div>
-                                </form>
-                                </div>
-                                <div className="modal-footer">
-                                <Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.closeAddModal()}>
-                                    Cancel
-                                                </Button>
-                                <Button color="success" type="button" onClick={() => this.handleAdd()}>
-                                    Add
-                                                </Button>
-                                </div>
-                        </Modal>
                 </CardHeader>
                 {this.state.loading ?
                   <CardBody>
@@ -151,36 +181,82 @@ class SuperAdminViewClient extends React.Component {
                     <thead className="thead-light">
                       <tr>
                         <th scope="col">Name</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">Assigned Workflow</th>
-                        <th scope="col">Assigned Article</th>
-                        <th scope="col"></th>
+                        <th scope="col">Email</th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                          <th scope="row">
-
-                          </th>
-                          <td>
-                            <Button
-                                color="primary"
-                                href=""
-                            
-                                size="sm"
-                                >
-                                View
-                            </Button>
-                          </td>
-
-                      </tr>
+                      {this.state.managers.map((manager, index) => {
+                        return (
+                          <tr key={index}>
+                            <th scope="row">
+                              {manager.name}
+                            </th>
+                            <td>
+                              {manager.email}
+                            </td>
+                            <td>
+                              <Button color="danger" size="sm" onClick={() => this.handleDelete(manager, index)}>
+                                Delete
+                              </Button>
+                            </td>
+                          </tr>
+                        )
+                      })
+                      }
                     </tbody>
                   </Table>
                 }
               </Card>
-              
-              
+              <Modal
+                className="modal-dialog-centered"
+                isOpen={this.state.addModal}
+                defaultValue={this.state.addModal}
+                toggle={() => this.closeAddModal()}
+              >
+                <div className="modal-header">
+                  <h2 className="modal-title" id="assignModelLabel">
+                    Add New Manager
+                      </h2>
+                  <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => this.closeAddModal()}>
+                    <span aria-hidden={true}>×</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <form>
+                    <div className="form-group">
+                      <label for="recipient-name" class="col-form-label" >Name:</label>
+                      <input type="text" class="form-control" id="recipient-name" onChange={this.handleName}></input>
+                    </div>
+                    <div className="form-group">
+                      <label for="recipient-name" class="col-form-label" >Email:</label>
+                      <input type="email" class="form-control" id="recipient-name" onChange={this.handleEmail}></input>
+                    </div>
+                    <div className="form-group">
+                      <label for="recipient-website" class="col-form-label" >Website</label>
+                      <input type="link" class="form-control" id="recipient-website" onChange={this.handleWebsite}></input>
+                    </div>
+                    <div class="form-group">
+                      <label for="recipient-name" class="col-form-label" >Password:</label>
+                      <input type="password" placeholder="Enter New Password" class="form-control" id="recipient-name" onChange={this.handlePassword}></input>
+                    </div>
+                  </form>
+                  {this.state.invalid ?
+                    <div className="text-center">
+                      <text style={{ color: 'red' }}>Invalid Fields</text>
+                    </div>
+                    :
+                    null}
+                </div>
+                <div className="modal-footer">
+                  <Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.closeAddModal()}>
+                    Cancel
+                  </Button>
+                  <Button color="success" type="button" onClick={() => this.handleAdd()}>
+                    Add
+                  </Button>
+                </div>
+              </Modal>
             </Col>
           </Row>
         </Container>
