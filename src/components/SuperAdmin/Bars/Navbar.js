@@ -20,7 +20,7 @@ import {
 	Media
 } from "reactstrap";
 
-class ManagerNavbar extends React.Component {
+class AdminNavbar extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -65,7 +65,7 @@ class ManagerNavbar extends React.Component {
 											<i className="fas fa-search" />
 										</InputGroupText>
 									</InputGroupAddon>
-									<Input placeholder="Search MANAGER" type="text" />
+									<Input placeholder="Search Admin" type="text" />
 								</InputGroup>
 							</FormGroup>
 						</Form>
@@ -99,11 +99,11 @@ class ManagerNavbar extends React.Component {
 									<DropdownItem className="noti-title" header tag="div">
 										<h6 className="text-overflow m-0">Welcome!</h6>
 									</DropdownItem>
-									<DropdownItem to="/manager/profile" tag={Link}>
+									<DropdownItem to="/master/profile" tag={Link}>
 										<i className="ni ni-single-02" />
 										<span>My profile</span>
 									</DropdownItem>
-									<DropdownItem to="/manager/index" tag={Link}>
+									<DropdownItem to="/master/index" tag={Link}>
 										<i className="ni ni-settings-gear-65" />
 										<span>Settings</span>
 									</DropdownItem>
@@ -111,7 +111,7 @@ class ManagerNavbar extends React.Component {
 
 									<DropdownItem divider />
 									<DropdownItem href="" onClick={this.logout}>
-										<i className="fas fa-power-off" />
+										<i className="ni ni-user-run" />
 										<span>Logout</span>
 									</DropdownItem>
 								</DropdownMenu>
@@ -124,4 +124,4 @@ class ManagerNavbar extends React.Component {
 	}
 }
 
-export default ManagerNavbar;
+export default AdminNavbar;

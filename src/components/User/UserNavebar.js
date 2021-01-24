@@ -109,7 +109,7 @@ class UserNavbar extends React.Component {
 									</DropdownItem>
 									<DropdownItem divider />
 									<DropdownItem href="" onClick={this.logout}>
-										<i className="ni ni-button-power" />
+										<i className="fas fa-power-off" />
 										<span>Logout</span>
 									</DropdownItem>
 								</DropdownMenu>

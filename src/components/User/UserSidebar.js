@@ -200,8 +200,8 @@ class UserSidebar extends React.Component {
                   <span>Support</span>
                 </DropdownItem> */}
                 <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={this.logout}>
-                  <i className="ni ni-user-run" />
+                <DropdownItem  onClick={this.logout}>
+                  <i className="fas fa-power-off" />
                   <span>Logout</span>
                 </DropdownItem>
               </DropdownMenu>

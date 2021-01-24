@@ -68,8 +68,6 @@ class ManagerIndex extends React.Component {
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
 
-		//console.warn('user ' + userId + 'client ' + clientId);
-
 		if (clientId != null && userId != null) {
 			const data = {
 				"clientId": clientId,
@@ -78,7 +76,6 @@ class ManagerIndex extends React.Component {
 			axios.post(constants["apiUrl"] + '/dashboard/get', data)
 				.then((res) => {
 					let data = res.data;
-					console.warn(JSON.stringify(data));
 					this.setState({
 						totalUsers: data.totalUsers,
 						pendAudits: data.pendingArticles,
@@ -114,10 +111,9 @@ class ManagerIndex extends React.Component {
 			email: this.state.user.email,
 			about: this.state.user.about,
 		});
-		console.log(this.state.user)
 	};
 
-	toggleRoleModal = (state, index = null) => {
+	toggleRoleModal = (state, index) => {
 		this.setState({
 			[state]: !this.state[state],
 			documentIndex: index,
@@ -131,7 +127,6 @@ class ManagerIndex extends React.Component {
 			userIndex: index,
 			user: this.state.users[index]
 		});
-		console.log(this.state.users[index]);
 	};
 
 
@@ -163,14 +158,6 @@ class ManagerIndex extends React.Component {
 		this.setState({
 			uploadDocument: event.target.files[0]
 		});
-	}
-
-	selectRole = (role) => {
-		let temp = [...this.state.tempRoles];
-		temp.push(role);
-		this.setState({
-			tempRoles: temp
-		})
 	}
 
 	handlePassword = (event) => {
@@ -221,14 +208,18 @@ class ManagerIndex extends React.Component {
 			axios.post(constants["apiUrl"] + '/user/update', data)
 				.then((res) => {
 					let data = res.data;
-					//console.warn(JSON.stringify(data));
+					console.warn(JSON.stringify(data));
+					let users = [...this.state.users];
+					users[this.state.userIndex] = data.user;
 					this.setState({
 						name: '',
 						password: '',
 						email: '',
 						about: '',
+						users: users,
+						user: data.user
 					})
-					this.forceUpdate();
+					// this.forceUpdate();
 					this.toggleEditModal("userEditModal");
 				})
 				.catch((error) => {
@@ -256,21 +247,30 @@ class ManagerIndex extends React.Component {
 		}
 	}
 
-
 	updateRoles = () => {
+		let updatedDocs = [];
 		if (this.state.tempRoles.length != 0) {
 			this.state.tempRoles.forEach(role => {
-				if (!this.state.documents[this.state.documentIndex].userRoles.includes(role)) {
-					console.warn(role.name);
-					console.warn("added role")
+				if (!this.state.documents[this.state.documentIndex].userRoles.some( r => r.id === role.id )) {
 					const data = new FormData();
 					data.append("documentId", this.state.documents[this.state.documentIndex].id);
 					data.append("roleId", role.id);
+					updatedDocs = [...this.state.documents];
+					updatedDocs[this.state.documentIndex].userRoles.push(role);
 
 					axios.post(constants["apiUrl"] + '/documents/addRole', data)
 						.then((res) => {
 							let data = res.data;
-							console.warn(JSON.stringify(data));
+
+							this.setState({
+								currentRole: null,
+								roleModel: false,
+								documentIndex: null,
+								documents: updatedDocs,
+								tempRoles: [],
+								removedRoles: []
+							})
+							this.forceUpdate();
 						})
 						.catch((error) => {
 							console.warn(JSON.stringify(error));
@@ -278,31 +278,52 @@ class ManagerIndex extends React.Component {
 				}
 			});
 		}
+		// updatedDocs = [];
 		if (this.state.removedRoles.length != 0) {
 			this.state.removedRoles.forEach(role => {
 				const data = new FormData();
 				data.append("documentId", this.state.documents[this.state.documentIndex].id);
 				data.append("roleId", role.id);
+				updatedDocs = [...this.state.documents];
+				updatedDocs[this.state.documentIndex].userRoles = updatedDocs[this.state.documentIndex].userRoles.filter(function (r) { return r.id !== role.id; });
 
 				axios.post(constants["apiUrl"] + '/documents/removeRole', data)
 					.then((res) => {
 						let data = res.data;
 						console.warn(JSON.stringify(data));
+						this.setState({
+							currentRole: null,
+							roleModel: false,
+							documentIndex: null,
+							documents: updatedDocs,
+							tempRoles: [],
+							removedRoles: []
+						})
 					})
 					.catch((error) => {
 						console.warn(JSON.stringify(error));
 					});
-				this.setState({
-					documentIndex: null
-				})
+			});
+		} else {
+			this.setState({
+				currentRole: null,
+				roleModel: false,
+				documentIndex: null,
+				tempRoles: [],
+				removedRoles: []
 			})
 		}
+	}
+	
+	selectRole = (role) => {
+		let updatedRemovedRoles = this.state.removedRoles.filter(function (r) { return r.id !== role.id; });
+		let temp = [...this.state.tempRoles];
+
+		temp.push(role);
+		console.log('inside the if');
 		this.setState({
-			currentRole: null,
-			roleModel: false,
-			documentIndex: null,
-			tempRoles: [],
-			removedRoles: []
+			tempRoles: temp,
+			removedRoles: updatedRemovedRoles
 		})
 	}
 
@@ -487,11 +508,7 @@ class ManagerIndex extends React.Component {
 															})}
 														</td>
 														<td>
-															<Button
-																color="primary"
-																onClick={() => this.toggleRoleModal("roleModel", index)}
-																size="sm"
-															>
+															<Button color="primary" onClick={() => this.toggleRoleModal("roleModel", index)} size="sm">
 																Edit
                               								</Button>
 														</td>
@@ -569,17 +586,12 @@ class ManagerIndex extends React.Component {
 												</Row>
 											</div>
 											<div className="modal-footer">
-												<Button
-													color="secondary"
-													data-dismiss="modal"
-													type="button"
-													onClick={() => this.closeRoleModal()}
-												>
+												<Button color="secondary" data-dismiss="modal" type="button" onClick={() => this.closeRoleModal()}>
 													Cancel
-                          </Button>
+                          						</Button>
 												<Button onClick={() => this.updateRoles()} color="success" type="button">
 													Save
-                          </Button>
+                          						</Button>
 											</div>
 										</Modal>
 									</Table>
@@ -650,12 +662,9 @@ class ManagerIndex extends React.Component {
 													name: "Food Quality 1.3"
 												}
 											}}>
-												<Button
-													color="success"
-													size="sm"
-												>
+												<Button color="success" size="sm">
 													See All
-                        </Button>
+                        						</Button>
 											</Link>
 										</div>
 									</Row>
@@ -737,7 +746,6 @@ class ManagerIndex extends React.Component {
 												<th scope="col">Name</th>
 												<th scope="col">Assigned To</th>
 												<th scope="col">Due Date</th>
-												<th scope="col">Workflow</th>
 												<th scope="col">Progress</th>
 											</tr>
 										</thead>
@@ -747,12 +755,9 @@ class ManagerIndex extends React.Component {
 													<tr>
 														<th scope="row">{w.name}</th>
 														<td>
-															{w.user ? w.user.name : "-"}
+															{w.user_id == null ? "-" : w.user.name}
 														</td>
 														<td>-</td>
-														<td>
-															{"Hi"}
-														</td>
 														<td>
 															<i className="fas fa-arrow-up text-success mr-3" />{" "}
 															{Number.isInteger(w.progress) ? w.progress : w.progress.toFixed(2)}%

@@ -110,10 +110,14 @@ class ManagerDocuments extends React.Component {
 	};
 
 	selectRole = (role) => {
+		let updatedRemovedRoles = this.state.removedRoles.filter(function (r) { return r.id !== role.id; });
 		let temp = [...this.state.tempRoles];
+
 		temp.push(role);
+		console.log('inside the if');
 		this.setState({
-			tempRoles: temp
+			tempRoles: temp,
+			removedRoles: updatedRemovedRoles
 		})
 	}
 
@@ -151,19 +155,29 @@ class ManagerDocuments extends React.Component {
 	}
 
 	updateRoles = () => {
+		let updatedDocs = [];
 		if (this.state.tempRoles.length != 0) {
 			this.state.tempRoles.forEach(role => {
-				if (!this.state.documents[this.state.documentIndex].userRoles.includes(role)) {
-					console.warn(role.name);
-					console.warn("added role")
+				if (!this.state.documents[this.state.documentIndex].userRoles.some( r => r.id === role.id )) {
 					const data = new FormData();
 					data.append("documentId", this.state.documents[this.state.documentIndex].id);
 					data.append("roleId", role.id);
+					updatedDocs = [...this.state.documents];
+					updatedDocs[this.state.documentIndex].userRoles.push(role);
 
 					axios.post(constants["apiUrl"] + '/documents/addRole', data)
 						.then((res) => {
 							let data = res.data;
-							console.warn(JSON.stringify(data));
+
+							this.setState({
+								currentRole: null,
+								roleModel: false,
+								documentIndex: null,
+								documents: updatedDocs,
+								tempRoles: [],
+								removedRoles: []
+							})
+							this.forceUpdate();
 						})
 						.catch((error) => {
 							console.warn(JSON.stringify(error));
@@ -171,32 +185,41 @@ class ManagerDocuments extends React.Component {
 				}
 			});
 		}
+		// updatedDocs = [];
 		if (this.state.removedRoles.length != 0) {
 			this.state.removedRoles.forEach(role => {
 				const data = new FormData();
 				data.append("documentId", this.state.documents[this.state.documentIndex].id);
 				data.append("roleId", role.id);
+				updatedDocs = [...this.state.documents];
+				updatedDocs[this.state.documentIndex].userRoles = updatedDocs[this.state.documentIndex].userRoles.filter(function (r) { return r.id !== role.id; });
 
 				axios.post(constants["apiUrl"] + '/documents/removeRole', data)
 					.then((res) => {
 						let data = res.data;
 						console.warn(JSON.stringify(data));
+						this.setState({
+							currentRole: null,
+							roleModel: false,
+							documentIndex: null,
+							documents: updatedDocs,
+							tempRoles: [],
+							removedRoles: []
+						})
 					})
 					.catch((error) => {
 						console.warn(JSON.stringify(error));
 					});
-				this.setState({
-					documentIndex: null
-				})
+			});
+		} else {
+			this.setState({
+				currentRole: null,
+				roleModel: false,
+				documentIndex: null,
+				tempRoles: [],
+				removedRoles: []
 			})
 		}
-		this.setState({
-			currentRole: null,
-			roleModel: false,
-			documentIndex: null,
-			tempRoles: [],
-			removedRoles: []
-		})
 	}
 
 	removeRole = (role, index) => {
@@ -447,10 +470,10 @@ class ManagerDocuments extends React.Component {
 											onClick={() => this.toggleModal("documentModel")}
 										>
 											Cancel
-                          </Button>
+                          					</Button>
 										<Button color="success" type="button" onClick={this.handleUpload}>
 											Upload
-                          </Button>
+                          					</Button>
 									</div>
 								</Modal>
 							</Card>

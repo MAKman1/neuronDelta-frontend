@@ -30,7 +30,7 @@ import {
 
 var ps;
 
-class ManagerSidebar extends React.Component {
+class Sidebar extends React.Component {
 	state = {
 		collapseOpen: false,
 		profileImage: null
@@ -76,7 +76,7 @@ class ManagerSidebar extends React.Component {
 	// creates the links that appear in the left menu / Sidebar
 	createLinks = routes => {
 		return routes.map((prop, key) => {
-			if (prop.layout == "/manager") {
+			if (prop.layout == "/master") {
 				return (
 					<NavItem key={key}>
 						<NavLink
@@ -174,17 +174,17 @@ class ManagerSidebar extends React.Component {
 								<DropdownItem className="noti-title" header tag="div">
 									<h6 className="text-overflow m-0">Welcome!</h6>
 								</DropdownItem>
-								<DropdownItem to="/manager/profile" tag={Link}>
+								<DropdownItem to="/master/profile" tag={Link}>
 									<i className="ni ni-single-02" />
 									<span>My profile</span>
 								</DropdownItem>
-								<DropdownItem to="/manager/index" tag={Link}>
+								<DropdownItem to="/master/index" tag={Link}>
 									<i className="ni ni-settings-gear-65" />
 									<span>Settings</span>
 								</DropdownItem>
 								<DropdownItem divider />
 								<DropdownItem onClick={this.logout}>
-									<i className="fas fa-power-off" />
+									<i className="ni ni-user-run" />
 									<span>Logout</span>
 								</DropdownItem>
 							</DropdownMenu>
@@ -252,11 +252,11 @@ class ManagerSidebar extends React.Component {
 	}
 }
 
-ManagerSidebar.defaultProps = {
+Sidebar.defaultProps = {
 	routes: [{}]
 };
 
-ManagerSidebar.propTypes = {
+Sidebar.propTypes = {
 	// links that will be displayed inside the component
 	routes: PropTypes.arrayOf(PropTypes.object),
 	logo: PropTypes.shape({
@@ -273,4 +273,4 @@ ManagerSidebar.propTypes = {
 	})
 };
 
-export default ManagerSidebar;
+export default Sidebar;

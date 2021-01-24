@@ -41,6 +41,7 @@ class ManagerWorkflows extends React.Component {
       users: [],
       index: null,
       username: 'Select User',
+      removeConfirm: false,
       assignId: null,
       loading: true
     };
@@ -51,7 +52,7 @@ class ManagerWorkflows extends React.Component {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
 
-    //console.warn('user ' + userId + 'client ' + clientId);
+    console.log('user ' + userId + ' client ' + clientId);
 
     if (clientId != null && userId != null) {
       const data = {
@@ -121,6 +122,7 @@ class ManagerWorkflows extends React.Component {
 
   handleAssign = () => {
 
+    console.warn("This is response")
     console.warn(this.state.assignId)
     if (this.state.assignId != null) {
       const data = {
@@ -134,7 +136,16 @@ class ManagerWorkflows extends React.Component {
           console.warn(JSON.stringify(data));
           if (data.done == '1') {
             this.closeAssignModal();
-            window.location.reload()
+            let index = this.state.workflows.findIndex( element => element.id == this.state.index);
+            if( index >= 0){
+              let w = this.state.workflows;
+              w[index] = data.workflow;
+              this.setState({
+                workflows: w
+              })
+            }
+            
+            this.forceUpdate()
           }
         })
         .catch((error) => {
@@ -200,13 +211,39 @@ class ManagerWorkflows extends React.Component {
 
   }
 
-  removeAssign = (workflowId, userId) => {
+  removeAssign = (workflowId, userId, id) => {
     let clientId = reactLocalStorage.get('clientId', true);
     const data = {
       "workflowId": workflowId,
       "userId": userId
     }
     axios.post(constants["apiUrl"] + '/workflows/removeAssignment', data)
+      .then((res) => {
+        let data = res.data;
+        console.warn(JSON.stringify(data));
+        let index = this.state.workflows.findIndex( element => element.id == workflowId);
+            if( index >= 0){
+              let w = this.state.workflows;
+              w[index].user = null
+              w[index].user_id = null
+              this.setState({
+                workflows: w
+              })
+              console.warn(w)
+            }
+            
+            this.forceUpdate()
+      })
+      .catch((error) => {
+        console.warn(JSON.stringify(error));
+      });
+  }
+
+  removeWorkflow = (workflowId) => {
+    const data = {
+      "workflowId": workflowId,
+    }
+    axios.post(constants["apiUrl"] + '/workflows/removeWorkflow', data)
       .then((res) => {
         let data = res.data;
         console.warn(JSON.stringify(data));
@@ -302,11 +339,11 @@ class ManagerWorkflows extends React.Component {
                         <th scope="col">Progress</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
-
+                        <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.workflows.map(workflow => {
+                      {this.state.workflows.map((workflow, index) => {
                         return (
                           <tr>
                             <th scope="row">
@@ -344,10 +381,24 @@ class ManagerWorkflows extends React.Component {
                                   Assign
                             </Button>
                                 :
-                                <Button color="danger" onClick={() => this.removeAssign(workflow.id, workflow.user.id)} size="sm">
-                                  Remove
+                                <Button color="danger" onClick={() => this.removeAssign(workflow.id, workflow.user.id, index)} size="sm">
+                                  Unassign
                             </Button>}
 
+                            </td>
+                            <td>
+                            <td>
+																	<Button
+																		aria-label="Close"
+																		className="close"
+																		data-dismiss="modal"
+																		type="button"
+																		color="danger"
+																		onClick={() => this.removeWorkflow(workflow.id)}
+																	>
+																		<span color="danger" aria-hidden={true}>×</span>
+																	</Button>
+														</td>
                             </td>
                           </tr>
                         )
