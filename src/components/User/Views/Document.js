@@ -31,25 +31,31 @@ class Workflows extends React.Component {
   componentDidMount() {
     //Check if auth token in valid
     let userId = reactLocalStorage.get('userId', true);
+    let type = reactLocalStorage.get('userType', true);
 
-    if (userId != null) {
-      const data = {
-        "userId": userId
-      }
-      axios.post(constants["apiUrl"] + '/documents/getAssigned', data)
-        .then((res) => {
-          let data = res.data;
-          console.warn(JSON.stringify(data));
-          this.setState({
-            documents: data.documents,
-            loading: false
+    if (type == 1) {
+      if (userId != null) {
+        const data = {
+          "userId": userId
+        }
+        axios.post(constants["apiUrl"] + '/documents/getAssigned', data)
+          .then((res) => {
+            let data = res.data;
+            console.warn(JSON.stringify(data));
+            this.setState({
+              documents: data.documents,
+              loading: false
+            })
           })
-        })
-        .catch((error) => {
-          console.warn(JSON.stringify(error));
-        });
-    } else {
-      //TODO: go back to login
+          .catch((error) => {
+            console.warn(JSON.stringify(error));
+          });
+      } else {
+        this.props.history.push("/login");
+      }
+    }
+    else {
+      this.props.history.push("/login");
     }
   }
 
