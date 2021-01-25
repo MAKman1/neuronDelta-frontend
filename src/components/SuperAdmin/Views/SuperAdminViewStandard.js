@@ -40,7 +40,10 @@ class SuperAdminViewStandards extends React.Component {
 
   componentDidMount() {
 
-    const data = {
+    let type = reactLocalStorage.get('userType', true);
+
+    if (type == 3) {
+      const data = {
         "standardId": this.standardId
       }
     
@@ -58,6 +61,13 @@ class SuperAdminViewStandards extends React.Component {
       .catch((error) => {
         console.warn(JSON.stringify(error));
       });
+
+    } else {
+      this.props.history.push("/login");
+    }
+    
+
+    
   }
 
   openAddModal = () => {

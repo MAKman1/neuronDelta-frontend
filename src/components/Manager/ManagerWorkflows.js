@@ -133,6 +133,8 @@ class ManagerWorkflows extends React.Component {
       axios.post(constants["apiUrl"] + '/workflows/assign', data)
         .then((res) => {
           let data = res.data;
+          
+
           console.warn(JSON.stringify(data));
           if (data.done == '1') {
             this.closeAssignModal();
@@ -197,11 +199,25 @@ class ManagerWorkflows extends React.Component {
       axios.post(constants["apiUrl"] + '/workflows/addWorkflow', data)
         .then((res) => {
           let data = res.data;
-          console.warn(JSON.stringify(data));
+          const tempworkflow = {
+            "name": data.workflow.name,
+            "client_id": data.workflow.client_id,
+            "created_at": data.workflow.created_at,
+            "description": data.workflow.description,
+            "id": data.workflow.id,
+            "updated_at": data.workflow.updated_at,
+            "user_id": data.workflow.user_id,
+            "progress": 0
+          }
+          console.warn((data));
+          let temp = this.state.workflows;
+          temp.push(tempworkflow)
+          this.setState({
+            workflows : temp,
+          })
 
+          this.forceUpdate()
           this.closeAddModal()
-          window.location.reload()
-
 
         })
         .catch((error) => {
@@ -247,7 +263,14 @@ class ManagerWorkflows extends React.Component {
       .then((res) => {
         let data = res.data;
         console.warn(JSON.stringify(data));
-        window.location.reload(false);
+        let temp = this.state.workflows
+        let filter = temp.filter(workflow => workflow.id != workflowId)
+        console.warn(filter)
+        this.setState({
+          workflows: filter
+        })
+
+        this.forceUpdate()
       })
       .catch((error) => {
         console.warn(JSON.stringify(error));

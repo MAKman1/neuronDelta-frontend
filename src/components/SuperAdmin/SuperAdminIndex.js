@@ -61,7 +61,6 @@ class SuperAdminIndex extends React.Component {
 
 	componentDidMount() {
 		let type = reactLocalStorage.get('userType', true);
-		type = 3
 		console.warn(type)
 		if (type == 3) {
 			console.warn("here")
@@ -79,6 +78,9 @@ class SuperAdminIndex extends React.Component {
 				console.warn(JSON.stringify(error));
 			});
 
+		}
+		else {
+			this.props.history.push("/login")
 		}
 
 		

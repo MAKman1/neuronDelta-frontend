@@ -39,20 +39,29 @@ class SuperAdminViewClient extends React.Component {
   }
 
   componentDidMount() {
-    const data = {
-      "clientId": this.clientId,
-    }
-    axios.post(constants["apiUrl"] + '/admin/getManagers', data)
-      .then((res) => {
-        let data = res.data;
-        this.setState({
-          managers: data.managers,
-          loading: false
+
+    let type = reactLocalStorage.get('userType', true);
+
+    if (type == 3) {
+      const data = {
+        "clientId": this.clientId,
+      }
+      axios.post(constants["apiUrl"] + '/admin/getManagers', data)
+        .then((res) => {
+          let data = res.data;
+          this.setState({
+            managers: data.managers,
+            loading: false
+          })
         })
-      })
-      .catch((error) => {
-        console.warn(JSON.stringify(error));
-      });
+        .catch((error) => {
+          console.warn(JSON.stringify(error));
+        });
+
+    } else {
+      this.props.history.push("/login");
+    }
+    
   }
 
   openAddModal = () => {

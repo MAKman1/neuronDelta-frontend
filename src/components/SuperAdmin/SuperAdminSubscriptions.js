@@ -43,7 +43,11 @@ class SuperAdminSubscriptions extends React.Component {
     }
 
     componentDidMount() {
-        axios.post(constants["apiUrl"] + '/admin/getSubscriptions')
+
+        let type = reactLocalStorage.get('userType', true);
+
+        if (type == 3) {
+            axios.post(constants["apiUrl"] + '/admin/getSubscriptions')
             .then((res) => {
                 let data = res.data;
                 this.setState({
@@ -55,30 +59,36 @@ class SuperAdminSubscriptions extends React.Component {
                 console.warn(JSON.stringify(error));
             });
 
-        axios.post(constants["apiUrl"] + '/admin/getClients')
-            .then((res) => {
-                let data = res.data;
-                this.setState({
-                    clients: data.clients,
-                    loading: false
+            axios.post(constants["apiUrl"] + '/admin/getClients')
+                .then((res) => {
+                    let data = res.data;
+                    this.setState({
+                        clients: data.clients,
+                        loading: false
+                    })
                 })
-            })
-            .catch((error) => {
-                console.warn(JSON.stringify(error));
-            });
+                .catch((error) => {
+                    console.warn(JSON.stringify(error));
+                });
 
-        axios.post(constants["apiUrl"] + '/admin/getStandards')
-            .then((res) => {
-                let data = res.data;
-                console.log(data);
-                this.setState({
-                    standards: data.standards,
-                    loading: false
+            axios.post(constants["apiUrl"] + '/admin/getStandards')
+                .then((res) => {
+                    let data = res.data;
+                    console.log(data);
+                    this.setState({
+                        standards: data.standards,
+                        loading: false
+                    })
                 })
-            })
-            .catch((error) => {
-                console.warn(JSON.stringify(error));
-            });
+                .catch((error) => {
+                    console.warn(JSON.stringify(error));
+                });
+
+        } else {
+          this.props.history.push("/login");
+        }
+
+        
     }
 
     toggleDropdown = (state) => {
