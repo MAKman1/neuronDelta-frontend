@@ -44,28 +44,39 @@ class ManagerUsers extends React.Component {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
 
+    let type = reactLocalStorage.get('userType', true);
+
+		if (type == 2) {
+      
+      if (clientId != null && userId != null) {
+        const data = {
+          "clientId": clientId,
+          "userId": userId
+        }
+        axios.post(constants["apiUrl"] + '/user/getAll', data)
+          .then((res) => {
+            let data = res.data;
+            console.warn(JSON.stringify(data));
+            this.setState({
+              users: data.users,
+              loading: false
+            })
+          })
+          .catch((error) => {
+            console.warn(JSON.stringify(error));
+          });
+      } else {
+        //TODO: go back to login
+      }
+		
+
+		} else {
+		this.props.history.push("/login");
+		}
+
     //console.warn('user ' + userId + 'client ' + clientId);
 
-    if (clientId != null && userId != null) {
-      const data = {
-        "clientId": clientId,
-        "userId": userId
-      }
-      axios.post(constants["apiUrl"] + '/user/getAll', data)
-        .then((res) => {
-          let data = res.data;
-          console.warn(JSON.stringify(data));
-          this.setState({
-            users: data.users,
-            loading: false
-          })
-        })
-        .catch((error) => {
-          console.warn(JSON.stringify(error));
-        });
-    } else {
-      //TODO: go back to login
-    }
+    
   }
 
   toggleModal = state => {

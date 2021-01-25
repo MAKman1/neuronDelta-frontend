@@ -53,32 +53,44 @@ class ManagerArticles extends React.Component {
 	}
 
 	componentDidMount() {
+
+
 		//Check if auth token in valid
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
 
-		//console.warn('user ' + userId + 'client ' + clientId);
+		let type = reactLocalStorage.get('userType', true);
 
-		if (clientId != null && userId != null) {
-			const data = {
-				"clientId": clientId,
-			}
-			axios.post(constants["apiUrl"] + '/articles/getAllManager', data)
-				.then((res) => {
-					let data = res.data;
-					// console.warn(JSON.stringify(data));
-					this.setState({
-						articles: data.articles,
-						loading: false
+		if (type == 2) {
+			if (clientId != null && userId != null) {
+				const data = {
+					"clientId": clientId,
+				}
+				axios.post(constants["apiUrl"] + '/articles/getAllManager', data)
+					.then((res) => {
+						let data = res.data;
+						// console.warn(JSON.stringify(data));
+						this.setState({
+							articles: data.articles,
+							loading: false
+						})
 					})
-				})
-				.catch((error) => {
-					console.warn(JSON.stringify(error));
-				});
+					.catch((error) => {
+						console.warn(JSON.stringify(error));
+					});
+
+			} else {
+				//TODO: go back to login
+			}
+		
 
 		} else {
-			//TODO: go back to login
+		this.props.history.push("/login");
 		}
+
+		//console.warn('user ' + userId + 'client ' + clientId);
+
+		
 	}
 
 	handleSelect = (username, userId) => {
