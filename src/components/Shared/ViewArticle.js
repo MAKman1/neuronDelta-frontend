@@ -54,40 +54,49 @@ class ViewArticle extends React.Component {
 		let clientId = reactLocalStorage.get('clientId', true);
 		let type = reactLocalStorage.get('userType', true);
 
-		
 		this.setState({
 			userType: type
 		})
+
+		if (type != 3) {
+      
+			
+			if (clientId !== null && userId !== null) {
+				const data = {
+					"clientId": clientId,
+					"articleId": this.articleId,
+					"userId": userId
+				}
+				axios.post(constants["apiUrl"] + '/checklists/get', data)
+					.then((res) => {
+						let data = res.data;
+						console.warn(data);
+						this.setState({
+							checklists: data.checklists,
+							article: data.article,
+							standard: data.standard,
+							user: data.article.assignedTo,
+							loading: false
+						})
+					})
+					.catch((error) => {
+						console.warn(JSON.stringify(error));
+					});
+			} else {
+				//TODO: go back to login
+			}
+
+		} else {
+		this.props.history.push("/login");
+		}
+		
+		
 
 		
 		
 
 		//console.warn('user ' + userId + 'client ' + clientId + this.articleId);
 
-		if (clientId !== null && userId !== null) {
-			const data = {
-				"clientId": clientId,
-				"articleId": this.articleId,
-				"userId": userId
-			}
-			axios.post(constants["apiUrl"] + '/checklists/get', data)
-				.then((res) => {
-					let data = res.data;
-					console.warn(data);
-					this.setState({
-						checklists: data.checklists,
-						article: data.article,
-						standard: data.standard,
-						user: data.article.assignedTo,
-						loading: false
-					})
-				})
-				.catch((error) => {
-					console.warn(JSON.stringify(error));
-				});
-		} else {
-			//TODO: go back to login
-		}
 	}
 
 	handleCheckClick = (checklist, current) => {

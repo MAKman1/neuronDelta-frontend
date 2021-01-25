@@ -52,28 +52,37 @@ class ManagerWorkflows extends React.Component {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
 
-    console.log('user ' + userId + ' client ' + clientId);
-
-    if (clientId != null && userId != null) {
-      const data = {
-        "clientId": clientId,
-      }
-      axios.post(constants["apiUrl"] + '/workflows/getAll', data)
-        .then((res) => {
-          let data = res.data;
-          console.warn(JSON.stringify(data));
-          this.setState({
-            workflows: data.workflows,
-            loading: false
+    let type = reactLocalStorage.get('userType', true);
+    if (type == 2) {
+      if (clientId != null && userId != null) {
+        const data = {
+          "clientId": clientId,
+        }
+        axios.post(constants["apiUrl"] + '/workflows/getAll', data)
+          .then((res) => {
+            let data = res.data;
+            console.warn(JSON.stringify(data));
+            this.setState({
+              workflows: data.workflows,
+              loading: false
+            })
           })
-        })
-        .catch((error) => {
-          console.warn(JSON.stringify(error));
-        });
+          .catch((error) => {
+            console.warn(JSON.stringify(error));
+          });
+  
+      } else {
+        //TODO: go back to login
+      }
+		
 
-    } else {
-      //TODO: go back to login
-    }
+		} else {
+		this.props.history.push("/login");
+		}
+
+    
+
+    
   }
 
   openAssignModal = (id) => {
