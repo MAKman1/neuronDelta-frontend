@@ -35,27 +35,32 @@ class Audits extends React.Component {
     let userId = reactLocalStorage.get('userId', true);
     let clientId = reactLocalStorage.get('clientId', true);
 
-    //console.warn('user ' + userId + 'client ' + clientId);
+    let type = reactLocalStorage.get('userType', true);
 
-    if (clientId != null && userId != null) {
-      const data = {
-        "clientId": clientId,
-        "userId": userId
-      }
-      axios.post(constants["apiUrl"] + '/articles/getAssigned', data)
-        .then((res) => {
-          let data = res.data;
-          console.warn(JSON.stringify(data));
-          this.setState({
-            articles: data.articles,
-            loading: false
+    if (type == 1) {
+      if (clientId != null && userId != null) {
+        const data = {
+          "clientId": clientId,
+          "userId": userId
+        }
+        axios.post(constants["apiUrl"] + '/articles/getAssigned', data)
+          .then((res) => {
+            let data = res.data;
+            console.warn(JSON.stringify(data));
+            this.setState({
+              articles: data.articles,
+              loading: false
+            })
           })
-        })
-        .catch((error) => {
-          console.warn(JSON.stringify(error));
-        });
-    } else {
-      //TODO: go back to login
+          .catch((error) => {
+            console.warn(JSON.stringify(error));
+          });
+      } else {
+        this.props.history.push("/login");
+      }
+    }
+    else {
+      this.props.history.push("/login");
     }
   }
 

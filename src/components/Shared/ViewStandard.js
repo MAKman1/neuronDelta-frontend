@@ -51,30 +51,41 @@ class ViewStandard extends React.Component {
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
 
+		let type = reactLocalStorage.get('userType', true);
+
+		if (type != 3) {
+      
+			if (clientId != null && userId != null) {
+				const data = {
+					"standardId": this.standardId,
+					"clientId": clientId,
+	
+				}
+				axios.post(constants["apiUrl"] + '/standards/get', data)
+					.then((res) => {
+						let data = res.data;
+						//console.warn(JSON.stringify(data));
+						this.setState({
+							articles: data.articles,
+							standard: data.standard,
+							loading: false
+						})
+					})
+					.catch((error) => {
+						console.warn(JSON.stringify(error));
+					});
+			} else {
+				//TODO: go back to login
+			}
+			
+
+		} else {
+			this.props.history.push("/login" + this.articleId);
+		}
+
 		//console.warn('user ' + userId + 'client ' + clientId);
 
-		if (clientId != null && userId != null) {
-			const data = {
-				"standardId": this.standardId,
-				"clientId": clientId,
-
-			}
-			axios.post(constants["apiUrl"] + '/standards/get', data)
-				.then((res) => {
-					let data = res.data;
-					//console.warn(JSON.stringify(data));
-					this.setState({
-						articles: data.articles,
-						standard: data.standard,
-						loading: false
-					})
-				})
-				.catch((error) => {
-					console.warn(JSON.stringify(error));
-				});
-		} else {
-			//TODO: go back to login
-		}
+		
 	}
 
 	render() {

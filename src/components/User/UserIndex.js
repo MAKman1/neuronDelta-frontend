@@ -38,33 +38,37 @@ class UserIndex extends React.Component {
 		//Check if auth token in valid
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
+		let type = reactLocalStorage.get('userType', true);
 
-		//onsole.warn('user ' + userId + 'client ' + clientId);
-
-		if (clientId != null && userId != null) {
-			const data = {
-				"clientId": clientId,
-				"userId": userId
-			}
-			axios.post(constants["apiUrl"] + '/dashboard/get', data)
-				.then((res) => {
-					let data = res.data;
-					//console.warn(JSON.stringify(data));
-					this.setState({
-						pendArticles: data.pendingArticles,
-						compArticles: data.completedArticles,
-						assignedDocs: data.assignedDocuments,
-						articles: data.assignedArticles,
-						documents: data.documents,
-						assignedWorkflows: data.assignedWorkflows,
-						loading: false
+		if (type == 1) {
+			if (clientId != null && userId != null) {
+				const data = {
+					"clientId": clientId,
+					"userId": userId
+				}
+				axios.post(constants["apiUrl"] + '/dashboard/get', data)
+					.then((res) => {
+						let data = res.data;
+						//console.warn(JSON.stringify(data));
+						this.setState({
+							pendArticles: data.pendingArticles,
+							compArticles: data.completedArticles,
+							assignedDocs: data.assignedDocuments,
+							articles: data.assignedArticles,
+							documents: data.documents,
+							assignedWorkflows: data.assignedWorkflows,
+							loading: false
+						})
 					})
-				})
-				.catch((error) => {
-					console.warn(JSON.stringify(error));
-				});
-		} else {
-			//TODO: go back to login
+					.catch((error) => {
+						console.warn(JSON.stringify(error));
+					});
+			} else {
+				this.props.history.push("/login");
+			}
+		}
+		else {
+			this.props.history.push("/login");
 		}
 	}
 
@@ -209,12 +213,12 @@ class UserIndex extends React.Component {
 											</tr>
 										</thead>
 										<tbody>
-											{this.state.documents.map( (doc, index) => {
+											{this.state.documents.map((doc, index) => {
 												return (
 													<tr>
 														<th scope="row">{doc.name}</th>
 														<td>{doc.size} KB</td>
-														<th >{doc.assignedBy ? doc.assignedBy : '-' }</th>
+														<th >{doc.assignedBy ? doc.assignedBy : '-'}</th>
 														<td className="text-center">
 															{doc.accepted ? <i class="fas fa-check"></i>
 																: <Button color="success" href="#pablo" onClick={() => this.acceptDocument(index)} size="sm"> Accept </Button>

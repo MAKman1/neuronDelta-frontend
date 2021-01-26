@@ -32,26 +32,33 @@ class Workflows extends React.Component {
         //Check if auth token in valid
         let userId = reactLocalStorage.get('userId', true);
         let clientId = reactLocalStorage.get('clientId', true);
+        let type = reactLocalStorage.get('userType', true);
 
-        if (clientId != null) {
-            const data = {
-                "clientId": clientId,
-                "userId": userId
-            }
-            axios.post(constants["apiUrl"] + '/workflows/getAssignedWorkflows', data)
-                .then((res) => {
-                    let data = res.data;
-                    console.warn(JSON.stringify(data));
-                    this.setState({
-                        workflows: data.workflows,
-                        loading: false
+        if (type == 1) {
+            if (clientId != null) {
+                const data = {
+                    "clientId": clientId,
+                    "userId": userId
+                }
+                axios.post(constants["apiUrl"] + '/workflows/getAssignedWorkflows', data)
+                    .then((res) => {
+                        let data = res.data;
+                        console.warn(JSON.stringify(data));
+                        this.setState({
+                            workflows: data.workflows,
+                            loading: false
+                        })
                     })
-                })
-                .catch((error) => {
-                    console.warn(JSON.stringify(error));
-                });
-        } else {
-            //TODO: go back to login
+                    .catch((error) => {
+                        console.warn(JSON.stringify(error));
+                    });
+            }
+            else {
+                this.props.history.push("/login");
+            }
+        }
+        else {
+            this.props.history.push("/login");
         }
     }
 
@@ -101,19 +108,19 @@ class Workflows extends React.Component {
                                                         <td>-</td>
                                                         <td>
                                                             <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                                                             {w.progress != null ? w.progress + "%" : "-" }
-                                                            </td>
+                                                            {w.progress != null ? w.progress + "%" : "-"}
+                                                        </td>
                                                         <td className="text-center">
-                                                        <Link to={{
-                                                            pathname: '/user/view/workflow/' + w.id,
-                                                            state: {
-                                                            
-                                                            }
-                                                        }}>
-                                                            <Button color="primary" size="sm">
-                                                            View
+                                                            <Link to={{
+                                                                pathname: '/user/view/workflow/' + w.id,
+                                                                state: {
+
+                                                                }
+                                                            }}>
+                                                                <Button color="primary" size="sm">
+                                                                    View
                                                             </Button>
-                                                        </Link>
+                                                            </Link>
                                                         </td>
                                                     </tr>
                                                 )

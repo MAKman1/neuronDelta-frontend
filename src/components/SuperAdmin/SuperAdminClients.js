@@ -41,7 +41,12 @@ class SuperAdminClients extends React.Component {
   }
 
   componentDidMount() {
-    axios.post(constants["apiUrl"] + '/admin/getClients')
+
+    let type = reactLocalStorage.get('userType', true);
+
+
+    if (type == 3) {
+      axios.post(constants["apiUrl"] + '/admin/getClients')
       .then((res) => {
         let data = res.data;
         this.setState({
@@ -52,6 +57,11 @@ class SuperAdminClients extends React.Component {
       .catch((error) => {
         console.warn(JSON.stringify(error));
       });
+    } else {
+      this.props.history.push("/login");
+    }
+
+    
   }
 
   openAddModal = () => {

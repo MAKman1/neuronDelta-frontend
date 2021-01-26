@@ -121,8 +121,10 @@ class Auth extends React.Component {
 
           if (data.user.user_type == 1) {
             this.props.history.push("/user/index");
-          } else {
+          } else if (data.user.user_type == 2) {
             this.props.history.push("/manager/index");
+          } else {
+            this.props.history.push("/master/index");
           }
         } else {
           this.setState({ valid: 1 });

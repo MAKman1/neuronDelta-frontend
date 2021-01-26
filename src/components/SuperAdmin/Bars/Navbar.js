@@ -99,10 +99,10 @@ class AdminNavbar extends React.Component {
 									<DropdownItem className="noti-title" header tag="div">
 										<h6 className="text-overflow m-0">Welcome!</h6>
 									</DropdownItem>
-									<DropdownItem to="/master/profile" tag={Link}>
+									{/* <DropdownItem to="/master/profile" tag={Link}>
 										<i className="ni ni-single-02" />
 										<span>My profile</span>
-									</DropdownItem>
+									</DropdownItem> */}
 									<DropdownItem to="/master/index" tag={Link}>
 										<i className="ni ni-settings-gear-65" />
 										<span>Settings</span>

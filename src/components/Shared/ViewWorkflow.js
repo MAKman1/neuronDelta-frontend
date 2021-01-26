@@ -54,39 +54,46 @@ class ViewWorkflow extends React.Component {
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
 		let type = reactLocalStorage.get('userType', true);
-
-		
 		this.setState({
 			userType: type
 		})
 
+		if (type != 3) {
+      
+			
+			if (clientId !== null && userId !== null) {
+				const data = {
+	
+					"workflowId": this.workflowId,
+	
+				}
+				axios.post(constants["apiUrl"] + '/workflows/get', data)
+					.then((res) => {
+						let data = res.data;
+						console.warn(JSON.stringify(data));
+						this.setState({
+							name: data.workflow.name,
+							desc: data.workflow.description,
+							user: data.workflow.user,
+							items: data.workflow.items,
+							workflowId: data.workflow.id,
+							loading: false
+						})
+					})
+					.catch((error) => {
+						console.warn(JSON.stringify(error));
+					});
+			} else {
+				//TODO: go back to login
+			}
+
+		} else {
+		this.props.history.push("/login");
+		}
+
 		//console.warn('user ' + userId + 'client ' + clientId + this.articleId);
 
-		if (clientId !== null && userId !== null) {
-			const data = {
-
-				"workflowId": this.workflowId,
-
-			}
-			axios.post(constants["apiUrl"] + '/workflows/get', data)
-				.then((res) => {
-					let data = res.data;
-					console.warn(JSON.stringify(data));
-					this.setState({
-						name: data.workflow.name,
-						desc: data.workflow.description,
-						user: data.workflow.user,
-						items: data.workflow.items,
-						workflowId: data.workflow.id,
-						loading: false
-					})
-				})
-				.catch((error) => {
-					console.warn(JSON.stringify(error));
-				});
-		} else {
-			//TODO: go back to login
-		}
+		
 	}
 
 	handleItemName = (event) => {
@@ -116,9 +123,15 @@ class ViewWorkflow extends React.Component {
 			axios.post(constants["apiUrl"] + '/workflows/addWorkflowItem', data)
 				.then((res) => {
 					let data = res.data;
-					console.warn(JSON.stringify(data));
+					console.warn((data));
 					this.closeAddItemModal();
-					window.location.reload(false)
+					let temp = this.state.items;
+					temp.push(data.item);
+					this.setState({
+						items: temp,
+					})
+
+					this.forceUpdate()
 				})
 				.catch((error) => {
 					console.warn(JSON.stringify(error));
@@ -156,10 +169,16 @@ class ViewWorkflow extends React.Component {
 		axios.post(constants["apiUrl"] + '/workflows/check', data)
 			.then((res) => {
 				let data = res.data;
-				console.warn(JSON.stringify(data));
-				if (data.done == 1) {
-					window.location.reload(false)
-				}
+				console.warn((data));
+				let temp = this.state.items;
+				let index = temp.findIndex(item => item.id == itemId)
+				temp[index].done = 1;
+				this.setState({
+					items: temp,
+				})
+
+				this.forceUpdate()
+				
 
 			})
 			.catch((error) => {
@@ -180,9 +199,14 @@ class ViewWorkflow extends React.Component {
 			.then((res) => {
 				let data = res.data;
 				console.warn(JSON.stringify(data));
-				if (data.done == 1) {
-					window.location.reload(false)
-				}
+				let temp = this.state.items;
+				let index = temp.findIndex(item => item.id == itemId)
+				temp[index].done = 0;
+				this.setState({
+					items: temp,
+				})
+
+				this.forceUpdate()
 
 			})
 			.catch((error) => {
@@ -273,9 +297,18 @@ class ViewWorkflow extends React.Component {
 		axios.post(constants["apiUrl"] + '/workflows/addDesciption', data)
 			.then((res) => {
 				let data = res.data;
-				console.warn(JSON.stringify(data));
+				console.warn(data);
+				let temp = this.state.items;
+				let index = temp.findIndex(item => item.id == this.state.index)
+				temp[index].description = this.state.details
+
+				this.setState({
+					items : temp,
+				})
+
+				this.forceUpdate()
 				this.closeDetModal()
-				window.location.reload(false)
+				
 
 			})
 			.catch((error) => {

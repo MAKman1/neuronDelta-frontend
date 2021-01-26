@@ -68,34 +68,44 @@ class ManagerIndex extends React.Component {
 		let userId = reactLocalStorage.get('userId', true);
 		let clientId = reactLocalStorage.get('clientId', true);
 
-		if (clientId != null && userId != null) {
-			const data = {
-				"clientId": clientId,
-				"userId": userId
-			}
-			axios.post(constants["apiUrl"] + '/dashboard/get', data)
-				.then((res) => {
-					let data = res.data;
-					this.setState({
-						totalUsers: data.totalUsers,
-						pendAudits: data.pendingArticles,
-						compAudits: data.completedArticles,
-						subsStandards: data.subscribedStandards,
-						standards: data.standards,
-						documents: data.documents,
-						articles: data.articles,
-						workflows: data.workflows,
-						users: data.users,
-						roles: data.roles,
-						loading: false
+		let type = reactLocalStorage.get('userType', true);
+
+		if (type == 2) {
+			if (clientId != null && userId != null) {
+				const data = {
+					"clientId": clientId,
+					"userId": userId
+				}
+				axios.post(constants["apiUrl"] + '/dashboard/get', data)
+					.then((res) => {
+						let data = res.data;
+						this.setState({
+							totalUsers: data.totalUsers,
+							pendAudits: data.pendingArticles,
+							compAudits: data.completedArticles,
+							subsStandards: data.subscribedStandards,
+							standards: data.standards,
+							documents: data.documents,
+							articles: data.articles,
+							workflows: data.workflows,
+							users: data.users,
+							roles: data.roles,
+							loading: false
+						})
 					})
-				})
-				.catch((error) => {
-					console.warn(JSON.stringify(error));
-				});
+					.catch((error) => {
+						console.warn(JSON.stringify(error));
+					});
+			} else {
+				//TODO: go back to login
+			}
+		
+
 		} else {
-			//TODO: go back to login
+		this.props.history.push("/login");
 		}
+
+		
 	}
 
 	toggleModal = (state) => {

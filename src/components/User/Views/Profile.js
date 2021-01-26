@@ -35,24 +35,31 @@ class Profile extends React.Component {
   componentDidMount() {
     let userId = reactLocalStorage.get('userId', true);
 
-    if (userId != null) {
-      const data = {
-        "userId": userId
-      }
-      axios.post(constants["apiUrl"] + '/user/getUser', data)
-        .then((res) => {
-          let data = res.data;
-          console.warn(data.user);
-          this.setState({
-            user: data.user,
-            loading: false
+    let type = reactLocalStorage.get('userType', true);
+
+    if (type == 1) {
+      if (userId != null) {
+        const data = {
+          "userId": userId
+        }
+        axios.post(constants["apiUrl"] + '/user/getUser', data)
+          .then((res) => {
+            let data = res.data;
+            console.warn(data.user);
+            this.setState({
+              user: data.user,
+              loading: false
+            })
           })
-        })
-        .catch((error) => {
-          console.warn(JSON.stringify(error));
-        });
-    } else {
-      //TODO: go back to login
+          .catch((error) => {
+            console.warn(JSON.stringify(error));
+          });
+      } else {
+        this.props.history.push("/login");
+      }
+    }
+    else {
+      this.props.history.push("/login");
     }
   }
 

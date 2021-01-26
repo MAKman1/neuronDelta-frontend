@@ -40,24 +40,34 @@ articleId = this.props.match.params.articleId;
 
 componentDidMount() {
 
-    const data = {
-        "articleId": this.articleId
-    }
-    
+    let type = reactLocalStorage.get('userType', true);
 
-    axios.post(constants["apiUrl"] + '/admin/getArticle', data )
-    .then((res) => {
-        let data = res.data;
-        console.warn(data)
-        this.setState({
-        article: data.article,
-        checklists: data.article.checklists,
-        loading: false,
+
+    if (type == 3) {
+        const data = {
+            "articleId": this.articleId
+        }
+        
+    
+        axios.post(constants["apiUrl"] + '/admin/getArticle', data )
+        .then((res) => {
+            let data = res.data;
+            console.warn(data)
+            this.setState({
+            article: data.article,
+            checklists: data.article.checklists,
+            loading: false,
+            })
         })
-    })
-    .catch((error) => {
-        console.warn(JSON.stringify(error));
-    });
+        .catch((error) => {
+            console.warn(JSON.stringify(error));
+        });
+
+    } else {
+      this.props.history.push("/login");
+    }
+
+    
 }
 
 openAddModal = () => {
