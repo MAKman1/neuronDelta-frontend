@@ -12,6 +12,7 @@ import AuthLayout from "components/Login/Auth.js";
 import ManagerLayout from "components/Manager/Manager.js";
 import UserLayout from "components/User/User.js";
 import SuperAdminLayout from "components/SuperAdmin/SuperAdmin.js";
+import Landing from "components/Landing/Landing";
 
 
 ReactDOM.render(
@@ -22,8 +23,9 @@ ReactDOM.render(
 			<Route path="/user" render={props => <UserLayout {...props} />} />
 			<Route path="/master" render={props => <SuperAdminLayout {...props} />} />
 			<Route path="/login" render={props => <AuthLayout {...props} />} />
+			<Route path="/" render={props => <Landing {...props} />} />
 
-			<Redirect from="/" to="/login" />
+			<Redirect from="/" to="/" />
 		</Switch>
 	</BrowserRouter>,
 	document.getElementById("root")

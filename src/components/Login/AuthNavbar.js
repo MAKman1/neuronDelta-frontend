@@ -72,7 +72,7 @@ class AuthNavbar extends React.Component {
                 <NavItem>
                   <NavLink
                     className="nav-link-icon"
-                    to="/auth/login"
+                    to="/"
                     tag={Link}
                   >
                     <i class="fas fa-home"></i>
