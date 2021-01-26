@@ -2,10 +2,12 @@
 import React from "react";
 
 import 'assets/landing/css/bootstrap.min.scoped.css';
+
 import 'assets/landing/css/slick.scoped.css';
 import 'assets/landing/css/magnific-popup.scoped.css';
 import 'assets/landing/css/LineIcons.scoped.css';
 import 'assets/landing/css/default.scoped.css';
+
 import 'assets/landing/css/style.scoped.css';
 
 import { Link } from "react-router-dom";
