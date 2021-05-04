@@ -62,7 +62,7 @@ class Admin extends React.Component {
           /> */}
           <Switch>
             {this.getRoutes(routes)}
-            <Redirect from="*" to="/admin/index" />
+            <Redirect from="*" to="/master/index" />
           </Switch>
           <Container fluid>
             {/* <AdminFooter /> */}

@@ -11,21 +11,22 @@ import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "components/Login/Auth.js";
 import ManagerLayout from "components/Manager/Manager.js";
 import UserLayout from "components/User/User.js";
-import AuditLayout from "components/Manager/ManagerAudits.js";
-import Manager from "components/Manager/Manager";
+import SuperAdminLayout from "components/SuperAdmin/SuperAdmin.js";
+import Landing from "components/Landing/Landing";
 
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route path="/admin" render={props => <AdminLayout {...props} />} />
-      <Route path="/manager" render={props => <ManagerLayout {...props} />} />
-      <Route path="/manager/audit" render = {props => <AuditLayout {...props}/>}/>
-      <Route path="/user" render={props => <UserLayout {...props} />} />
-      <Route path="/login" render={props => <AuthLayout {...props} />} />
-      
-      <Redirect from="/" to="/user/index" />
-    </Switch>
-  </BrowserRouter>,
-  document.getElementById("root")
+	<BrowserRouter>
+		<Switch>
+			<Route path="/admin" render={props => <AdminLayout {...props} />} />
+			<Route path="/manager" render={props => <ManagerLayout {...props} />} />
+			<Route path="/user" render={props => <UserLayout {...props} />} />
+			<Route path="/master" render={props => <SuperAdminLayout {...props} />} />
+			<Route path="/login" render={props => <AuthLayout {...props} />} />
+			<Route path="/" render={props => <Landing {...props} />} />
+
+			<Redirect from="/" to="/" />
+		</Switch>
+	</BrowserRouter>,
+	document.getElementById("root")
 );  

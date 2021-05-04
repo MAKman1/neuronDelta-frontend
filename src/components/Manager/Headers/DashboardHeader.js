@@ -11,9 +11,9 @@ class DashboardHeader extends React.Component {
         <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
           <Container fluid>
             <div className="header-body">
-				<Row>
-					<h1 className="text-white" style={{paddingLeft: 15, paddingBottom: 50}}>Jacobs & Sons</h1>
-				</Row>
+              <Row>
+                <h1 className="text-white" style={{ paddingLeft: 15, paddingBottom: 50 }}>Jacobs & Sons</h1>
+              </Row>
               {/* Card stats */}
               <Row>
                 <Col lg="6" xl="3">
@@ -32,12 +32,12 @@ class DashboardHeader extends React.Component {
                           </span>
                         </div>
                         <Col className="col-auto">
-                          <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
-                            <i className="fas fa-chart-bar" />
+                          <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                            <i className="fas fa-users" />
                           </div>
                         </Col>
                       </Row>
-                      
+
                     </CardBody>
                   </Card>
                 </Col>
@@ -53,16 +53,16 @@ class DashboardHeader extends React.Component {
                             Pending Articles
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                          {this.props.pendAudits}
+                            {this.props.pendAudits}
                           </span>
                         </div>
                         <Col className="col-auto">
-                          <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
-                            <i className="fas fa-chart-pie" />
+                          <div className="icon icon-shape bg-blue text-white rounded-circle shadow">
+                            <i className="ni ni-collection text-white" />
                           </div>
                         </Col>
                       </Row>
-                    
+
                     </CardBody>
                   </Card>
                 </Col>
@@ -78,16 +78,16 @@ class DashboardHeader extends React.Component {
                             Completed Articles
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                          {this.props.compAudits}
+                            {this.props.compAudits}
                           </span>
                         </div>
                         <Col className="col-auto">
-                          <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
-                            <i className="fas fa-users" />
+                          <div className="icon icon-shape bg-green text-white rounded-circle shadow">
+                            <i className="ni ni-collection text-white" />
                           </div>
                         </Col>
                       </Row>
-                      
+
                     </CardBody>
                   </Card>
                 </Col>
@@ -103,12 +103,12 @@ class DashboardHeader extends React.Component {
                             Subscribed Standards
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                          {this.props.subsStandards}
+                            {this.props.subsStandards}
                           </span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
-                            <i className="fas fa-chart-pie" />
+                            <i className="ni ni-tag" />
                           </div>
                         </Col>
                       </Row>

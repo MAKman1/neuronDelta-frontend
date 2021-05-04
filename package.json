@@ -18,7 +18,7 @@
   },
   "homepage": "https://google.com",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "craco start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -37,14 +37,26 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@craco/craco": "^5.5.0",
     "@fortawesome/fontawesome-free": "5.12.1",
+    "@react-pdf-viewer/core": "^2.3.1",
+    "@react-pdf-viewer/default-layout": "^2.3.0",
+    "@react-pdf-viewer/full-screen": "^2.3.0",
+    "@react-pdf-viewer/page-navigation": "^2.3.1",
+    "@react-pdf-viewer/print": "^2.3.0",
+    "@react-pdf-viewer/search": "^2.3.0",
+    "@react-pdf-viewer/toolbar": "^2.3.1",
+    "@react-pdf-viewer/zoom": "^2.3.0",
     "axios": "^0.21.1",
+    "babel-plugin-react-scoped-css": "^1.1.0",
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
     "cors": "^2.8.5",
+    "craco-plugin-scoped-css": "^1.1.0",
     "moment": "2.24.0",
     "node-sass": "4.13.1",
     "nouislider": "14.1.1",
+    "pdfjs-dist": "^2.5.207",
     "react": "16.12.0",
     "react-chartjs-2": "2.9.0",
     "react-copy-to-clipboard": "5.0.2",
@@ -54,7 +66,8 @@
     "react-router-dom": "5.1.2",
     "react-scripts": "^3.4.1",
     "reactjs-localstorage": "^1.0.1",
-    "reactstrap": "8.4.1"
+    "reactstrap": "8.4.1",
+    "styled-jsx": "^3.4.1"
   },
   "devDependencies": {
     "@types/googlemaps": "3.39.2",

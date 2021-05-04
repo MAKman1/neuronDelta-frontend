@@ -8,18 +8,32 @@ import ManagerUsers from "components/Manager/ManagerUsers.js"
 import ManagerSubscriptions from "components/Manager/ManagerSubscriptions.js";
 import ManagerDocuments from "components/Manager/ManagerDocuments.js";
 import ManagerProfile from "components/Manager/ManagerProfile.js";
-import ManagerArticle from "components/Manager/ManagerArticle.js";
+import ManagerArticles from "components/Manager/ManagerArticles.js";
 
+
+import ViewStandard from "components/Shared/ViewStandard";
+import ViewArticle from "components/Shared/ViewArticle";
+import ViewWorkflow from "components/Shared/ViewWorkflow";
 
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
-import ManagerAudits from "components/Manager/ManagerAudits";
 
 // User Imports
 import Audit from "components/User/Views/Audit.js"
 import Document from "components/User/Views/Document.js"
 import Workflows from "components/User/Views/Workflows.js"
 import Profile from "components/User/Views/Profile.js";
+import ViewDocument from "components/Shared/ViewDocument";
+
+//SuperAdmin imports
+import SuperAdminIndex from "components/SuperAdmin/SuperAdminIndex.js";
+import SuperAdminStandards from "components/SuperAdmin/SuperAdminStandards.js";
+import SuperAdminSubscriptions from "components/SuperAdmin/SuperAdminSubscriptions.js"
+import SuperAdminClients from "components/SuperAdmin/SuperAdminClients.js";
+import SuperAdminViewClient from "components/SuperAdmin/Views/SuperAdminViewClient.js";
+import SuperAdminViewStandard from "components/SuperAdmin/Views/SuperAdminViewStandard.js";
+import SuperAdminViewArticle from "components/SuperAdmin/Views/SuperAdminViewArticle";
+
 
 
 
@@ -35,7 +49,7 @@ var routes = [
   {
     path: "/profile",
     name: "Profile",
-    icon: "ni ni-single-02 text-yellow",
+    icon: "fas fa-user text-blue",
     component: ManagerProfile,
     layout: "/manager"
   },
@@ -54,10 +68,10 @@ var routes = [
     layout: "/manager"
   },
   {
-    path: "/audit",
-    name: "Article",
+    path: "/articles",
+    name: "Articles",
     icon: "ni ni-collection text-blue",
-    component: ManagerAudits,
+    component: ManagerArticles,
     layout: "/manager"
   },
 
@@ -71,23 +85,116 @@ var routes = [
   {
     path: "/users",
     name: "Users",
-    icon: "ni ni-single-02 text-yellow",
+    icon: "fas fa-users text-yellow",
     component: ManagerUsers,
     layout: "/manager"
   },
   {
     path: "/subscriptions",
     name: "Subscriptions",
-    icon: "ni ni-single-copy-04 text-red",
+    icon: "ni ni-tag text-red",
     component: ManagerSubscriptions,
     layout: "/manager"
   },
 
+  //View docs
   {
-    path: "/article",
-    component: ManagerArticle,
-    layout: "/manager/audit"
+	path: "/standard/:standardId",
+	name: "standardView",
+    component: ViewStandard,
+    layout: "/manager/view"
   },
+  {
+	path: "/article/:articleId",
+	name: "articleView",
+    component: ViewArticle,
+    layout: "/manager/view"
+  },
+  {
+	path: "/document/:documentId",
+	name: "documentView",
+    component: ViewDocument,
+    layout: "/manager/view"
+  },
+
+  {
+    path: "/workflow/:workflowId",
+    name: "workflowView",
+      component: ViewWorkflow,
+      layout: "/manager/view"
+  },
+
+  
+
+  //View docs user
+  {
+	path: "/article/:articleId",
+	name: "articleView",
+    component: ViewArticle,
+    layout: "/user/view"
+  },
+  {
+	path: "/document/:documentId",
+	name: "documentView",
+    component: ViewDocument,
+    layout: "/user/view"
+  },
+
+  {
+    path: "/workflow/:workflowId",
+    name: "workflowView",
+      component: ViewWorkflow,
+      layout: "/user/view"
+  },
+
+// Superadmin
+  {
+    path: "/index",
+      name: "Dashboard",
+      icon: "ni ni-tv-2 text-primary",
+      component: SuperAdminIndex,
+      layout: "/master"
+  },
+  {
+    path: "/standards",
+      name: "Standards",
+      icon: "ni ni-book-bookmark text-green",
+      component: SuperAdminStandards,
+      layout: "/master"
+  },
+  {
+    path: "/subscription",
+      name: "Subscriptions",
+      icon: "ni ni-tag text-red",
+      component: SuperAdminSubscriptions,
+      layout: "/master"
+  },
+  {
+    path: "/clients",
+      name: "Clients",
+      icon: "fas fa-users text-yellow",
+      component: SuperAdminClients,
+      layout: "/master"
+  },
+  {
+    path: "/client/:clientId",
+    name: "Client View",
+      component: SuperAdminViewClient,
+      layout: "/master/view"
+    },
+    {
+      path: "/standard/:standardId",
+      name: "Standard View",
+        component: SuperAdminViewStandard,
+        layout: "/master/view"
+      },
+      {
+        path: "/article/:articleId",
+        name: "Article View",
+          component: SuperAdminViewArticle,
+          layout: "/master/view"
+        },
+  
 
 
   // User
@@ -107,7 +214,7 @@ var routes = [
   },
   {
     path: "/audit",
-    name: "Audits",
+    name: "Articles",
     icon: "ni ni-collection text-blue",
     component: Audit,
     layout: "/user"
